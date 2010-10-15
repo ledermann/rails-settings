@@ -15,12 +15,12 @@ class SettingsTest < Test::Unit::TestCase
   def test_defaults
     Settings.defaults[:foo] = 'default foo'
     
-    assert_nil Settings.object(:foo)
+    assert_nil Settings.target(:foo)
     assert_equal 'default foo', Settings.foo
     
     Settings.foo = 'bar'
     assert_equal 'bar', Settings.foo
-    assert_not_nil Settings.object(:foo)
+    assert_not_nil Settings.target(:foo)
   end
   
   def test_get
@@ -49,7 +49,7 @@ class SettingsTest < Test::Unit::TestCase
     assert_equal 0.02, Settings.float * 2
   end
   
-  def test_object_scope
+  def test_target_scope
     user1 = User.create :name => 'First user'
     user2 = User.create :name => 'Second user'
     
@@ -118,13 +118,13 @@ class SettingsTest < Test::Unit::TestCase
   end
   
   private
-    def assert_setting(value, key, scope_object=nil)
+    def assert_setting(value, key, scope_target=nil)
       key = key.to_sym
       
-      if scope_object
-        assert_equal value, scope_object.instance_eval("settings.#{key}")
-        assert_equal value, scope_object.settings[key.to_sym]
-        assert_equal value, scope_object.settings[key.to_s]
+      if scope_target
+        assert_equal value, scope_target.instance_eval("settings.#{key}")
+        assert_equal value, scope_target.settings[key.to_sym]
+        assert_equal value, scope_target.settings[key.to_s]
       else
         assert_equal value, eval("Settings.#{key}")
         assert_equal value, Settings[key.to_sym]
@@ -132,16 +132,16 @@ class SettingsTest < Test::Unit::TestCase
       end
     end
     
-    def assert_assign_setting(value, key, scope_object=nil)
+    def assert_assign_setting(value, key, scope_target=nil)
       key = key.to_sym
       
-      if scope_object
-        assert_equal value, (scope_object.settings[key] = value)
-        assert_setting value, key, scope_object
-        scope_object.settings[key] = nil
+      if scope_target
+        assert_equal value, (scope_target.settings[key] = value)
+        assert_setting value, key, scope_target
+        scope_target.settings[key] = nil
       
-        assert_equal value, (scope_object.settings[key.to_s] = value)
-        assert_setting value, key, scope_object
+        assert_equal value, (scope_target.settings[key.to_s] = value)
+        assert_setting value, key, scope_target
       else
         assert_equal value, (Settings[key] = value)
         assert_setting value, key

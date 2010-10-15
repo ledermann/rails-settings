@@ -32,7 +32,7 @@ class Settings < ActiveRecord::Base
   def self.destroy(var_name)
     var_name = var_name.to_s
     if self[var_name]
-      object(var_name).destroy
+      target(var_name).destroy
       true
     else
       raise SettingNotFound, "Setting variable \"#{var_name}\" not found"
@@ -42,7 +42,7 @@ class Settings < ActiveRecord::Base
   #retrieve all settings as a hash (optionally starting with a given namespace)
   def self.all(starting_with=nil)
     options = starting_with ? { :conditions => "var LIKE '#{starting_with}%'"} : {}
-    vars = object_scoped.find(:all, {:select => 'var, value'}.merge(options))
+    vars = target_scoped.find(:all, {:select => 'var, value'}.merge(options))
     
     result = {}
     vars.each do |record|
@@ -53,7 +53,7 @@ class Settings < ActiveRecord::Base
   
   #get a setting value by [] notation
   def self.[](var_name)
-    if var = object(var_name)
+    if var = target(var_name)
       var.value
     elsif @@defaults[var_name.to_s]
       @@defaults[var_name.to_s]
@@ -66,7 +66,7 @@ class Settings < ActiveRecord::Base
   def self.[]=(var_name, value)
     var_name = var_name.to_s
     
-    record = object(var_name) || object_scoped.new(:var => var_name)
+    record = target(var_name) || target_scoped.new(:var => var_name)
     record.value = value
     record.save!
     
@@ -85,8 +85,8 @@ class Settings < ActiveRecord::Base
     new_value
   end
 
-  def self.object(var_name)
-    object_scoped.find_by_var(var_name.to_s)
+  def self.target(var_name)
+    target_scoped.find_by_var(var_name.to_s)
   end
   
   #get the value field, YAML decoded
@@ -99,8 +99,8 @@ class Settings < ActiveRecord::Base
     self[:value] = new_value.to_yaml
   end
   
-  def self.object_scoped
-    Settings.scoped_by_object_type_and_object_id(object_type, object_id)
+  def self.target_scoped
+    Settings.scoped_by_target_type_and_target_id(target_type, target_id)
   end
   
   #Deprecated!
@@ -108,26 +108,26 @@ class Settings < ActiveRecord::Base
     self
   end
   
-  def self.object_id
+  def self.target_id
     nil
   end
 
-  def self.object_type
+  def self.target_type
     nil
   end
 end
 
 class ScopedSettings < Settings
-  def self.for_object(object)
-    @object = object
+  def self.for_target(target)
+    @target = target
     self
   end
   
-  def self.object_id
-    @object.id
+  def self.target_id
+    @target.id
   end
   
-  def self.object_type
-    @object.class.base_class.to_s
+  def self.target_type
+    @target.class.base_class.to_s
   end
 end

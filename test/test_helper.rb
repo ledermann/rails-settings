@@ -1,3 +1,6 @@
+gem 'activesupport', '< 3'
+gem 'activerecord', '< 3'
+
 require 'rubygems'
 require 'active_support'
 require 'active_support/test_case'
@@ -17,11 +20,11 @@ def setup_db
     create_table :settings do |t|
       t.string :var, :null => false
       t.text   :value, :null => true
-      t.integer :object_id, :null => true
-      t.string :object_type, :limit => 30, :null => true
+      t.integer :target_id, :null => true
+      t.string :target_type, :limit => 30, :null => true
       t.timestamps
     end
-    add_index :settings, [ :object_type, :object_id, :var ], :unique => true
+    add_index :settings, [ :target_type, :target_id, :var ], :unique => true
     
     create_table :users do |t|
       t.string :name
