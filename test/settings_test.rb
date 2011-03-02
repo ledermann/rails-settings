@@ -23,6 +23,11 @@ class SettingsTest < Test::Unit::TestCase
     assert_not_nil Settings.target(:foo)
   end
   
+  def tests_defaults_false
+    Settings.defaults[:foo] = false
+    assert_equal false, Settings.foo
+  end
+  
   def test_get
     assert_setting 'foo', :test
     assert_setting 'bar', :test2

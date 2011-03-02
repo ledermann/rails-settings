@@ -55,10 +55,8 @@ class Settings < ActiveRecord::Base
   def self.[](var_name)
     if var = target(var_name)
       var.value
-    elsif @@defaults[var_name.to_s]
-      @@defaults[var_name.to_s]
     else
-      nil
+      @@defaults[var_name.to_s]
     end
   end
   
