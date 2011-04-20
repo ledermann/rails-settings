@@ -93,6 +93,21 @@ class SettingsTest < Test::Unit::TestCase
     assert_equal [user_without_settings, user_with_settings], User.without_settings_for('foo')
   end
   
+  def test_delete_settings_after_destroying_target
+    user1 = User.create :name => 'Mr. Foo'
+    user2 = User.create :name => 'Mr. Bar'
+    user1.settings.example = 42
+    user2.settings.example = 43
+    
+    before_count = Settings.count
+    user1.destroy
+    assert_equal before_count - 1, Settings.count
+    
+    before_count = Settings.count
+    user2.destroy
+    assert_equal before_count - 1, Settings.count
+  end
+  
   def test_all
     assert_equal({ "test2" => "bar", "test" => "foo" }, Settings.all)
     assert_equal({ "test2" => "bar" }, Settings.all('test2'))

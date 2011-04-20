@@ -7,6 +7,8 @@ ActiveRecord::Base.class_eval do
         ScopedSettings.for_target(self)
       end
       
+      after_destroy { |user| user.settings.target_scoped.delete_all }
+      
       named_scope :with_settings, :joins => "JOIN settings ON (settings.target_id = #{self.table_name}.#{self.primary_key} AND
                                                                settings.target_type = '#{self.base_class.name}')",
                                   :select => "DISTINCT #{self.table_name}.*" 
