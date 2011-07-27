@@ -1,6 +1,5 @@
 require 'rubygems'
 
-gem 'activesupport', '< 3'
 gem 'activerecord', '< 3'
 
 require 'active_support'
