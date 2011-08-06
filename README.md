@@ -12,32 +12,31 @@ arrays, or any object.
 ## Setup
 
 Requirements:
-  Rails 2.3.x
+  ActiveRecord 2.3.x or 3.0.x
 
-You must create the table used by the Settings model.  Simply run this command:
-  ruby script/generate settings_migration
+You have to create the table used by the Settings model by using this migration:
 
-Now just put that migration in the database with:
-  rake db:migrate
-
-If you use some older version of this fork, beware that the database schema needs to 
-be changed ("object_id" renamed to "target_id", "object_type" renamed to "target_type"). 
-You can do this with this migration:
-
-    class RenameSettingsFields < ActiveRecord::Migration
+    class CreateSettingsTable < ActiveRecord::Migration
       def self.up
-        remove_index :settings, [ :object_type, :object_id, :var ]
-    
-        rename_column :settings, :object_id, :target_id
-        rename_column :settings, :object_type, :target_type
-    
+        create_table :settings, :force => true do |t|
+          t.string  :var,         :null => false
+          t.text    :value
+          t.integer :target_id
+          t.string  :target_type, :limit => 30
+          t.timestamps
+        end
+
         add_index :settings, [ :target_type, :target_id, :var ], :unique => true
       end
 
       def self.down
-        # ...
+        drop_table :settings
       end
     end
+    
+Now put update your database with:
+
+    rake db:migrate
 
 ## Usage
 
