@@ -1,4 +1,6 @@
-= Settings Plugin
+# Settings Plugin for Rails
+
+[![Build Status](http://travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings_migration)
 
 Settings is a plugin that makes managing a table of global key, value pairs easy.
 Think of it like a global Hash stored in you database, that uses simple ActiveRecord
@@ -7,7 +9,7 @@ to hard code into your rails app.  You can store any kind of object.  Strings, n
 arrays, or any object.
 
 
-== Setup
+## Setup
 
 Requirements:
   Rails 2.3.x
@@ -37,73 +39,74 @@ You can do this with this migration:
       end
     end
 
-== Usage
+## Usage
 
 The syntax is easy.  First, lets create some settings to keep track of:
 
-  Settings.admin_password = 'supersecret'
-  Settings.date_format    = '%m %d, %Y'
-  Settings.cocktails      = ['Martini', 'Screwdriver', 'White Russian']
-  Settings.foo            = 123
-  Settings.credentials    = { :username => 'tom', :password => 'secret' }
+    Settings.admin_password = 'supersecret'
+    Settings.date_format    = '%m %d, %Y'
+    Settings.cocktails      = ['Martini', 'Screwdriver', 'White Russian']
+    Settings.foo            = 123
+    Settings.credentials    = { :username => 'tom', :password => 'secret' }
 
 Now lets read them back:
 
-  Settings.foo            # returns 123
+    Settings.foo            # returns 123
 
 Changing an existing setting is the same as creating a new setting:
 
-  Settings.foo = 'super duper bar'
+    Settings.foo = 'super duper bar'
 
 For changing an existing setting which is a Hash, you can merge new values with existing ones:
-  Settings.merge! :credentials, :password => 'topsecret'
-  Settings.credentials    # returns { :username => 'tom', :password => 'topsecret' }
+
+    Settings.merge! :credentials, :password => 'topsecret'
+    Settings.credentials    # returns { :username => 'tom', :password => 'topsecret' }
 
 Decide you dont want to track a particular setting anymore?
 
-  Settings.destroy :foo
-  Settings.foo            # returns nil
+    Settings.destroy :foo
+    Settings.foo            # returns nil
 
 Want a list of all the settings?
 
-  Settings.all            # returns {'admin_password' => 'super_secret', 'date_format' => '%m %d, %Y'}
+    Settings.all            # returns {'admin_password' => 'super_secret', 'date_format' => '%m %d, %Y'}
 
 You need name spaces and want a list of settings for a give name space? Just choose your prefered named space delimiter and use Settings.all like this:
 
-  Settings['preferences.color'] = :blue
-  Settings['preferences.size'] = :large
-  Settings['license.key'] = 'ABC-DEF'
-  Settings.all('preferences.')   # returns { 'preferences.color' => :blue, 'preferences.size' => :large }
+    Settings['preferences.color'] = :blue
+    Settings['preferences.size'] = :large
+    Settings['license.key'] = 'ABC-DEF'
+    Settings.all('preferences.')   # returns { 'preferences.color' => :blue, 'preferences.size' => :large }
 
 Set defaults for certain settings of your app.  This will cause the defined settings to return with the
 Specified value even if they are not in the database.  Make a new file in config/initializers/settings.rb
 with the following:
 
-  Settings.defaults[:some_setting] = 'footastic'
+    Settings.defaults[:some_setting] = 'footastic'
   
 Now even if the database is completely empty, you app will have some intelligent defaults:
 
-  Settings.some_setting   # returns 'footastic'
+    Settings.some_setting   # returns 'footastic'
 
 Settings may be bound to any existing ActiveRecord object. Define this association like this:
 
-  class User < ActiveRecord::Base
-    has_settings
-  end
+    class User < ActiveRecord::Base
+      has_settings
+    end
 
 Then you can set/get a setting for a given user instance just by doing this:
 
-  user = User.find(123)
-  user.settings.color = :red
-  user.settings.color # returns :red
-  user.settings.all # { "color" => :red }
+    user = User.find(123)
+    user.settings.color = :red
+    user.settings.color # returns :red
+    user.settings.all # { "color" => :red }
 
 I you want to find users having or not having some settings, there are named scopes for this:
 
-  User.with_settings # => returns a scope of users having any setting
-  User.with_settings_for('color') # => returns a scope of users having a 'color' setting
+    User.with_settings # => returns a scope of users having any setting
+    User.with_settings_for('color') # => returns a scope of users having a 'color' setting
   
-  User.without_settings # returns a scope of users having no setting at all (means user.settings.all == {})
-  User.without_settings('color') # returns a scope of users having no 'color' setting (means user.settings.color == nil)
+    User.without_settings # returns a scope of users having no setting at all (means user.settings.all == {})
+    User.without_settings('color') # returns a scope of users having no 'color' setting (means user.settings.color == nil)
 
 That's all there is to it! Enjoy!
