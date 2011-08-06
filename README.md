@@ -1,6 +1,6 @@
 # Settings Plugin for Rails
 
-[![Build Status](http://travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings_migration)
+[![Build Status](http://travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings)
 
 Settings is a plugin that makes managing a table of global key, value pairs easy.
 Think of it like a global Hash stored in you database, that uses simple ActiveRecord
