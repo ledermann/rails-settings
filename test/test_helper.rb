@@ -1,6 +1,6 @@
 require 'rubygems'
 
-gem 'activerecord', '< 3'
+gem 'activerecord'
 
 require 'active_support'
 require 'active_support/test_case'
