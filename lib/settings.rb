@@ -62,9 +62,7 @@ class Settings < ActiveRecord::Base
   
   #set a setting value by [] notation
   def self.[]=(var_name, value)
-    var_name = var_name.to_s
-    
-    record = target(var_name) || target_scoped.new(:var => var_name)
+    record = target_scoped.find_or_initialize_by_var(var_name.to_s)
     record.value = value
     record.save!
     
