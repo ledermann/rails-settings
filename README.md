@@ -9,6 +9,8 @@ Settings is a plugin that makes managing a table of key/value pairs easy. Think 
 
 ActiveRecord 2.3.x or 3.0.x
 
+Tested with Ruby 1.8.7, 1.9.2, 1.9.3 and RBX2.0
+
 
 ## Setup
 
@@ -38,7 +40,7 @@ Now put update your database with:
 
 ## Usage
 
-The syntax is easy.  First, lets create some settings to keep track of:
+The syntax is easy. First, lets create some settings to keep track of:
 
     Settings.admin_password = 'supersecret'
     Settings.date_format    = '%m %d, %Y'
