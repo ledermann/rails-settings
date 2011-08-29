@@ -135,6 +135,18 @@ class SettingsTest < Test::Unit::TestCase
   def test_destroy
     Settings.destroy :test
     assert_equal nil, Settings.test
+    
+    assert_raise(Settings::SettingNotFound) do
+      Settings.destroy :unknown
+    end
+  end
+  
+  def test_false
+    Settings.test3 = false
+    assert_setting(false, 'test3')
+    
+    Settings.destroy :test3
+    assert_setting(nil, 'test3')
   end
   
   private

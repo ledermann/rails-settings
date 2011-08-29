@@ -31,10 +31,10 @@ class Settings < ActiveRecord::Base
   #destroy the specified settings record
   def self.destroy(var_name)
     var_name = var_name.to_s
-    if self[var_name]
+    begin
       target(var_name).destroy
       true
-    else
+    rescue NoMethodError
       raise SettingNotFound, "Setting variable \"#{var_name}\" not found"
     end
   end
