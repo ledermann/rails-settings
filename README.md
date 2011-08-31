@@ -7,7 +7,7 @@ Settings is a plugin that makes managing a table of key/value pairs easy. Think 
 
 ## Requirements
 
-ActiveRecord 2.3.x or 3.0.x
+ActiveRecord 2.3.x, 3.0.x or 3.1.x
 
 Tested with Ruby 1.8.7, 1.9.2, 1.9.3 and RBX2.0
 

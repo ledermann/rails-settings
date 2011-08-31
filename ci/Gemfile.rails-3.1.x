@@ -1,5 +1,5 @@
 source :rubygems
 
-gem 'activerecord', '~> 2.3.14'
+gem 'activerecord', '~> 3.1.0'
 gem 'sqlite3'
 gem 'rake'

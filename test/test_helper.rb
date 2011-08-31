@@ -1,7 +1,5 @@
 require 'rubygems'
 
-gem 'activerecord'
-
 require 'active_support'
 require 'active_support/test_case'
 require 'active_record'
@@ -10,6 +8,7 @@ require 'test/unit'
 require "#{File.dirname(__FILE__)}/../init"
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+ActiveRecord::Migration.verbose = false
 
 class User < ActiveRecord::Base
   has_settings
@@ -31,3 +30,5 @@ def setup_db
     end
   end
 end
+
+puts "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING}"
