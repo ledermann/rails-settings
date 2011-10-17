@@ -11,20 +11,22 @@ class Settings < ActiveRecord::Base
   
   #get or set a variable with the variable as the called method
   def self.method_missing(method, *args)
-    method_name = method.to_s
-    super(method, *args)
-    
-  rescue NoMethodError
-    #set a value for a variable
-    if method_name =~ /=$/
-      var_name = method_name.gsub('=', '')
-      value = args.first
-      self[var_name] = value
-    
-    #retrieve a value
+    if self.respond_to?(method)
+      super
     else
-      self[method_name]
+      method_name = method.to_s
+    
+      #set a value for a variable
+      if method_name =~ /=$/
+        var_name = method_name.gsub('=', '')
+        value = args.first
+        self[var_name] = value
+    
+      #retrieve a value
+      else
+        self[method_name]
       
+      end
     end
   end
   
