@@ -1,8 +1,8 @@
-# Settings Plugin for Rails
+# Settings Gem/Plugin for Rails
 
 [![Build Status](https://secure.travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings)
 
-Settings is a plugin that makes managing a table of key/value pairs easy. Think of it like a Hash stored in you database, that uses simple ActiveRecord like methods for manipulation. Keep track of any setting that you don't want to hard code into your rails app. You can store any kind of object: Strings, numbers, arrays, or any object which can be noted as YAML.
+Settings is a gem/plugin that makes managing a table of key/value pairs easy. Think of it like a Hash stored in you database, that uses simple ActiveRecord like methods for manipulation. Keep track of any setting that you don't want to hard code into your rails app. You can store any kind of object: Strings, numbers, arrays, or any object which can be noted as YAML.
 
 
 ## Requirements
@@ -12,7 +12,16 @@ ActiveRecord 2.3.x, 3.0.x or 3.1.x
 Tested with Ruby 1.8.7, 1.9.2, 1.9.3 and RBX2.0
 
 
-## Setup
+## Installation
+
+Include the gem in your Gemfile
+
+    gem 'ledermann-rails-settings', :require => 'rails-settings'
+
+or install as a plugin:
+
+    ./script/plugin install git://github.com/ledermann/rails-settings.git
+
 
 You have to create the table used by the Settings model by using this migration:
 
@@ -34,7 +43,7 @@ You have to create the table used by the Settings model by using this migration:
       end
     end
     
-Now put update your database with:
+Now update your database with:
 
     rake db:migrate
 
