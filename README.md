@@ -42,7 +42,7 @@ You have to create the table used by the Settings model by using this migration:
         drop_table :settings
       end
     end
-    
+
 Now update your database with:
 
     rake db:migrate
@@ -96,7 +96,7 @@ Specified value even if they are not in the database.  Make a new file in config
 with the following:
 
     Settings.defaults[:some_setting] = 'footastic'
-  
+
 Now even if the database is completely empty, you app will have some intelligent defaults:
 
     Settings.some_setting
@@ -114,7 +114,7 @@ Then you can set/get a setting for a given user instance just by doing this:
     user.settings.color = :red
     user.settings.color
     # => :red
-    
+
     user.settings.all
     # => { "color" => :red }
 
@@ -122,13 +122,13 @@ I you want to find users having or not having some settings, there are named sco
 
     User.with_settings
     # returns a scope of users having any setting
-    
+
     User.with_settings_for('color')
     # returns a scope of users having a 'color' setting
-  
+
     User.without_settings
     # returns a scope of users having no setting at all (means user.settings.all == {})
-    
+
     User.without_settings('color')
     # returns a scope of users having no 'color' setting (means user.settings.color == nil)
 
