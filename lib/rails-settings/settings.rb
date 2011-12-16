@@ -87,14 +87,14 @@ class Settings < ActiveRecord::Base
     target_scoped.find_by_var(var_name.to_s)
   end
 
-  #get the value field, YAML decoded
+  #get the value field, Marshal decoded
   def value
-    YAML::load(self[:value])
+    Marshal.load(self[:value])
   end
 
-  #set the value field, YAML encoded
+  #set the value field, Marshal encoded
   def value=(new_value)
-    self[:value] = new_value.to_yaml
+    self[:value] = Marshal.dump(new_value)
   end
 
   def self.target_scoped

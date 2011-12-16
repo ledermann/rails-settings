@@ -29,7 +29,7 @@ You have to create the table used by the Settings model by using this migration:
       def self.up
         create_table :settings, :force => true do |t|
           t.string  :var,         :null => false
-          t.text    :value
+          t.binary  :value
           t.integer :target_id
           t.string  :target_type, :limit => 30
           t.timestamps
