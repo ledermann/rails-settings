@@ -5,10 +5,10 @@ class ScopedSettings < Settings
   end
   
   def self.target_id
-    @target.id
+    @target.is_a?(Class) ? nil : @target.id
   end
   
   def self.target_type
-    @target.class.base_class.to_s
+    @target.is_a?(Class) ? @target.name : @target.class.base_class.to_s
   end
 end

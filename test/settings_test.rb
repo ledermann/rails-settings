@@ -149,6 +149,22 @@ class SettingsTest < Test::Unit::TestCase
     assert_setting(nil, 'test3')
   end
   
+  def test_class_level_settings
+    assert_equal User.settings.name, "ScopedSettings"
+  end
+
+  def test_object_inherits_class_settings_before_default
+    Settings.defaults['foo'] = 'default'
+    User.settings.foo = 'class'
+    user = User.create :name => 'Dwight'
+    assert_equal user.settings.foo, 'class'
+  end
+
+  def test_class_inherits_default_settings
+    Settings.defaults['foo'] = 'bar'
+    assert_equal User.settings.foo, 'bar'
+  end
+
   private
     def assert_setting(value, key, scope_target=nil)
       key = key.to_sym
