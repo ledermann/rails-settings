@@ -10,6 +10,7 @@ class SettingsTest < Test::Unit::TestCase
 
   def teardown
     Settings.delete_all
+    User.delete_all
   end
   
   def test_defaults
