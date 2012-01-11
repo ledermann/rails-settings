@@ -173,6 +173,12 @@ class SettingsTest < Test::Unit::TestCase
     assert_equal 2, user.settings[:two]
   end
 
+  def test_all_includes_defaults
+    Settings.defaults[:foo] = 'bar'
+    user = User.create :name => 'Mr. Foo'
+    assert_equal({ 'foo' => 'bar' }, user.settings.all)
+  end
+
   private
     def assert_setting(value, key, scope_target=nil)
       key = key.to_sym
