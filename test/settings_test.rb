@@ -168,9 +168,12 @@ class SettingsTest < Test::Unit::TestCase
 
   def test_sets_settings_with_hash
     user = User.create :name => 'Mr. Foo'
-    user.settings = { :one => 1, :two => 2 }
-    assert_equal 1, user.settings[:one]
-    assert_equal 2, user.settings[:two]
+    user.settings[:one] = 1
+    user.settings[:two] = 2
+    user.settings = { :two => 'two', :three => 3 }
+    assert_equal 1, user.settings[:one] # ensure existing settings remain intact
+    assert_equal 'two', user.settings[:two] # ensure settings are properly overwritten
+    assert_equal 3, user.settings[:three] # ensure new settings are created
   end
 
   def test_all_includes_defaults
