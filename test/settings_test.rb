@@ -165,6 +165,13 @@ class SettingsTest < Test::Unit::TestCase
     assert_equal User.settings.foo, 'bar'
   end
 
+  def test_sets_settings_with_hash
+    user = User.create :name => 'Mr. Foo'
+    user.settings = { :one => 1, :two => 2 }
+    assert_equal 1, user.settings[:one]
+    assert_equal 2, user.settings[:two]
+  end
+
   private
     def assert_setting(value, key, scope_target=nil)
       key = key.to_sym

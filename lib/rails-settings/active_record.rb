@@ -9,6 +9,10 @@ ActiveRecord::Base.class_eval do
         ScopedSettings.for_target(self)
       end
 
+      def settings=(hash)
+        hash.each { |k,v| settings[k] = v }
+      end
+
       after_destroy { |user| user.settings.target_scoped.delete_all }
 
       scope_method = ActiveRecord::VERSION::MAJOR < 3 ? :named_scope : :scope
