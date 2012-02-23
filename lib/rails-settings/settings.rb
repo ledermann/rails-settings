@@ -50,7 +50,9 @@ class Settings < ActiveRecord::Base
     vars.each do |record|
       result[record.var] = record.value
     end
-    result.with_indifferent_access
+    defaults = @@defaults.select{ |k, v| k =~ /^#{starting_with}/ }
+    defaults = Hash[defaults] if defaults.is_a?(Array)
+    defaults.merge(result).with_indifferent_access
   end
   
   #get a setting value by [] notation
@@ -58,7 +60,11 @@ class Settings < ActiveRecord::Base
     if var = target(var_name)
       var.value
     else
-      @@defaults[var_name.to_s]
+      if target_id.nil?
+        @@defaults[var_name.to_s]
+      else
+        target_type.constantize.settings[var_name.to_s]
+      end
     end
   end
   

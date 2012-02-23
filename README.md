@@ -78,7 +78,7 @@ Decide you dont want to track a particular setting anymore?
     Settings.foo
     # => nil
 
-Want a list of all the settings?
+Want a list of all the settings (including defaults)?
 
     Settings.all
     # => { 'admin_password' => 'super_secret', 'date_format' => '%m %d, %Y' }
