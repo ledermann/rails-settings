@@ -77,7 +77,7 @@ class Settings < ActiveRecord::Base
       if (var = target(var_name)).present?
         var.value
       else
-        @@defaults[var_name.to_s]
+        defaults[var_name.to_s]
       end
     end
   end
