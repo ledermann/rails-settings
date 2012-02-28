@@ -132,4 +132,9 @@ I you want to find users having or not having some settings, there are named sco
     User.without_settings('color')
     # returns a scope of users having no 'color' setting (means user.settings.color == nil)
 
+For better performance, you can enable caching, e.g.:
+
+    Settings.cache = ActiveSupport::Cache::MemoryStore.new
+    Settings.cache_options = { :expires_in => 5.minutes }
+
 That's all there is to it! Enjoy!
