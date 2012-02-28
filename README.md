@@ -7,7 +7,7 @@ Settings is a gem/plugin that makes managing a table of key/value pairs easy. Th
 
 ## Requirements
 
-ActiveRecord 2.3.x or 3.x
+Rails 2.3.x or 3.2.x (due to an [issue with Rails caching](https://github.com/rails/rails/pull/2010) it does not work properly with Rails 3.0 or 3.1 yet)
 
 Tested with Ruby 1.8.7 and 1.9.3
 
