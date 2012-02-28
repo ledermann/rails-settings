@@ -9,6 +9,7 @@ class SettingsTest < Test::Unit::TestCase
   end
 
   def teardown
+    User.delete_all
     Settings.delete_all
   end
   
@@ -23,6 +24,11 @@ class SettingsTest < Test::Unit::TestCase
     assert_not_nil Settings.target(:foo)
   end
   
+  def tests_defaults_true
+    Settings.defaults[:foo] = true
+    assert_equal true, Settings.foo
+  end
+
   def tests_defaults_false
     Settings.defaults[:foo] = false
     assert_equal false, Settings.foo
@@ -183,4 +189,25 @@ class SettingsTest < Test::Unit::TestCase
         assert_setting value, key
       end
     end
+end
+
+class CachedSettingsTest < SettingsTest
+  def setup
+    Settings.cache = ActiveSupport::Cache::MemoryStore.new
+    Settings.cache_options = { :expires_in => 5.minutes }
+    super
+  end
+
+  def test_caching_is_in_place
+    Settings.progress = "boing"
+    Settings.connection.execute("delete from settings")
+    assert_equal "boing", Settings.progress
+    Settings.cache.clear
+    assert_nil Settings.progress
+  end
+
+  def teardown
+    Settings.cache.clear
+    super
+  end
 end
