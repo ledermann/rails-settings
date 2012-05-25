@@ -41,6 +41,17 @@ class Settings < ActiveRecord::Base
       end
     end
   end
+
+  after_save do |settings|
+    case settings.target_type
+    when 'User'
+      User.find_by_id(settings.target_id).try(:touch)
+    when 'Account'
+      Account.find_by_id(settings.target_id).try(:user).try(:touch)
+    end
+
+    true
+  end
   
   #destroy the specified settings record
   def self.destroy(var_name)

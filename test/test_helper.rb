@@ -12,13 +12,18 @@ ActiveRecord::Migration.verbose = false
 
 class User < ActiveRecord::Base
   has_settings
+  belongs_to :account
+end
+
+class Account < ActiveRecord::Base
+  has_one :user
 end
 
 def setup_db
   ActiveRecord::Schema.define(:version => 1) do
     create_table :settings do |t|
       t.string :var, :null => false
-      t.text   :value, :null => true
+      t.text :value, :null => true
       t.integer :target_id, :null => true
       t.string :target_type, :limit => 30, :null => true
       t.timestamps
@@ -27,6 +32,12 @@ def setup_db
     
     create_table :users do |t|
       t.string :name
+      t.belongs_to :account
+      t.timestamps
+    end
+
+    create_table :accounts do |t|
+      t.string :login
     end
   end
 end

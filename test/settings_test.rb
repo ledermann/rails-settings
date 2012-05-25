@@ -113,6 +113,25 @@ class SettingsTest < Test::Unit::TestCase
     user2.destroy
     assert_equal before_count - 1, Settings.count
   end
+
+  def test_save_on_settings_targetting_user
+    user = User.create :name => 'Mr. Foo'
+    updated_at = user.updated_at.to_i
+
+    sleep 1
+    user.settings.example = 42
+    assert user.reload.updated_at.to_i > updated_at
+  end
+
+  def test_save_on_settings_targetting_account
+    account = Account.create :login => 'name@email.com'
+    user = User.create :name => 'Mr. Foo', :account => account
+    updated_at = user.updated_at.to_i
+
+    sleep 1
+    user.settings.example = 42
+    assert user.reload.updated_at.to_i > updated_at
+  end
   
   def test_all
     assert_equal({ "test2" => "bar", "test" => "foo" }, Settings.all)
