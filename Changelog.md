@@ -1,3 +1,7 @@
+Version 1.2.0 (2012-07-21)
+
+- Added model-level settings (thanks to Jim Ryan)
+
 Version 1.1.0 (2012-06-01)
 
 - Added caching (thanks to Matthew McEachen)
