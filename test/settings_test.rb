@@ -4,8 +4,8 @@ class SettingsTest < Test::Unit::TestCase
   setup_db
   
   def setup
-    Settings.create(:var => 'test',  :value => 'foo')
-    Settings.create(:var => 'test2', :value => 'bar')
+    Settings.create!(:var => 'test',  :value => 'foo')
+    Settings.create!(:var => 'test2', :value => 'bar')
     
     # Reset defaults
     Settings.defaults = {}.with_indifferent_access
@@ -64,8 +64,8 @@ class SettingsTest < Test::Unit::TestCase
   end
   
   def test_target_scope
-    user1 = User.create :name => 'First user'
-    user2 = User.create :name => 'Second user'
+    user1 = User.create! :name => 'First user'
+    user2 = User.create! :name => 'Second user'
     
     assert_assign_setting 1, :one, user1
     assert_assign_setting 2, :two, user2
@@ -86,8 +86,8 @@ class SettingsTest < Test::Unit::TestCase
   end
   
   def test_named_scope
-    user_without_settings = User.create :name => 'User without settings'
-    user_with_settings = User.create :name => 'User with settings'
+    user_without_settings = User.create! :name => 'User without settings'
+    user_with_settings = User.create! :name => 'User with settings'
     user_with_settings.settings.one = '1'
     user_with_settings.settings.two = '2'
     
@@ -103,8 +103,8 @@ class SettingsTest < Test::Unit::TestCase
   end
   
   def test_delete_settings_after_destroying_target
-    user1 = User.create :name => 'Mr. Foo'
-    user2 = User.create :name => 'Mr. Bar'
+    user1 = User.create! :name => 'Mr. Foo'
+    user2 = User.create! :name => 'Mr. Bar'
     user1.settings.example = 42
     user2.settings.example = 43
     
@@ -163,30 +163,34 @@ class SettingsTest < Test::Unit::TestCase
   end
 
   def test_object_inherits_class_settings_before_default
-    Settings.defaults['foo'] = 'default'
-    User.settings.foo = 'class'
-    user = User.create :name => 'Dwight'
-    assert_equal user.settings.foo, 'class'
+    Settings.defaults[:foo] = 'global default'
+    User.settings.foo = 'model default'
+    
+    user = User.create! :name => 'Dwight'
+    
+    assert_equal user.settings.foo, 'model default'
+    assert_equal 'global default', Settings.foo
   end
 
   def test_class_inherits_default_settings
-    Settings.defaults['foo'] = 'bar'
+    Settings.defaults[:foo] = 'bar'
     assert_equal User.settings.foo, 'bar'
   end
 
   def test_sets_settings_with_hash
-    user = User.create :name => 'Mr. Foo'
-    user.settings[:one] = 1
-    user.settings[:two] = 2
-    user.settings = { :two => 'two', :three => 3 }
-    assert_equal 1, user.settings[:one] # ensure existing settings remain intact
-    assert_equal 'two', user.settings[:two] # ensure settings are properly overwritten
-    assert_equal 3, user.settings[:three] # ensure new settings are created
+    user = User.create! :name => 'Mr. Foo'
+    user.settings[:one] = '1'
+    user.settings[:two] = '2'
+    user.settings = { :two => '2a', :three => '3' }
+    
+    assert_equal '1',  user.settings[:one]   # ensure existing settings remain intact
+    assert_equal '2a', user.settings[:two]   # ensure settings are properly overwritten
+    assert_equal '3',  user.settings[:three] # ensure new setting are created
   end
 
   def test_all_includes_defaults
     Settings.defaults[:foo] = 'bar'
-    user = User.create :name => 'Mr. Foo'
+    user = User.create! :name => 'Mr. Foo'
     assert_equal({ 'foo' => 'bar' }, user.settings.all)
   end
 
