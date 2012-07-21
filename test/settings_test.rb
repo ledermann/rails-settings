@@ -11,6 +11,7 @@ class SettingsTest < Test::Unit::TestCase
   def teardown
     User.delete_all
     Settings.delete_all
+    User.delete_all
   end
   
   def test_defaults
@@ -155,6 +156,38 @@ class SettingsTest < Test::Unit::TestCase
     assert_setting(nil, 'test3')
   end
   
+  def test_class_level_settings
+    assert_equal User.settings.name, "ScopedSettings"
+  end
+
+  def test_object_inherits_class_settings_before_default
+    Settings.defaults['foo'] = 'default'
+    User.settings.foo = 'class'
+    user = User.create :name => 'Dwight'
+    assert_equal user.settings.foo, 'class'
+  end
+
+  def test_class_inherits_default_settings
+    Settings.defaults['foo'] = 'bar'
+    assert_equal User.settings.foo, 'bar'
+  end
+
+  def test_sets_settings_with_hash
+    user = User.create :name => 'Mr. Foo'
+    user.settings[:one] = 1
+    user.settings[:two] = 2
+    user.settings = { :two => 'two', :three => 3 }
+    assert_equal 1, user.settings[:one] # ensure existing settings remain intact
+    assert_equal 'two', user.settings[:two] # ensure settings are properly overwritten
+    assert_equal 3, user.settings[:three] # ensure new settings are created
+  end
+
+  def test_all_includes_defaults
+    Settings.defaults[:foo] = 'bar'
+    user = User.create :name => 'Mr. Foo'
+    assert_equal({ 'foo' => 'bar' }, user.settings.all)
+  end
+
   private
     def assert_setting(value, key, scope_target=nil)
       key = key.to_sym
