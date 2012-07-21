@@ -6,12 +6,14 @@ class SettingsTest < Test::Unit::TestCase
   def setup
     Settings.create(:var => 'test',  :value => 'foo')
     Settings.create(:var => 'test2', :value => 'bar')
+    
+    # Reset defaults
+    Settings.defaults = {}.with_indifferent_access
   end
 
   def teardown
     User.delete_all
     Settings.delete_all
-    User.delete_all
   end
   
   def test_defaults
