@@ -91,17 +91,6 @@ You need name spaces and want a list of settings for a give name space? Just cho
     Settings.all('preferences.')
     # => { 'preferences.color' => :blue, 'preferences.size' => :large }
 
-Set defaults for certain settings of your app.  This will cause the defined settings to return with the
-Specified value even if they are not in the database.  Make a new file in config/initializers/settings.rb
-with the following:
-
-    Settings.defaults[:some_setting] = 'footastic'
-  
-Now even if the database is completely empty, you app will have some intelligent defaults:
-
-    Settings.some_setting
-    # => 'footastic'
-
 Settings may be bound to any existing ActiveRecord object. Define this association like this:
 
     class User < ActiveRecord::Base
@@ -117,6 +106,35 @@ Then you can set/get a setting for a given user instance just by doing this:
     
     user.settings.all
     # => { "color" => :red }
+
+
+Set defaults for certain settings of your app.  This will cause the defined settings to return with the
+specified value even if they are not in the database.  Make a new file in config/initializers/settings.rb
+with the following:
+
+    Settings.defaults[:foo] = 'footastic'
+  
+Now even if the database is completely empty, you app will have some intelligent defaults:
+
+    Settings.foo
+    # => 'footastic'
+
+Defaults can be defined on the model level, too:
+
+    User.settings.foo = 'bar'
+    User.find(123).settings.foo
+    # => 'bar'
+
+If the setting doesn't exist on the object or the model, you'll get the default, as expected:
+
+    Settings.defaults[:some_default] = 'foo'
+    
+    User.settings.some_default
+    # => 'foo'
+    
+    User.find(123).settings.some_default
+    # => 'foo'
+
 
 I you want to find users having or not having some settings, there are named scopes for this:
 
