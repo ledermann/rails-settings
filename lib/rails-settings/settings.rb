@@ -4,18 +4,6 @@ class Settings < ActiveRecord::Base
   cattr_accessor :defaults
   self.defaults = {}.with_indifferent_access
 
-  # cache must follow the contract of ActiveSupport::Cache. Defaults to no-op.
-  cattr_accessor :cache
-  self.cache = ActiveSupport::Cache::NullStore.new
-
-  # options passed to cache.fetch() and cache.write(). example: {:expires_in => 5.minutes}
-  cattr_accessor :cache_options
-  self.cache_options = {}
-
-  def self.cache_key(var_name)
-    [target_id, target_type, var_name].compact.join("::")
-  end
-
   # Support old plugin
   if defined?(SettingsDefaults::DEFAULTS)
     self.defaults = SettingsDefaults::DEFAULTS.with_indifferent_access
@@ -47,16 +35,10 @@ class Settings < ActiveRecord::Base
     var_name = var_name.to_s
     begin
       target(var_name).destroy
-      cache.delete(cache_key(var_name))
       true
     rescue NoMethodError
       raise SettingNotFound, "Setting variable \"#{var_name}\" not found"
     end
-  end
-
-  def self.delete_all(conditions = nil)
-    cache.clear
-    super
   end
 
   #retrieve all settings as a hash (optionally starting with a given namespace)
@@ -75,15 +57,13 @@ class Settings < ActiveRecord::Base
   
   #get a setting value by [] notation
   def self.[](var_name)
-    cache.fetch(cache_key(var_name), cache_options) do
-      if var = target(var_name)
-        var.value
+    if var = target(var_name)
+      var.value
+    else
+      if target_id.nil?
+        defaults[var_name.to_s]
       else
-        if target_id.nil?
-          @@defaults[var_name.to_s]
-        else
-          target_type.constantize.settings[var_name.to_s]
-        end
+        target_type.constantize.settings[var_name.to_s]
       end
     end
   end
@@ -93,7 +73,6 @@ class Settings < ActiveRecord::Base
     record = target_scoped.find_or_initialize_by_var(var_name.to_s)
     record.value = value
     record.save!
-    cache.write(cache_key(var_name), value, cache_options)
     value
   end
   

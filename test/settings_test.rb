@@ -141,6 +141,13 @@ class SettingsTest < Test::Unit::TestCase
     assert_equal({ :two => 2 }, Settings[:empty_hash])
   end
   
+  def test_association_merge
+    user = User.create! :name => 'Mr. Foo'
+    user.settings.merge! :foo, { :one => 1, :two => 2}
+
+    assert_equal({:one => 1, :two => 2}, user.settings.foo)
+  end
+  
   def test_destroy
     Settings.destroy :test
     assert_equal nil, Settings.test
@@ -236,25 +243,4 @@ class SettingsTest < Test::Unit::TestCase
         assert_setting value, key
       end
     end
-end
-
-class CachedSettingsTest < SettingsTest
-  def setup
-    Settings.cache = ActiveSupport::Cache::MemoryStore.new
-    Settings.cache_options = { :expires_in => 5.minutes }
-    super
-  end
-
-  def test_caching_is_in_place
-    Settings.progress = "boing"
-    Settings.connection.execute("delete from settings")
-    assert_equal "boing", Settings.progress
-    Settings.cache.clear
-    assert_nil Settings.progress
-  end
-
-  def teardown
-    Settings.cache.clear
-    super
-  end
 end
