@@ -193,6 +193,14 @@ class SettingsTest < Test::Unit::TestCase
     user = User.create! :name => 'Mr. Foo'
     assert_equal({ 'foo' => 'bar' }, user.settings.all)
   end
+  
+  def test_issue_18
+    Settings.one = 'value1'
+    User.settings.two = 'value2'
+    
+    assert_equal({'two' => 'value2'}, User.settings.all)
+  end
+  
 
   private
     def assert_setting(value, key, scope_target=nil)
