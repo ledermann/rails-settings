@@ -50,9 +50,9 @@ class Settings < ActiveRecord::Base
     vars.each do |record|
       result[record.var] = record.value
     end
-    defaults = @@defaults.select{ |k, v| k =~ /^#{starting_with}/ }
-    defaults = Hash[defaults] if defaults.is_a?(Array)
-    defaults.merge(result).with_indifferent_access
+    selected_defaults = defaults.select{ |k, v| k =~ /^#{starting_with}/ }
+    selected_defaults = Hash[selected_defaults] if selected_defaults.is_a?(Array)
+    selected_defaults.merge(result).with_indifferent_access
   end
   
   #get a setting value by [] notation
