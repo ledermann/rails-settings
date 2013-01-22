@@ -1,8 +1,13 @@
 class Settings < ActiveRecord::Base
   class SettingNotFound < RuntimeError; end
   
-  cattr_accessor :defaults
-  self.defaults = {}.with_indifferent_access
+  def self.defaults
+    Thread.current[:rails_settings_defaults] ||= {}.with_indifferent_access
+  end
+  
+  def self.defaults=(value)
+    Thread.current[:rails_settings_defaults] = value
+  end
 
   #get or set a variable with the variable as the called method
   def self.method_missing(method, *args)
