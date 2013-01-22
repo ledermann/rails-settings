@@ -4,11 +4,6 @@ class Settings < ActiveRecord::Base
   cattr_accessor :defaults
   self.defaults = {}.with_indifferent_access
 
-  # Support old plugin
-  if defined?(SettingsDefaults::DEFAULTS)
-    self.defaults = SettingsDefaults::DEFAULTS.with_indifferent_access
-  end
-  
   #get or set a variable with the variable as the called method
   def self.method_missing(method, *args)
     if self.respond_to?(method)
