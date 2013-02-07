@@ -78,13 +78,25 @@ class SettingsTest < Test::Unit::TestCase
     
     assert_setting nil, :two, user1
     assert_setting nil, :one, user2
-    
+
     assert_equal({ "one" => 1}, user1.settings.all('one'))
     assert_equal({ "two" => 2}, user2.settings.all('two'))
     assert_equal({ "one" => 1}, user1.settings.all('o'))
     assert_equal({}, user1.settings.all('non_existing_var'))
   end
-  
+
+  def test_target_scope_is_instance_safe
+    user1 = User.create! :name => 'First user'
+    user2 = User.create! :name => 'Second user'
+
+    assert_assign_setting 'Foo one', :foo, user1
+    assert_assign_setting 'Foo two', :foo, user2
+
+    settings_1 = user1.settings
+    settings_2 = user2.settings
+    assert_equal 'Foo one', settings_1.foo
+  end
+
   def test_named_scope
     user_without_settings = User.create! :name => 'User without settings'
     user_with_settings = User.create! :name => 'User with settings'

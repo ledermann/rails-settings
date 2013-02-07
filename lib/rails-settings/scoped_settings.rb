@@ -1,7 +1,13 @@
 class ScopedSettings < Settings
+
+  @klasses = {}
+
   def self.for_target(target)
-    @target = target
-    self
+    @klasses[target] ||= self.dup.instance_eval do
+      def name; "ScopedSettings"; end # Required by ActiveModel::Naming
+      @target = target
+      self
+    end
   end
   
   def self.target_id
