@@ -1,8 +1,9 @@
-WIP
+Version 1.2.1 (2013-02-09)
 
 - Quick and dirty fix for design flaw in target scope implementation (thanks to Yves-Eric Martin)
 - Use Thread.current instead of cattr_accessor to be threadsafe
 - Code cleanup
+
 
 Version 1.2.0 (2012-07-21)
 
