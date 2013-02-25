@@ -8,3 +8,7 @@ gemfile:
 #  - ci/Gemfile.rails-3.0.x
   - ci/Gemfile.rails-3.1.x
   - ci/Gemfile.rails-3.2.x
+matrix:
+  exclude:
+    - rvm: 2.0.0
+      gemfile: ci/Gemfile.rails-2.3.x
