@@ -1,11 +1,5 @@
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-Rake::TestTask.new do |t|
-  t.libs << 'lib' << 'test'
-  t.test_files = Dir.glob("test/**/*_test.rb")
-  t.verbose = true
-end
+RSpec::Core::RakeTask.new(:spec)
 
-task :default => :test
-
-require 'bundler/gem_tasks'
+task :default => :spec

@@ -1,27 +1,25 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path('../lib', __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'rails-settings/version'
 
-Gem::Specification.new do |s|
-  s.name        = 'ledermann-rails-settings'
-  s.version     = RailsSettings::VERSION
-  s.authors     = ['Georg Ledermann']
-  s.email       = ['mail@georg-ledermann.de']
-  s.homepage    = 'https://github.com/ledermann/rails-settings'
-  s.summary     = %q{Settings management for ActiveRecord objects}
-  s.description = %q{Ruby Gem that makes managing a table of key/value pairs easy. Think of it like a Hash stored in you database, that uses simple ActiveRecord like methods for manipulation.}
+Gem::Specification.new do |gem|
+  gem.name          = 'ledermann-rails-settings'
+  gem.version       = RailsSettings::VERSION
+  gem.authors       = ['Georg Ledermann']
+  gem.email         = ['mail@georg-ledermann.de']
+  gem.description   = %q{Handling of settings for ActiveRecord objects}
+  gem.summary       = %q{Every ActiveRecord object gets some settings. With defaults.}
+  gem.homepage      = 'https://github.com/ledermann/rails-settings'
 
-  s.rubyforge_project = 'ledermann-rails-settings'
+  gem.files         = `git ls-files`.split($/)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths = ['lib']
+  
+  gem.add_dependency 'activerecord', '~> 3.0'
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ['lib']
-
-  s.add_dependency 'activerecord', '>= 2.3'
-
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'rspec'
 end

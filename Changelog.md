@@ -1,3 +1,16 @@
+Version 2.0.0 (WIP)
+
+- Complete rewrite
+- New API (not finished yet)
+- Rails 3 only
+- Threadsafe
+- No more storing defaults in the database
+- Define defaults per ActiveRecord class, no global defaults anymore
+- Testing with RSpec
+- Based on OpenStruct
+- Store settings using `before_save` callback
+
+
 Version 1.2.1 (2013-02-09)
 
 - Quick and dirty fix for design flaw in target scope implementation (thanks to Yves-Eric Martin)
