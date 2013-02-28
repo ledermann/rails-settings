@@ -13,7 +13,7 @@ ActiveRecord::Base.class_eval do
       class_attribute :default_settings
       self.default_settings = {}
     end
-    self.default_settings[var] = defaults || {}
+    self.default_settings[var] = (defaults || {}).freeze
 
     include RailsSettings::Base   unless self.include?(RailsSettings::Base)
     include RailsSettings::Scopes unless self.include?(RailsSettings::Scopes)

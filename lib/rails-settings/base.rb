@@ -14,8 +14,8 @@ module RailsSettings
           @_setting_structs ||= begin
             result = self.class.default_settings.dup
             
-            setting_objects.map do |setting_object|
-              result[setting_object.var.to_sym].merge!(setting_object.value)
+            setting_objects.each do |setting_object|
+              result[setting_object.var.to_sym] = result[setting_object.var.to_sym].merge(setting_object.value)
             end
             
             result.keys.each do |key|
