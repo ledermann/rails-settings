@@ -35,6 +35,26 @@ module RailsSettings
             raise
           end
         end
+        
+        def reset_settings
+          setting_objects.reset
+          @_setting_structs = nil
+        end
+        
+        def update_settings!(var, hash)
+          hash.reverse_merge! self.class.default_settings
+          @_setting_structs[var] = OpenStruct.new(hash)
+          
+          setting_object = setting_objects.detect { |s| s.var.to_sym == var }
+          if hash.present? && hash != self.class.default_settings[var]
+            setting_object ||= setting_objects.build
+            setting_object.var = var
+            setting_object.value = hash
+            setting_object.save!
+          elsif setting_object
+            setting_object.destroy
+          end
+        end
 
         before_save do
           @_setting_structs.each_pair do |var,value|

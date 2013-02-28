@@ -102,15 +102,30 @@ describe "Object with settings" do
     end
   end
   
-  it "should have two setting object" do
+  it "should have two setting objects" do
     RailsSettings::SettingObject.count.should eq(2)
   end
 
+  it "should update settings" do
+    user.update_settings! :dashboard, :smart => true
+
+    user.reset_settings
+    user.settings(:dashboard).smart.should eq(true)
+  end
+
+  it "should reset settings" do
+    expect {
+      user.settings(:dashboard).dummy = 42
+      user.reset_settings
+      user.settings(:dashboard).dummy.should eq(nil)
+    }.not_to change(RailsSettings::SettingObject, :count)
+  end
+
   it "should destroy settings with nil" do
-    user.settings = nil
-    user.save!
-    
-    RailsSettings::SettingObject.count.should eq(0)
+    expect {
+      user.settings = nil
+      user.save!
+    }.to change(RailsSettings::SettingObject, :count).by(-2)
   end
 end
 
