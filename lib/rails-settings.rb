@@ -9,7 +9,7 @@ ActiveRecord::Base.class_eval do
     class_attribute :default_settings
     self.default_settings = defaults || {}
 
-    include RailsSettings::Base
-    include RailsSettings::Scopes
+    include RailsSettings::Base   unless self.include?(RailsSettings::Base)
+    include RailsSettings::Scopes unless self.include?(RailsSettings::Scopes)
   end
 end
