@@ -179,8 +179,8 @@ describe "Subclass" do
   end
   
   it "should not conflict with base class" do
-    user = User.new :name => 'user', :settings => { :limit => 2000, :newsletter => true }
-    guest = GuestUser.new :name => 'guest', :settings => { :limit => 100, :newsletter => false }
+    user = User.new :name => 'user', :settings => { :limit => 2000 }
+    guest = GuestUser.new :name => 'guest', :settings => { :limit => 100 }
     
     user.settings.limit.should eq(2000)
     user.settings.newsletter.should eq(true)
