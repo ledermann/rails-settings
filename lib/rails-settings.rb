@@ -1,6 +1,6 @@
 require 'ostruct'
 
-require 'rails-settings/setting_object'
+require 'app/models/setting_object'
 require 'rails-settings/base'
 require 'rails-settings/scopes'
 
