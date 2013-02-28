@@ -27,6 +27,10 @@ module RailsSettings
           @_setting_structs[var]
         end
         
+        def settings_loaded?
+          @_setting_structs.present?
+        end
+        
         def settings=(value)
           if value.nil?
             setting_objects.each(&:mark_for_destruction)
@@ -43,9 +47,15 @@ module RailsSettings
         
         def update_settings!(var, hash)
           hash.reverse_merge! self.class.default_settings
-          @_setting_structs[var] = OpenStruct.new(hash)
           
-          setting_object = setting_objects.detect { |s| s.var.to_sym == var }
+          if settings_loaded?
+            setting_object = setting_objects.detect { |s| s.var.to_sym == var }
+            @_setting_structs[var] = OpenStruct.new(hash)
+          else
+            # No need to load all setting_objects, so just find the right one
+            setting_object = setting_objects.where(:var => var).first
+          end
+          
           if hash.present? && hash != self.class.default_settings[var]
             setting_object ||= setting_objects.build
             setting_object.var = var
@@ -68,7 +78,7 @@ module RailsSettings
             elsif setting_object
               setting_object.mark_for_destruction
             end
-          end if @_setting_structs
+          end if settings_loaded?
         end
       end
     end

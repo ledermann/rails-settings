@@ -94,6 +94,36 @@ describe 'Objects' do
   end
 end
 
+describe "Object without settings" do
+  let!(:user) { User.create! :name => 'Mr. White' }
+  
+  it "should have no setting objects" do
+    RailsSettings::SettingObject.count.should eq(0)
+  end
+
+  it "should update settings" do
+    user.update_settings! :dashboard, :smart => true
+
+    user.reset_settings
+    user.settings(:dashboard).smart.should eq(true)
+  end
+
+  it "should reset settings" do
+    expect {
+      user.settings(:dashboard).dummy = 42
+      user.reset_settings
+      user.settings(:dashboard).dummy.should eq(nil)
+    }.not_to change(RailsSettings::SettingObject, :count)
+  end
+
+  it "should destroy settings with nil" do
+    expect {
+      user.settings = nil
+      user.save!
+    }.to_not change(RailsSettings::SettingObject, :count)
+  end
+end
+
 describe "Object with settings" do
   let!(:user) do
     User.create! :name => 'Mr. White' do |user|
