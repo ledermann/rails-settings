@@ -2,27 +2,53 @@ module RailsSettings
   module Base
     def self.included(base)
       base.class_eval do
-        has_one :setting_object, :as => :target, :dependent => :delete, :class_name => 'RailsSettings::SettingObject', :autosave => true
+        has_many :setting_objects,
+                 :as         => :target,
+                 :autosave   => true,
+                 :dependent  => :delete_all,
+                 :class_name => 'RailsSettings::SettingObject'
 
-        def settings
-          @_settings_struct ||= OpenStruct.new self.class.default_settings.merge(setting_object ? setting_object.value : {})
+        def settings(var)
+          raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_settings[var]
+          
+          @_setting_structs ||= begin
+            result = self.class.default_settings.dup
+            
+            setting_objects.all.map do |setting_object|
+              result[setting_object.var.to_sym].merge!(setting_object.value)
+            end
+            
+            result.keys.each do |key|
+              result[key] = OpenStruct.new(result[key])
+            end
+            result
+          end
+          
+          @_setting_structs[var]
         end
-
+        
         def settings=(value)
-          hash = value.is_a?(OpenStruct) ? value.marshal_dump : value
-          @_settings_struct = OpenStruct.new self.class.default_settings.merge(hash || {})
+          if value.nil?
+            setting_objects.each(&:mark_for_destruction)
+            @_setting_structs = nil
+          else
+            raise
+          end
         end
 
         before_save do
-          if @_settings_struct
-            hash = @_settings_struct.marshal_dump
-            if hash.present? && hash != self.class.default_settings
-              build_setting_object unless setting_object
+          @_setting_structs.each_pair do |var,value|
+            hash = value.marshal_dump
+            setting_object = setting_objects.find { |s| s.var.to_sym == var }
+            
+            if hash.present? && hash != self.class.default_settings[var]
+              setting_object ||= setting_objects.build
+              setting_object.var = var
               setting_object.value = hash
-            elsif self.setting_object
-              self.setting_object.mark_for_destruction
+            elsif setting_object
+              setting_object.mark_for_destruction
             end
-          end
+          end if @_setting_structs
         end
       end
     end

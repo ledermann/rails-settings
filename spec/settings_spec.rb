@@ -5,29 +5,15 @@ describe "Getter/Setter" do
   let(:account) { Account.new :subdomain => 'foo' }
 
   it "should handle method syntax" do
-    account.settings.premium = true
-    account.settings.fee = 42.5
+    account.settings(:portal).enabled = true
+    account.settings(:portal).template = 'black'
 
-    account.settings.premium.should eq(true)
-    account.settings.fee.should eq(42.5)
+    account.settings(:portal).enabled.should eq(true)
+    account.settings(:portal).template.should eq('black')
   end
-
-  it "should handle Hash syntax" do
-    account.settings = { :premium => true, :fee => 42.5 }
-    
-    account.settings.premium.should eq(true)
-    account.settings.fee.should eq(42.5)
-  end
-
-  it "should handle OpenStruct" do
-    account.settings = OpenStruct.new(:premium => true, :fee => 42.5)
-    
-    account.settings.premium.should eq(true)
-    account.settings.fee.should eq(42.5)
-  end
-
+  
   it "should return nil for not existing key" do
-    account.settings.foo.should eq(nil)
+    account.settings(:portal).foo.should eq(nil)
   end
 end
 
@@ -36,7 +22,7 @@ describe 'Objects' do
     let(:account) { Account.new :subdomain => 'foo' }
 
     it 'should have blank settings' do
-      account.settings.should eq(OpenStruct.new)
+      account.settings(:portal).should eq(OpenStruct.new)
     end
 
     it 'should not add settings' do
@@ -45,13 +31,13 @@ describe 'Objects' do
     end
 
     it "should save object with settings" do
-      account.settings.premium = true
-      account.settings.fee = 42.5
+      account.settings(:portal).premium = true
+      account.settings(:portal).fee = 42.5
       account.save!
 
       account.reload
-      account.settings.premium.should eq(true)
-      account.settings.fee.should eq(42.5)
+      account.settings(:portal).premium.should eq(true)
+      account.settings(:portal).fee.should eq(42.5)
       
       RailsSettings::SettingObject.count.should eq(1)
       RailsSettings::SettingObject.first.value.should == { :premium => true, :fee => 42.5 }
@@ -62,71 +48,66 @@ describe 'Objects' do
     let(:user) { User.new :name => 'Mr. Brown' }
 
     it "should return class defaults" do
-      User.default_settings.should eq(:theme => 'blue', :newsletter => true)
+      User.default_settings.should eq({:dashboard=>{:theme=>"red", :view=>"monthly", :filter=>false}, :calendar=>{:scope=>"company"}})
     end
 
     it 'should have default settings' do
-      user.settings.theme.should eq('blue')
-      user.settings.newsletter.should eq(true)
+      user.settings(:dashboard).theme.should eq('red')
+      user.settings(:dashboard).view.should eq('monthly')
+      user.settings(:dashboard).filter.should eq(false)
+      user.settings(:calendar).scope.should eq('company')
     end
     
     it 'should have default settings after changing one' do
-      user.settings.theme = 'red'
+      user.settings(:dashboard).theme = 'gray'
       
-      user.settings.theme.should eq('red')
-      user.settings.newsletter.should eq(true)
+      user.settings(:dashboard).theme.should eq('gray')
+      user.settings(:dashboard).view.should eq('monthly')
+      user.settings(:dashboard).filter.should eq(false)
+      user.settings(:calendar).scope.should eq('company')
     end
 
     it "should overwrite settings" do
-      user.settings.theme = 'brown'
-      user.settings.newsletter = false
+      user.settings(:dashboard).theme = 'brown'
+      user.settings(:dashboard).filter = true
       user.save!
 
       user.reload
-      user.settings.theme.should eq('brown')
-      user.settings.newsletter.should eq(false)
+      user.settings(:dashboard).theme.should eq('brown')
+      user.settings(:dashboard).filter.should eq(true)
 
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :newsletter => false }
+      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :view => 'monthly', :filter => true }
     end
 
     it "should merge settings with defaults" do
-      user.settings.theme = 'brown'
+      user.settings(:dashboard).theme = 'brown'
       user.save!
 
       user.reload
-      user.settings.theme.should eq('brown')
-      user.settings.newsletter.should eq(true)
+      user.settings(:dashboard).theme.should eq('brown')
+      user.settings(:dashboard).filter.should eq(false)
 
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :newsletter => true }
+      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :view => 'monthly', :filter => false }
     end
   end
 end
 
 describe "Object with settings" do
-  let!(:user) { User.create! :name => 'Mr. White', :settings => { :theme => 'white' } }
-  
-  it "should have one setting object" do
-    RailsSettings::SettingObject.count.should eq(1)
+  let!(:user) do
+    User.create! :name => 'Mr. White' do |user|
+      user.settings(:dashboard).theme = 'white'
+      user.settings(:calendar).scope = 'all'
+    end
   end
   
-  it "should destroy settings with nil" do
-    user.settings = nil
-    user.save!
-    
-    RailsSettings::SettingObject.count.should eq(0)
-  end
-  
-  it "should destroy settings with empty hash" do
-    user.settings = {}
-    user.save!
-    
-    RailsSettings::SettingObject.count.should eq(0)
+  it "should have two setting object" do
+    RailsSettings::SettingObject.count.should eq(2)
   end
 
-  it "should destroy settings with defaults" do
-    user.settings = { :theme => 'blue', :newsletter => true }
+  it "should destroy settings with nil" do
+    user.settings = nil
     user.save!
     
     RailsSettings::SettingObject.count.should eq(0)
@@ -134,28 +115,25 @@ describe "Object with settings" do
 end
 
 describe 'scopes' do
-  let!(:user1) { User.create! :name => 'Mr. White', :settings => OpenStruct.new(:theme => 'white') }
-  let!(:user2) { User.create! :name => 'Mr. Pink',  :settings => {} }
-  let!(:user3) { User.create! :name => 'Mr. Blond', :settings => nil }
-  let!(:user4) { User.create! :name => 'Mr. Blue' }
+  let!(:user1) { User.create! :name => 'Mr. White' do |user| user.settings(:dashboard).theme = 'white' end }
+  let!(:user2) { User.create! :name => 'Mr. Blue' }
   
   it "should find objects with existing settings" do
     User.with_settings.all.should eq([user1])
   end
 
   it "should find objects with settings for key" do
-    User.with_settings_for(:theme).all.should eq([user1])
-    User.with_settings_for(:them).all.should eq([])
+    User.with_settings_for(:dashboard).all.should eq([user1])
     User.with_settings_for(:foo).all.should eq([])
   end
 
   it "should records without settings" do
-    User.without_settings.all.should eq([user2, user3, user4])
+    User.without_settings.all.should eq([user2])
   end
 
   it "should records without settings for key" do
-    User.without_settings_for(:foo).all.should eq([user1, user2, user3, user4])
-    User.without_settings_for(:theme).all.should eq([user2, user3, user4])
+    User.without_settings_for(:foo).all.should eq([user1, user2])
+    User.without_settings_for(:dashboard).all.should eq([user2])
   end
   
   it "should require symbol as key" do
@@ -168,21 +146,27 @@ end
 
 describe "Subclass" do
   it "should save settings" do
-    guest = GuestUser.create! :name => 'guest', :settings => { :limit => 100, :newsletter => false }
+    guest = GuestUser.new :name => 'guest'
+    guest.settings(:dashboard).theme = 'blue'
+    guest.settings(:dashboard).filter = true
+    guest.save!
     guest.reload
     
-    guest.settings.limit.should eq(100)
-    guest.settings.newsletter.should eq(false)
+    guest.settings(:dashboard).theme.should eq('blue')
+    guest.settings(:dashboard).filter.should eq(true)
   end
   
   it "should not conflict with base class" do
-    user = User.new :name => 'user', :settings => { :limit => 2000 }
-    guest = GuestUser.new :name => 'guest', :settings => { :limit => 100 }
+    user = User.new :name => 'user'
+    user.settings(:dashboard).theme = 'blue'
     
-    user.settings.limit.should eq(2000)
-    user.settings.newsletter.should eq(true)
+    guest = GuestUser.new :name => 'guest'
+    guest.settings(:dashboard).theme = 'brown'
     
-    guest.settings.limit.should eq(100)
-    guest.settings.newsletter.should eq(false)
+    user.settings(:dashboard).theme.should eq('blue')
+    user.settings(:dashboard).filter.should eq(false)
+    
+    guest.settings(:dashboard).theme.should eq('brown')
+    guest.settings(:dashboard).filter.should eq(false)
   end
 end

@@ -23,25 +23,27 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Migration.verbose = false
 
 class User < ActiveRecord::Base
-  has_settings :theme => 'blue', :newsletter => true
+  has_settings :dashboard, :theme => 'blue', :view => 'monthly', :filter => false
+  has_settings :calendar, :scope => 'company'
 end
 
 class GuestUser < User
-  has_settings :theme => 'blue', :newsletter => false
+  has_settings :dashboard, :theme => 'red', :view => 'monthly', :filter => false
 end
 
 class Account < ActiveRecord::Base
-  has_settings
+  has_settings :portal
 end
 
 def setup_db
   ActiveRecord::Schema.define(:version => 1) do
     create_table :settings do |t|
+      t.string     :var,    :null => false
       t.text       :value,  :null => false
       t.references :target, :null => false, :polymorphic => true
       t.timestamps
     end
-    add_index :settings, [ :target_type, :target_id ], :unique => true
+    add_index :settings, [ :target_type, :target_id, :var ], :unique => true
 
     create_table :users do |t|
       t.string :type
