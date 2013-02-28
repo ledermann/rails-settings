@@ -2,7 +2,7 @@ module RailsSettings
   module Base
     def self.included(base)
       base.class_eval do
-        has_one :setting_object, :as => :target, :dependent => :delete, :class_name => 'RailsSettings::SettingObject'
+        has_one :setting_object, :as => :target, :dependent => :delete, :class_name => 'RailsSettings::SettingObject', :autosave => true
 
         def settings
           @_settings_struct ||= OpenStruct.new self.class.default_settings.merge(setting_object ? setting_object.value : {})
@@ -19,8 +19,8 @@ module RailsSettings
             if hash.present? && hash != self.class.default_settings
               build_setting_object unless setting_object
               setting_object.value = hash
-            else
-              self.setting_object = nil
+            elsif self.setting_object
+              self.setting_object.mark_for_destruction
             end
           end
         end
