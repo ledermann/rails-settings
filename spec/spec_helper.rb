@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
   has_settings :theme => 'blue', :newsletter => true
 end
 
+class GuestUser < User
+  has_settings :theme => 'blue', :newsletter => false
+end
+
 class Account < ActiveRecord::Base
   has_settings
 end
@@ -41,6 +45,7 @@ def setup_db
     add_index :settings, [ :target_type, :target_id ], :unique => true
 
     create_table :users do |t|
+      t.string :type
       t.string :name
     end
 

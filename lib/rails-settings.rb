@@ -6,9 +6,7 @@ require 'rails-settings/scopes'
 
 ActiveRecord::Base.class_eval do
   def self.has_settings(defaults=nil)
-    class << self
-      attr_accessor :default_settings
-    end
+    class_attribute :default_settings
     self.default_settings = defaults || {}
 
     include RailsSettings::Base

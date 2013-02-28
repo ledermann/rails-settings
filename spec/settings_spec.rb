@@ -168,3 +168,24 @@ describe 'scopes' do
     User.without_settings_for(:theme).all.should eq([@user2, @user3, @user4])
   end
 end
+
+describe "Subclass" do
+  it "should save settings" do
+    guest = GuestUser.create! :name => 'guest', :settings => { :limit => 100, :newsletter => false }
+    guest.reload
+    
+    guest.settings.limit.should eq(100)
+    guest.settings.newsletter.should eq(false)
+  end
+  
+  it "should not conflict with base class" do
+    user = User.new :name => 'user', :settings => { :limit => 2000, :newsletter => true }
+    guest = GuestUser.new :name => 'guest', :settings => { :limit => 100, :newsletter => false }
+    
+    user.settings.limit.should eq(2000)
+    user.settings.newsletter.should eq(true)
+    
+    guest.settings.limit.should eq(100)
+    guest.settings.newsletter.should eq(false)
+  end
+end
