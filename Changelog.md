@@ -2,7 +2,7 @@ Version 2.0.0 (WIP)
 
 - Complete rewrite
 - New API (not finished yet)
-- Rails 3 only
+- Rails >= 3.1 only
 - Threadsafe
 - No more storing defaults in the database
 - Define defaults per ActiveRecord class, no global defaults anymore
