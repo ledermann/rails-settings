@@ -37,9 +37,8 @@ end
 def setup_db
   ActiveRecord::Schema.define(:version => 1) do
     create_table :settings do |t|
-      t.text   :value, :null => false
-      t.integer :target_id, :null => false
-      t.string :target_type, :null => false
+      t.text       :value,  :null => false
+      t.references :target, :null => false, :polymorphic => true
       t.timestamps
     end
     add_index :settings, [ :target_type, :target_id ], :unique => true
