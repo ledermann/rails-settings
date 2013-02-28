@@ -14,7 +14,7 @@ module RailsSettings
           @_setting_structs ||= begin
             result = self.class.default_settings.dup
             
-            setting_objects.all.map do |setting_object|
+            setting_objects.map do |setting_object|
               result[setting_object.var.to_sym].merge!(setting_object.value)
             end
             
@@ -39,7 +39,7 @@ module RailsSettings
         before_save do
           @_setting_structs.each_pair do |var,value|
             hash = value.marshal_dump
-            setting_object = setting_objects.find { |s| s.var.to_sym == var }
+            setting_object = setting_objects.detect { |s| s.var.to_sym == var }
             
             if hash.present? && hash != self.class.default_settings[var]
               setting_object ||= setting_objects.build

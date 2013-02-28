@@ -119,21 +119,21 @@ describe 'scopes' do
   let!(:user2) { User.create! :name => 'Mr. Blue' }
   
   it "should find objects with existing settings" do
-    User.with_settings.all.should eq([user1])
+    User.with_settings.should eq([user1])
   end
 
   it "should find objects with settings for key" do
-    User.with_settings_for(:dashboard).all.should eq([user1])
-    User.with_settings_for(:foo).all.should eq([])
+    User.with_settings_for(:dashboard).should eq([user1])
+    User.with_settings_for(:foo).should eq([])
   end
 
   it "should records without settings" do
-    User.without_settings.all.should eq([user2])
+    User.without_settings.should eq([user2])
   end
 
   it "should records without settings for key" do
-    User.without_settings_for(:foo).all.should eq([user1, user2])
-    User.without_settings_for(:dashboard).all.should eq([user2])
+    User.without_settings_for(:foo).should eq([user1, user2])
+    User.without_settings_for(:dashboard).should eq([user2])
   end
   
   it "should require symbol as key" do
