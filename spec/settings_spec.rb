@@ -157,6 +157,13 @@ describe 'scopes' do
     User.without_settings_for(:foo).all.should eq([user1, user2, user3, user4])
     User.without_settings_for(:theme).all.should eq([user2, user3, user4])
   end
+  
+  it "should require symbol as key" do
+    [ nil, "string", 42 ].each do |invalid_key|
+      expect { User.without_settings_for(invalid_key) }.to raise_error(ArgumentError)
+      expect { User.with_settings_for(invalid_key)    }.to raise_error(ArgumentError)
+    end
+  end
 end
 
 describe "Subclass" do
