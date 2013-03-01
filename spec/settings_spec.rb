@@ -1,5 +1,4 @@
 require 'spec_helper'
-setup_db
 
 describe "Getter/Setter" do
   let(:account) { Account.new :subdomain => 'foo' }
