@@ -16,7 +16,7 @@ ActiveRecord::Base.class_eval do
       self.default_settings[key] = defaults
     end
 
-    include RailsSettings::Base
-    include RailsSettings::Scopes
+    include RailsSettings::Base   unless self.include?(RailsSettings::Base)
+    include RailsSettings::Scopes unless self.include?(RailsSettings::Scopes)
   end
 end
