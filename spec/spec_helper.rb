@@ -27,16 +27,16 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Migration.verbose = false
 
 class User < ActiveRecord::Base
-  has_settings :dashboard, :theme => 'blue', :view => 'monthly', :filter => false
-  has_settings :calendar, :scope => 'company'
+  has_settings :dashboard => { :theme => 'blue', :view => 'monthly', :filter => false },
+               :calendar  => { :scope => 'company'}
 end
 
 class GuestUser < User
-  has_settings :dashboard, :theme => 'red', :view => 'monthly', :filter => false
+  has_settings :dashboard => { :theme => 'red', :view => 'monthly', :filter => false }
 end
 
 class Account < ActiveRecord::Base
-  has_settings :portal
+  has_settings :portal => {}
 end
 
 def setup_db

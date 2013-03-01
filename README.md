@@ -6,8 +6,8 @@ Complete rewrite
 
 ```ruby
 class User < ActiveRecord::Base
-  has_settings :dashboard, :theme => 'blue', :view => 'monthly', :filter => false
-  has_settings :calendar, :scope => 'company'
+  has_settings :dashboard => { :theme => 'blue', :view => 'monthly', :filter => false },
+               :calendar  => { :scope => 'company'}
 end
 ```
 

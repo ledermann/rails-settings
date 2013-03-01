@@ -1,5 +1,19 @@
 require 'spec_helper'
 
+describe "Defaults" do
+  it "should be stored for simple class" do
+    Account.default_settings.should eq(:portal => {})
+  end
+
+  it "should be stored for parent class" do
+    User.default_settings.should eq(:dashboard => { :theme => 'blue', :view => 'monthly', :filter => false }, :calendar => { :scope => 'company'})
+  end
+  
+  it "should be stored for child class" do
+    GuestUser.default_settings.should eq(:dashboard => { :theme => 'red', :view => 'monthly', :filter => false })
+  end
+end
+
 describe "Getter/Setter" do
   let(:account) { Account.new :subdomain => 'foo' }
 
@@ -46,12 +60,8 @@ describe 'Objects' do
   context 'with defaults' do
     let(:user) { User.new :name => 'Mr. Brown' }
 
-    it "should return class defaults" do
-      User.default_settings.should eq({:dashboard=>{:theme=>"red", :view=>"monthly", :filter=>false}, :calendar=>{:scope=>"company"}})
-    end
-
     it 'should have default settings' do
-      user.settings(:dashboard).theme.should eq('red')
+      user.settings(:dashboard).theme.should eq('blue')
       user.settings(:dashboard).view.should eq('monthly')
       user.settings(:dashboard).filter.should eq(false)
       user.settings(:calendar).scope.should eq('company')
@@ -140,8 +150,10 @@ describe "Object with settings" do
 
     user.reset_settings
     user.settings(:dashboard).smart.should eq(true)
+    user.settings(:dashboard).theme.should eq('white')
+    user.settings(:calendar).scope.should eq('all')
   end
-
+  
   it "should reset settings" do
     expect {
       user.settings(:dashboard).dummy = 42
