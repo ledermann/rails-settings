@@ -154,6 +154,16 @@ describe "Object with settings" do
     user.settings(:calendar).scope.should eq('all')
   end
   
+  it "should not update settings for unchanged attributes" do
+    RailsSettings::SettingObject.any_instance.should_not_receive(:save!)
+    user.update_settings! :dashboard, :theme => 'white'
+  end
+
+  it "should not update settings for blank Hash" do
+    RailsSettings::SettingObject.any_instance.should_not_receive(:save!)
+    user.update_settings! :dashboard, {}
+  end
+  
   it "should reset settings" do
     expect {
       user.settings(:dashboard).dummy = 42

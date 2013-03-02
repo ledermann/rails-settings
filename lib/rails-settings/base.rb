@@ -46,14 +46,21 @@ module RailsSettings
         end
         
         def update_settings!(var, hash)
-          if settings_loaded?
-            setting_object = setting_objects.detect { |s| s.var.to_sym == var }
+          raise ArgumentError unless var.is_a?(Symbol)
+          raise ArgumentError unless hash.is_a?(Hash)
+          
+          return if hash.blank?
+          
+          setting_object = if settings_loaded?
+            setting_objects.detect { |s| s.var.to_sym == var }
           else
-            # No need to load all setting_objects, so just find the right one
-            setting_object = setting_objects.where(:var => var).first
+            # No need to load all setting_objects, so just load the right one
+            setting_objects.where(:var => var).first
           end
           
-          if hash.present? && hash != self.class.default_settings[var]
+          if setting_object && setting_object.value.merge(hash) == setting_object.value
+            # no change, so no need to update
+          elsif hash != self.class.default_settings[var]
             setting_object ||= setting_objects.build
             setting_object.var = var.to_s
             setting_object.value = setting_object.value.merge(hash)
