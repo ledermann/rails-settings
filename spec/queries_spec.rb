@@ -94,7 +94,7 @@ describe 'Queries performed' do
     
     it "should update settings by one SQL query" do
       expect {
-        user.update_settings! :dashboard, :foo => 'bar'
+        user.settings(:dashboard).update! :foo => 'bar'
       }.to perform_queries(1)
     end
   end

@@ -16,25 +16,25 @@ describe "Serialization" do
       calendar_settings = user.setting_objects.where(:var => 'calendar').first
 
       dashboard_settings.var.should == 'dashboard'
-      dashboard_settings.value.should eq(:theme => 'white', :view => 'monthly', :filter => false)
+      dashboard_settings.value.should eq({:theme => 'white'}.with_indifferent_access)
 
       calendar_settings.var.should == 'calendar'
-      calendar_settings.value.should eq(:scope => 'all')
+      calendar_settings.value.should eq({:scope => 'all'}.with_indifferent_access)
     end
   end
-  
+
   describe 'updated settings' do
     it 'should be serialized' do
-      user.update_settings! :dashboard, :smart => true
+      user.settings(:dashboard).update! :smart => true
 
       dashboard_settings = user.setting_objects.where(:var => 'dashboard').first
       calendar_settings = user.setting_objects.where(:var => 'calendar').first
 
       dashboard_settings.var.should == 'dashboard'
-      dashboard_settings.value.should eq(:theme => 'white', :view => 'monthly', :filter => false, :smart => true)
+      dashboard_settings.value.should eq({:theme => 'white', :smart => true}.with_indifferent_access)
 
       calendar_settings.var.should == 'calendar'
-      calendar_settings.value.should eq(:scope => 'all')
+      calendar_settings.value.should eq({:scope => 'all'}.with_indifferent_access)
     end
   end
 end

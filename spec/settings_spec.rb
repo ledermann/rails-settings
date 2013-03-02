@@ -2,15 +2,16 @@ require 'spec_helper'
 
 describe "Defaults" do
   it "should be stored for simple class" do
-    Account.default_settings.should eq(:portal => {})
+    Account.default_settings.should eq(:portal => {}.with_indifferent_access)
   end
 
   it "should be stored for parent class" do
-    User.default_settings.should eq(:dashboard => { :theme => 'blue', :view => 'monthly', :filter => false }, :calendar => { :scope => 'company'})
+    User.default_settings.should eq(:dashboard => { :theme => 'blue', :view => 'monthly', :filter => false }.with_indifferent_access, 
+                                    :calendar => { :scope => 'company'}.with_indifferent_access)
   end
   
   it "should be stored for child class" do
-    GuestUser.default_settings.should eq(:dashboard => { :theme => 'red', :view => 'monthly', :filter => false })
+    GuestUser.default_settings.should eq(:dashboard => { :theme => 'red', :view => 'monthly', :filter => false }.with_indifferent_access)
   end
 end
 
@@ -35,10 +36,10 @@ describe 'Objects' do
     let(:account) { Account.new :subdomain => 'foo' }
 
     it 'should have blank settings' do
-      account.settings(:portal).should eq(OpenStruct.new)
+      account.settings(:portal).value.should eq({})
     end
 
-    it 'should not add settings' do
+    it 'should not add settings on saving' do
       account.save!
       RailsSettings::SettingObject.count.should eq(0)
     end
@@ -53,7 +54,20 @@ describe 'Objects' do
       account.settings(:portal).fee.should eq(42.5)
       
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :premium => true, :fee => 42.5 }
+      RailsSettings::SettingObject.first.value.should == { :premium => true, :fee => 42.5 }.with_indifferent_access
+    end
+    
+    it "should save settings separated" do
+      account.save!
+      
+      settings = account.settings(:portal)
+      settings.enabled = true
+      settings.template = 'black'
+      settings.save!
+
+      account.reload
+      account.settings(:portal).enabled.should eq(true)
+      account.settings(:portal).template.should eq('black')
     end
   end
 
@@ -84,9 +98,8 @@ describe 'Objects' do
       user.reload
       user.settings(:dashboard).theme.should eq('brown')
       user.settings(:dashboard).filter.should eq(true)
-
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :view => 'monthly', :filter => true }
+      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :filter => true }.with_indifferent_access
     end
 
     it "should merge settings with defaults" do
@@ -96,9 +109,8 @@ describe 'Objects' do
       user.reload
       user.settings(:dashboard).theme.should eq('brown')
       user.settings(:dashboard).filter.should eq(false)
-
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :view => 'monthly', :filter => false }
+      RailsSettings::SettingObject.first.value.should == { :theme => 'brown' }.with_indifferent_access
     end
   end
 end
@@ -111,18 +123,10 @@ describe "Object without settings" do
   end
 
   it "should update settings" do
-    user.update_settings! :dashboard, :smart => true
+    user.settings(:dashboard).update! :smart => true
 
-    user.reset_settings
+    user.reload
     user.settings(:dashboard).smart.should eq(true)
-  end
-
-  it "should reset settings" do
-    expect {
-      user.settings(:dashboard).dummy = 42
-      user.reset_settings
-      user.settings(:dashboard).dummy.should eq(nil)
-    }.not_to change(RailsSettings::SettingObject, :count)
   end
 
   it "should destroy settings with nil" do
@@ -146,32 +150,32 @@ describe "Object with settings" do
   end
 
   it "should update settings" do
-    user.update_settings! :dashboard, :smart => true
+    user.settings(:dashboard).update! :smart => true
+    user.reload
 
-    user.reset_settings
     user.settings(:dashboard).smart.should eq(true)
     user.settings(:dashboard).theme.should eq('white')
     user.settings(:calendar).scope.should eq('all')
   end
+
+  it "should update settings by saving object" do
+    user.settings(:dashboard).smart = true
+    user.save!
+    
+    user.reload
+    user.settings(:dashboard).smart.should eq(true)
+  end
   
   it "should not update settings for unchanged attributes" do
     RailsSettings::SettingObject.any_instance.should_not_receive(:save!)
-    user.update_settings! :dashboard, :theme => 'white'
+    user.settings(:dashboard).update! :theme => 'white'
   end
 
   it "should not update settings for blank Hash" do
     RailsSettings::SettingObject.any_instance.should_not_receive(:save!)
-    user.update_settings! :dashboard, {}
+    user.settings(:dashboard).update!({})
   end
   
-  it "should reset settings" do
-    expect {
-      user.settings(:dashboard).dummy = 42
-      user.reset_settings
-      user.settings(:dashboard).dummy.should eq(nil)
-    }.not_to change(RailsSettings::SettingObject, :count)
-  end
-
   it "should destroy settings with nil" do
     expect {
       user.settings = nil

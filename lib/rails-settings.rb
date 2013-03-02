@@ -1,5 +1,3 @@
-require 'ostruct'
-
 require 'app/models/setting_object'
 require 'rails-settings/base'
 require 'rails-settings/scopes'
@@ -13,7 +11,7 @@ ActiveRecord::Base.class_eval do
       raise ArgumentError unless key.is_a?(Symbol)
       raise ArgumentError unless defaults.nil? || defaults.is_a?(Hash)
 
-      self.default_settings[key] = defaults
+      self.default_settings[key] = defaults.with_indifferent_access.freeze
     end
 
     include RailsSettings::Base   unless self.include?(RailsSettings::Base)
