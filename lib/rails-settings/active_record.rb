@@ -1,5 +1,5 @@
 ActiveRecord::Base.class_eval do
-  def self.has_settings
+  def self.has_settings(default_settings=nil)
     class_eval do
       def settings
         ScopedSettings.for_target(self)
@@ -11,6 +11,10 @@ ActiveRecord::Base.class_eval do
 
       def settings=(hash)
         hash.each { |k,v| settings[k] = v }
+      end
+
+      def self.settings=(hash)
+        hash.each { |k,v| self.settings[k] = v }
       end
 
       after_destroy { |user| user.settings.target_scoped.delete_all }
@@ -34,5 +38,6 @@ ActiveRecord::Base.class_eval do
                                                                                       settings.var = '#{var}'",
                                                                  :conditions => 'settings.id IS NULL' } }
     end
+    self.settings = default_settings if default_settings
   end
 end
