@@ -196,6 +196,14 @@ class SettingsTest < Test::Unit::TestCase
     assert_equal User.settings.foo, 'bar'
   end
 
+  def test_class_declaration_sets_defaults_with_hash
+    User.has_settings :baz => "baz", :qux => "qux"
+    user = User.create! :name => 'Mr. Foo'
+    user.settings.qux = 'quxx' 
+    assert_equal 'baz',  user.settings[:baz]  # ensure class level defaults exist
+    assert_equal 'quxx', user.settings[:qux]   # ensure settings are properly overwritten
+  end
+
   def test_sets_settings_with_hash
     user = User.create! :name => 'Mr. Foo'
     user.settings[:one] = '1'
