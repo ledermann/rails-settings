@@ -123,7 +123,7 @@ describe "Object without settings" do
   end
 
   it "should update settings" do
-    user.settings(:dashboard).update! :smart => true
+    user.settings(:dashboard).update_attributes :smart => true
 
     user.reload
     user.settings(:dashboard).smart.should eq(true)
@@ -150,7 +150,7 @@ describe "Object with settings" do
   end
 
   it "should update settings" do
-    user.settings(:dashboard).update! :smart => true
+    user.settings(:dashboard).update_attributes! :smart => true
     user.reload
 
     user.settings(:dashboard).smart.should eq(true)
@@ -164,16 +164,6 @@ describe "Object with settings" do
     
     user.reload
     user.settings(:dashboard).smart.should eq(true)
-  end
-  
-  it "should not update settings for unchanged attributes" do
-    RailsSettings::SettingObject.any_instance.should_not_receive(:save!)
-    user.settings(:dashboard).update! :theme => 'white'
-  end
-
-  it "should not update settings for blank Hash" do
-    RailsSettings::SettingObject.any_instance.should_not_receive(:save!)
-    user.settings(:dashboard).update!({})
   end
   
   it "should destroy settings with nil" do

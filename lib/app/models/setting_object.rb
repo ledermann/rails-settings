@@ -13,9 +13,14 @@ module RailsSettings
 
     serialize :value, Hash
 
-    def update!(value_attributes)
-      self.value = self.value.merge(value_attributes.stringify_keys)
-      save! if self.value_changed?
+    def update_attributes(attributes)
+      merge_value(attributes)
+      self.value_changed? ? super(:value => self.value) : true
+    end
+    
+    def update_attributes!(attributes)
+      merge_value(attributes)
+      self.value_changed? ? super(:value => self.value) : true
     end
 
     def method_missing(method_name, *args, &block)
@@ -32,6 +37,10 @@ module RailsSettings
   private
     def target_class
       target_type.constantize
+    end
+    
+    def merge_value(attributes)
+      self.value = self.value.merge(attributes.stringify_keys)
     end
   end
 end
