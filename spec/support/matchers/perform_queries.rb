@@ -9,7 +9,10 @@ RSpec::Matchers.define :perform_queries do |expected|
 
   def query_count(&block)
     @counter = ActiveRecord::QueryCounter.new
-    ActiveSupport::Notifications.subscribed(@counter.to_proc, 'sql.active_record', &block)
+    ActiveSupport::Notifications.subscribe('sql.active_record', @counter.to_proc)
+    yield
+    ActiveSupport::Notifications.unsubscribe(@counter.to_proc)
+    
     @counter.query_count
   end
 end
