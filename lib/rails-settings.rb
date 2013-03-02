@@ -11,7 +11,7 @@ ActiveRecord::Base.class_eval do
       raise ArgumentError unless key.is_a?(Symbol)
       raise ArgumentError unless defaults.nil? || defaults.is_a?(Hash)
 
-      self.default_settings[key] = defaults.with_indifferent_access.freeze
+      self.default_settings[key] = defaults.stringify_keys.freeze
     end
 
     include RailsSettings::Base   unless self.include?(RailsSettings::Base)

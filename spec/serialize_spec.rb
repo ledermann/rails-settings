@@ -16,10 +16,10 @@ describe "Serialization" do
       calendar_settings = user.setting_objects.where(:var => 'calendar').first
 
       dashboard_settings.var.should == 'dashboard'
-      dashboard_settings.value.should eq({:theme => 'white'}.with_indifferent_access)
+      dashboard_settings.value.should eq({'theme' => 'white'})
 
       calendar_settings.var.should == 'calendar'
-      calendar_settings.value.should eq({:scope => 'all'}.with_indifferent_access)
+      calendar_settings.value.should eq({'scope' => 'all'})
     end
   end
 
@@ -31,10 +31,10 @@ describe "Serialization" do
       calendar_settings = user.setting_objects.where(:var => 'calendar').first
 
       dashboard_settings.var.should == 'dashboard'
-      dashboard_settings.value.should eq({:theme => 'white', :smart => true}.with_indifferent_access)
+      dashboard_settings.value.should eq({'theme' => 'white', 'smart' => true})
 
       calendar_settings.var.should == 'calendar'
-      calendar_settings.value.should eq({:scope => 'all'}.with_indifferent_access)
+      calendar_settings.value.should eq({'scope' => 'all'})
     end
   end
 end

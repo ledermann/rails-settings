@@ -11,10 +11,10 @@ module RailsSettings
       end
     end
 
-    serialize :value, HashWithIndifferentAccess
+    serialize :value, Hash
 
     def update!(value_attributes)
-      self.value = self.value.merge(value_attributes)
+      self.value = self.value.merge(value_attributes.stringify_keys)
       save! if self.value_changed?
     end
 
@@ -25,7 +25,7 @@ module RailsSettings
         self.value[m[1]] = args.first
       else
         # Getter
-        self.value[method_name] || target_class.default_settings[var.to_sym][method_name]
+        self.value[method_name.to_s] || target_class.default_settings[var.to_sym][method_name.to_s]
       end
     end
 

@@ -29,7 +29,7 @@ describe RailsSettings::SettingObject do
     setting_object.foo = 42
     setting_object.bar = 'hello'
     
-    setting_object.value.should eq({:foo => 42, :bar => 'hello'}.with_indifferent_access)
+    setting_object.value.should eq({'foo' => 42, 'bar' => 'hello'})
   end
   
   it "should save" do

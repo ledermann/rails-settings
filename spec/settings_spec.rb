@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe "Defaults" do
   it "should be stored for simple class" do
-    Account.default_settings.should eq(:portal => {}.with_indifferent_access)
+    Account.default_settings.should eq(:portal => {})
   end
 
   it "should be stored for parent class" do
-    User.default_settings.should eq(:dashboard => { :theme => 'blue', :view => 'monthly', :filter => false }.with_indifferent_access, 
-                                    :calendar => { :scope => 'company'}.with_indifferent_access)
+    User.default_settings.should eq(:dashboard => { 'theme' => 'blue', 'view' => 'monthly', 'filter' => false }, 
+                                    :calendar => { 'scope' => 'company'})
   end
   
   it "should be stored for child class" do
-    GuestUser.default_settings.should eq(:dashboard => { :theme => 'red', :view => 'monthly', :filter => false }.with_indifferent_access)
+    GuestUser.default_settings.should eq(:dashboard => { 'theme' => 'red', 'view' => 'monthly', 'filter' => false })
   end
 end
 
@@ -54,7 +54,7 @@ describe 'Objects' do
       account.settings(:portal).fee.should eq(42.5)
       
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :premium => true, :fee => 42.5 }.with_indifferent_access
+      RailsSettings::SettingObject.first.value.should == { 'premium' => true, 'fee' => 42.5 }
     end
     
     it "should save settings separated" do
@@ -99,7 +99,7 @@ describe 'Objects' do
       user.settings(:dashboard).theme.should eq('brown')
       user.settings(:dashboard).filter.should eq(true)
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :theme => 'brown', :filter => true }.with_indifferent_access
+      RailsSettings::SettingObject.first.value.should == { 'theme' => 'brown', 'filter' => true }
     end
 
     it "should merge settings with defaults" do
@@ -110,7 +110,7 @@ describe 'Objects' do
       user.settings(:dashboard).theme.should eq('brown')
       user.settings(:dashboard).filter.should eq(false)
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { :theme => 'brown' }.with_indifferent_access
+      RailsSettings::SettingObject.first.value.should == { 'theme' => 'brown' }
     end
   end
 end
