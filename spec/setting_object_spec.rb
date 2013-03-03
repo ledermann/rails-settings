@@ -2,101 +2,92 @@ require 'spec_helper'
 
 describe RailsSettings::SettingObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
-  let(:setting_object) { RailsSettings::SettingObject.new :var => 'dashboard', :target => user }
+  let(:new_setting_object) { user.setting_objects.build :var => 'dashboard' }
+  let(:saved_setting_object) { user.setting_objects.create! :var => 'dashboard', :value => { 'theme' => 'pink' } }
 
   describe "Getter and Setter" do
-    it "should return nil for unknown attribute" do
-      setting_object.foo.should eq(nil)
-      setting_object.bar.should eq(nil)
+    context "on unsaved settings" do
+      it "should respond to setters" do
+        new_setting_object.should respond_to(:foo=)
+        new_setting_object.should respond_to(:bar=)
+      end
+
+      it "should return nil for unknown attribute" do
+        new_setting_object.foo.should eq(nil)
+        new_setting_object.bar.should eq(nil)
+      end
+
+      it "should return defaults" do
+        new_setting_object.theme.should eq('blue')
+        new_setting_object.view.should eq('monthly')
+        new_setting_object.filter.should eq(false)
+      end
+
+      it "should store to value hash" do
+        new_setting_object.foo = 42
+        new_setting_object.bar = 'hello'
+
+        new_setting_object.value.should eq({'foo' => 42, 'bar' => 'hello'})
+      end
+
+      it "should set and return attributes" do
+        new_setting_object.theme = 'pink'
+        new_setting_object.foo = 42
+        new_setting_object.bar = 'hello'
+
+        new_setting_object.theme.should eq('pink')
+        new_setting_object.foo.should eq(42)
+        new_setting_object.bar.should eq('hello')
+      end
+
+      it "should set dirty trackers on change" do
+        new_setting_object.theme = 'pink'
+        new_setting_object.should be_value_changed
+        new_setting_object.should be_changed
+      end
     end
 
-    it "should return defaults" do
-      setting_object.theme.should eq('blue')
-      setting_object.view.should eq('monthly')
-      setting_object.filter.should eq(false)
-    end
-
-    it "should store to hash" do
-      setting_object.foo = 42
-      setting_object.bar = 'hello'
-
-      setting_object.value.should eq({'foo' => 42, 'bar' => 'hello'})
-    end
-
-    it "should set and return attributes" do
-      setting_object.theme = 'pink'
-      setting_object.foo = 42
-      setting_object.bar = 'hello'
-
-      setting_object.theme.should eq('pink')
-      setting_object.foo.should eq(42)
-      setting_object.bar.should eq('hello')
+    context "on saved settings" do
+      it "should not set dirty trackers on setting same value" do
+        saved_setting_object.theme = 'pink'
+        saved_setting_object.should_not be_value_changed
+        saved_setting_object.should_not be_changed
+      end
     end
   end
 
   describe "update_attributes" do
     it 'should save' do
-      setting_object.update_attributes('foo' => 42).should be_true
-      setting_object.reload
+      new_setting_object.update_attributes(:foo => 42, :bar => 'string').should be_true
+      new_setting_object.reload
 
-      setting_object.foo.should eq(42)
-    end
-
-    it "should not save for unchanged attributes" do
-      setting_object.theme = 'white'
-      setting_object.save!
-      setting_object.reload
-
-      setting_object.should_not_receive(:save)
-      setting_object.update_attributes :theme => 'white'
-    end
-
-    it "should not save for blank Hash" do
-      setting_object.should_not_receive(:save)
-      setting_object.update_attributes({}).should be_true
+      new_setting_object.foo.should eq(42)
+      new_setting_object.bar.should eq('string')
+      new_setting_object.should_not be_new_record
+      new_setting_object.id.should_not be_zero
     end
   end
 
-  describe "update_attributes!" do
-    it 'should save' do
-      setting_object.update_attributes!('foo' => 42).should be_true
-      setting_object.reload
-
-      setting_object.foo.should eq(42)
-    end
-
-    it "should not save for unchanged attributes" do
-      setting_object.theme = 'white'
-      setting_object.save!
-      setting_object.reload
-      
-      setting_object.should_not_receive(:save)
-      setting_object.update_attributes! :theme => 'white'
-    end
-
-    it "should not save for blank Hash" do
-      setting_object.should_not_receive(:save!)
-      setting_object.update_attributes!({}).should be_true
-    end
-  end
-
-  describe "save!" do
+  describe "save" do
     it "should save" do
-      setting_object.foo = 42
-      setting_object.bar = 'hello'
-      setting_object.save!
+      new_setting_object.foo = 42
+      new_setting_object.bar = 'string'
+      new_setting_object.save.should be_true
+      new_setting_object.reload
 
-      setting_object.should_not be_new_record
-      setting_object.id.should_not be_zero
+      new_setting_object.foo.should eq(42)
+      new_setting_object.bar.should eq('string')
+      new_setting_object.should_not be_new_record
+      new_setting_object.id.should_not be_zero
     end
   end
 
   describe "validation" do
     it "should not validate for unknown var" do
-      setting_object.var = "unknown-var"
+      new_setting_object.var = "unknown-var"
 
-      setting_object.should_not be_valid
-      setting_object.errors[:var].should be_present
+      new_setting_object.should_not be_valid
+      new_setting_object.errors[:var].should be_present
     end
   end
 end

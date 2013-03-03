@@ -13,21 +13,19 @@ module RailsSettings
 
     serialize :value, Hash
 
-    def update_attributes(attributes)
-      merge_value(attributes)
-      self.value_changed? ? super(:value => self.value) : true
-    end
-    
-    def update_attributes!(attributes)
-      merge_value(attributes)
-      self.value_changed? ? super(:value => self.value) : true
+    REGEX_SETTER = /([a-z]\w+)=$/i
+
+    def respond_to?(method_name, include_priv=false)
+      super || method_name.to_s =~ REGEX_SETTER
     end
 
     def method_missing(method_name, *args, &block)
-      if m = method_name.to_s.match(/(.*)=$/)
+      if method_name.to_s =~ REGEX_SETTER
         # Setter
-        self.value_will_change!
-        self.value[m[1]] = args.first
+        if self.value[$1] != args.first
+          self.value_will_change!
+          self.value[$1] = args.first
+        end
       else
         # Getter
         self.value[method_name.to_s] || target_class.default_settings[var.to_sym][method_name.to_s]
@@ -37,10 +35,6 @@ module RailsSettings
   private
     def target_class
       target_type.constantize
-    end
-    
-    def merge_value(attributes)
-      self.value = self.value.merge(attributes.stringify_keys)
     end
   end
 end
