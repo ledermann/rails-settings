@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings)
 
-Handling settings for ActiveRecord objects (with defaults).
+Handling settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.
 
 **BEWARE: WORK IN PROGRESS!**
 

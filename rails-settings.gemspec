@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = RailsSettings::VERSION
   gem.authors       = ['Georg Ledermann']
   gem.email         = ['mail@georg-ledermann.de']
-  gem.description   = %q{Handling of settings for ActiveRecord objects}
-  gem.summary       = %q{Every ActiveRecord object gets some settings. With defaults.}
+  gem.description   = %q{Settings gem for Ruby on Rails}
+  gem.summary       = %q{Handling settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.}
   gem.homepage      = 'https://github.com/ledermann/rails-settings'
 
   gem.files         = `git ls-files`.split($/)
