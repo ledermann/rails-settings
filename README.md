@@ -9,8 +9,8 @@ Handling settings for ActiveRecord objects (with defaults).
 
 ## Requirements
 
-Rails 3.1.x or 3.2.x.  
-Ruby 1.8.7, 1.9.3 and 2.0.0
+Rails 3.1.x or 3.2.x  
+Ruby 1.8.7, 1.9.3 or 2.0.0
 
 
 # Example
@@ -63,13 +63,13 @@ user.settings(:calendar).scope
 Include the gem in your Gemfile:
 
 ```ruby
-gem 'ledermann-rails-settings', :github => 'ledermann-rails-settings', :branch => 'rewrite', :require => 'rails-settings'
+gem 'ledermann-rails-settings', :github => 'ledermann/rails-settings', :branch => 'rewrite', :require => 'rails-settings'
 ```
 
 Generate and run the migration:
 
 ```shell
-rails g rails-settings:migration
+rails g rails_settings:migration
 rake db:migrate
 ```
 
