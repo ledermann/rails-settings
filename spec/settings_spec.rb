@@ -117,6 +117,11 @@ end
 
 describe "Object without settings" do
   let!(:user) { User.create! :name => 'Mr. White' }
+
+  it "should respond to #settings?" do
+    user.settings?.should == false
+    user.settings?(:dashboard).should == false
+  end
   
   it "should have no setting objects" do
     RailsSettings::SettingObject.count.should eq(0)
@@ -145,6 +150,13 @@ describe "Object with settings" do
     end
   end
   
+  it "should respond to #settings?" do
+    user.settings?.should == true
+
+    user.settings?(:dashboard).should == true
+    user.settings?(:calendar).should == true
+  end
+
   it "should have two setting objects" do
     RailsSettings::SettingObject.count.should eq(2)
   end
@@ -171,6 +183,8 @@ describe "Object with settings" do
       user.settings = nil
       user.save!
     }.to change(RailsSettings::SettingObject, :count).by(-2)
+    
+    user.settings?.should == false
   end
 end
 

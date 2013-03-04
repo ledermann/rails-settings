@@ -22,6 +22,14 @@ module RailsSettings
             raise ArgumentError
           end
         end
+        
+        def settings?(var=nil)
+          if var.nil?
+            setting_objects.any? { |setting_object| !setting_object.marked_for_destruction? && setting_object.value.present? }
+          else
+            settings(var).value.present?
+          end
+        end
       end
     end
   end
