@@ -24,7 +24,12 @@ module RailsSettings
         # Setter
         if self.value[$1] != args.first
           self.value_will_change!
-          self.value[$1] = args.first
+          
+          if args.first.nil?
+            self.value.delete($1)
+          else
+            self.value[$1] = args.first
+          end
         end
       else
         # Getter

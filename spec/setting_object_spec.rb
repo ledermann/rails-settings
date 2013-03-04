@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RailsSettings::SettingObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
   let(:new_setting_object) { user.setting_objects.build :var => 'dashboard' }
-  let(:saved_setting_object) { user.setting_objects.create! :var => 'dashboard', :value => { 'theme' => 'pink' } }
+  let(:saved_setting_object) { user.setting_objects.create! :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => true } }
 
   describe "Getter and Setter" do
     context "on unsaved settings" do
@@ -52,6 +52,11 @@ describe RailsSettings::SettingObject do
         saved_setting_object.theme = 'pink'
         saved_setting_object.should_not be_value_changed
         saved_setting_object.should_not be_changed
+      end
+      
+      it "should delete key on assigning nil" do
+        saved_setting_object.theme = nil
+        saved_setting_object.value.should == { 'filter' => true }
       end
     end
   end
