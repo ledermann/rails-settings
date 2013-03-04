@@ -36,5 +36,11 @@ module RailsSettings
     def target_class
       target_type.constantize
     end
+
+    def update(*)
+      # Patch ActiveRecord to save serialized attributes only if they are changed
+      # https://github.com/rails/rails/blob/3-2-stable/activerecord/lib/active_record/attribute_methods/dirty.rb#L70
+      super(changed) if changed?
+    end
   end
 end

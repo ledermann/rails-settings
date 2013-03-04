@@ -97,5 +97,12 @@ describe 'Queries performed' do
         user.settings(:dashboard).update_attributes! :foo => 'bar'
       }.to perform_queries(1)
     end
+    
+    it "should not touch database if there are no changes made" do
+      expect {
+        user.settings(:dashboard).update_attributes :theme => 'pink'
+        user.settings(:calendar).update_attributes :scope => 'all'
+      }.to perform_queries(0)
+    end
   end
 end
