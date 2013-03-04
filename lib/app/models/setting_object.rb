@@ -13,7 +13,8 @@ module RailsSettings
 
     serialize :value, Hash
 
-    REGEX_SETTER = /([a-z]\w+)=$/i
+    REGEX_SETTER = /\A([a-z]\w+)=\Z/i
+    REGEX_GETTER = /\A([a-z]\w+)\Z/i
 
     def respond_to?(method_name, include_priv=false)
       super || method_name.to_s =~ REGEX_SETTER
@@ -31,9 +32,11 @@ module RailsSettings
             self.value[$1] = args.first
           end
         end
-      else
+      elsif method_name.to_s =~ REGEX_GETTER
         # Getter
-        self.value[method_name.to_s] || target_class.default_settings[var.to_sym][method_name.to_s]
+        self.value[$1] || target_class.default_settings[var.to_sym][$1]
+      else
+        super
       end
     end
 

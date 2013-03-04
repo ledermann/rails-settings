@@ -12,6 +12,11 @@ describe RailsSettings::SettingObject do
         new_setting_object.should respond_to(:bar=)
       end
 
+      it "should not respond to some getters" do
+        expect { new_setting_object.foo! }.to raise_error(NoMethodError)
+        expect { new_setting_object.foo? }.to raise_error(NoMethodError)
+      end
+
       it "should return nil for unknown attribute" do
         new_setting_object.foo.should eq(nil)
         new_setting_object.bar.should eq(nil)
