@@ -2,12 +2,19 @@ module RailsSettings
   module Base
     def self.included(base)
       base.class_eval do
+        # Use a custom SettingObject class if there is any
+        setting_object_class_name = begin
+          "#{base.name}SettingObject" if Module.const_get("#{base.name}SettingObject")
+        rescue NameError
+          'RailsSettings::SettingObject'
+        end
+        
         has_many :setting_objects,
                  :as         => :target,
                  :autosave   => true,
                  :dependent  => :delete_all,
-                 :class_name => 'RailsSettings::SettingObject'
-
+                 :class_name => setting_object_class_name
+        
         def settings(var)
           raise ArgumentError unless var.is_a?(Symbol)
           raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_settings[var]

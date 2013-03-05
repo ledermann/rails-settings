@@ -188,3 +188,19 @@ describe "Object with settings" do
   end
 end
 
+describe "Customized SettingObject" do
+  let(:project) { Project.create! :name => 'Heist' }
+  
+  it "should not accept invalid attributes" do
+    project.settings(:info).owner_name = 42
+    project.settings(:info).should_not be_valid
+    
+    project.settings(:info).owner_name = ''
+    project.settings(:info).should_not be_valid
+  end
+  
+  it "should accept valid attributes" do
+    project.settings(:info).owner_name = 'Mr. Brown'
+    project.settings(:info).should be_valid
+  end
+end

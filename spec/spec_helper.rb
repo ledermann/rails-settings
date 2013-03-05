@@ -39,6 +39,18 @@ class Account < ActiveRecord::Base
   has_settings :portal => {}
 end
 
+class ProjectSettingObject < RailsSettings::SettingObject
+  validate do
+    unless self.owner_name.present? && self.owner_name.is_a?(String)
+      errors.add(:base, "Owner name is missing")
+    end
+  end
+end
+
+class Project < ActiveRecord::Base
+  has_settings :info => {}
+end
+
 def setup_db
   ActiveRecord::Schema.define(:version => 1) do
     create_table :settings do |t|
@@ -56,6 +68,10 @@ def setup_db
 
     create_table :accounts do |t|
       t.string :subdomain
+    end
+    
+    create_table :projects do |t|
+      t.string :name
     end
   end
 end
