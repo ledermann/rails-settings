@@ -16,6 +16,18 @@ describe RailsSettings::SettingObject do
         expect { new_setting_object.foo! }.to raise_error(NoMethodError)
         expect { new_setting_object.foo? }.to raise_error(NoMethodError)
       end
+      
+      it "should not respond if a block is given" do
+        expect { 
+          new_setting_object.foo do
+          end
+        }.to raise_error(NoMethodError)
+      end
+      
+      it "should not respond if params are given" do
+        expect { new_setting_object.foo(42) }.to raise_error(NoMethodError)
+        expect { new_setting_object.foo(42,43) }.to raise_error(NoMethodError)
+      end
 
       it "should return nil for unknown attribute" do
         new_setting_object.foo.should eq(nil)

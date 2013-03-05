@@ -21,22 +21,26 @@ module RailsSettings
     end
 
     def method_missing(method_name, *args, &block)
-      if method_name.to_s =~ REGEX_SETTER
-        # Setter
-        if self.value[$1] != args.first
-          self.value_will_change!
-          
-          if args.first.nil?
-            self.value.delete($1)
-          else
-            self.value[$1] = args.first
-          end
-        end
-      elsif method_name.to_s =~ REGEX_GETTER
-        # Getter
-        self.value[$1] || target_class.default_settings[var.to_sym][$1]
-      else
+      if block_given?
         super
+      else
+        if method_name.to_s =~ REGEX_SETTER && args.size == 1
+          # Setter
+          if self.value[$1] != args.first
+            self.value_will_change!
+          
+            if args.first.nil?
+              self.value.delete($1)
+            else
+              self.value[$1] = args.first
+            end
+          end
+        elsif method_name.to_s =~ REGEX_GETTER && args.size == 0
+          # Getter
+          self.value[$1] || target_class.default_settings[var.to_sym][$1]
+        else
+          super
+        end
       end
     end
 
