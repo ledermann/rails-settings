@@ -119,8 +119,8 @@ describe "Object without settings" do
   let!(:user) { User.create! :name => 'Mr. White' }
 
   it "should respond to #settings?" do
-    user.settings?.should == false
-    user.settings?(:dashboard).should == false
+    user.settings?.should eq(false)
+    user.settings?(:dashboard).should eq(false)
   end
   
   it "should have no setting objects" do
@@ -151,10 +151,10 @@ describe "Object with settings" do
   end
   
   it "should respond to #settings?" do
-    user.settings?.should == true
+    user.settings?.should eq(true)
 
-    user.settings?(:dashboard).should == true
-    user.settings?(:calendar).should == true
+    user.settings?(:dashboard).should eq(true)
+    user.settings?(:calendar).should eq(true)
   end
 
   it "should have two setting objects" do
