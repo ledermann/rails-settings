@@ -27,16 +27,24 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Migration.verbose = false
 
 class User < ActiveRecord::Base
-  has_settings :dashboard => { :theme => 'blue', :view => 'monthly', :filter => false },
-               :calendar  => { :scope => 'company'}
+  has_settings do |s|
+    s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => false }
+    s.key :calendar,  :defaults => { :scope => 'company'}
+  end
 end
 
 class GuestUser < User
-  has_settings :dashboard => { :theme => 'red', :view => 'monthly', :filter => false }
+  has_settings do |s|
+    s.key :dashboard, :defaults => { :theme => 'red', :view => 'monthly', :filter => false }
+  end
 end
 
 class Account < ActiveRecord::Base
-  has_settings :portal => {}
+  has_settings :portal
+end
+
+class Project < ActiveRecord::Base
+  has_settings :info, :class_name => 'ProjectSettingObject'
 end
 
 class ProjectSettingObject < RailsSettings::SettingObject
@@ -45,10 +53,6 @@ class ProjectSettingObject < RailsSettings::SettingObject
       errors.add(:base, "Owner name is missing")
     end
   end
-end
-
-class Project < ActiveRecord::Base
-  has_settings :info => {}
 end
 
 def setup_db

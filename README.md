@@ -17,10 +17,38 @@ Ruby 1.8.7, 1.9.3 or 2.0.0
 
 ### Define Settings for a model with default values
 
+Without defaults:
+
 ```ruby
 class User < ActiveRecord::Base
-  has_settings :dashboard => { :theme => 'blue', :view => 'monthly', :filter => false },
-               :calendar  => { :scope => 'company'}
+  has_settings :dashboard, :calendar
+end
+```
+
+With defaults:
+
+```ruby
+class User < ActiveRecord::Base
+  has_settings do |s|
+    s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => false }
+    s.key :calendar,  :defaults => { :scope => 'company'}
+  end
+end
+```
+
+With customized object, e.g. for validation:
+
+```ruby
+class Project < ActiveRecord::Base
+  has_settings :info, :class_name => 'ProjectSettingObject'
+end
+
+class ProjectSettingObject < RailsSettings::SettingObject
+  validate do
+    unless self.owner_name.present? && self.owner_name.is_a?(String)
+      errors.add(:base, "Owner name is missing")
+    end
+  end
 end
 ```
 
