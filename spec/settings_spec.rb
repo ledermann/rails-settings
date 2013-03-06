@@ -127,14 +127,14 @@ describe "Object without settings" do
     RailsSettings::SettingObject.count.should eq(0)
   end
 
-  it "should update settings" do
-    user.settings(:dashboard).update_attributes :smart => true
+  it "should add settings" do
+    user.settings(:dashboard).update_attributes! :smart => true
 
     user.reload
     user.settings(:dashboard).smart.should eq(true)
   end
 
-  it "should destroy settings with nil" do
+  it "should not save settings if assigned nil" do
     expect {
       user.settings = nil
       user.save!

@@ -88,6 +88,10 @@ describe RailsSettings::SettingObject do
       new_setting_object.should_not be_new_record
       new_setting_object.id.should_not be_zero
     end
+    
+    it 'should not save blank hash' do
+      new_setting_object.update_attributes({}).should be_false
+    end
   end
 
   describe "save" do
