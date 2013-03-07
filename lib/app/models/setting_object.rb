@@ -6,8 +6,7 @@ module RailsSettings
 
     validates_presence_of :var, :value, :target_type
     validate do
-      unless _target_class
-.default_settings[var.to_sym]
+      unless _target_class.default_settings[var.to_sym]
         errors.add(:var, "#{var} is not defined!")
       end
     end
