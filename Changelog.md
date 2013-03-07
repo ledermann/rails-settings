@@ -1,12 +1,13 @@
-Version 2.0.0 (WIP)
+Version 2.0.0 (WIP, will be released soon)
 
 - Complete rewrite
-- New API (not finished yet)
-- Rails >= 3.1 needed
-- Threadsafe
+- New DSL (see README)
+- No global defaults anymore. Defaults are defined per ActiveRecord class
 - No more storing defaults in the database
-- Define defaults per ActiveRecord class, no global defaults anymore
-- Testing with RSpec
+- Rails >= 3.1 needed (Rails 2.3 not supported anymore)
+- Threadsafe
+- Switched to RSpec for testing
+
 
 Version 1.2.1 (2013-02-09)
 

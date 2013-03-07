@@ -1,31 +1,16 @@
-# Settings gem for Rails
+# Settings for Rails 3
 
 [![Build Status](https://secure.travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings)
+[![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.png)](https://codeclimate.com/github/ledermann/rails-settings)
 
-Handling settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.
+Ruby gem to handle settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.
 
-**BEWARE: WORK IN PROGRESS!**
-
-
-## Requirements
-
-Rails 3.1.x or 3.2.x  
-Ruby 1.8.7, 1.9.3 or 2.0.0
+**BEWARE: This is version 2 which is a complete rewrite and NOT compatible with version 1.x**
 
 
-# Example
+## Example
 
-### Define Settings for a model with default values
-
-Without defaults:
-
-```ruby
-class User < ActiveRecord::Base
-  has_settings :dashboard, :calendar
-end
-```
-
-With defaults:
+### Defining settings
 
 ```ruby
 class User < ActiveRecord::Base
@@ -36,7 +21,15 @@ class User < ActiveRecord::Base
 end
 ```
 
-With customized object, e.g. for validation:
+If no defaults are needed, a simplified syntax can be used:
+
+```ruby
+class User < ActiveRecord::Base
+  has_settings :dashboard, :calendar
+end
+```
+
+Every setting is handled by the class `RailsSettings::SettingObject`. You can use your own class, e.g. for validations:
 
 ```ruby
 class Project < ActiveRecord::Base
@@ -52,14 +45,14 @@ class ProjectSettingObject < RailsSettings::SettingObject
 end
 ```
 
-### Set settings for a given object
+### Set settings
 
 ```ruby
 user = User.find(1)
 user.settings(:dashboard).theme = 'black'
 user.settings(:calendar).scope = 'all'
 user.settings(:calendar).display = 'daily'
-user.save!
+user.save! # saves new or changed settings, too
 ```
 
 or
@@ -79,11 +72,34 @@ user.settings(:dashboard).theme
 # => 'black
 
 user.settings(:dashboard).view
-# => 'monthly'  (it's default)
+# => 'monthly'  (it's the default)
 
 user.settings(:calendar).scope
 # => 'all'
 ```
+
+
+### Using scopes
+
+```ruby
+User.with_settings
+# => all users having any setting
+
+User.without_settings
+# => all users without having any setting
+
+User.with_settings_for(:calendar)
+# => all users having a setting for 'calender'
+
+User.without_settings_for(:calendar)
+# => all users without having settings for 'calendar'
+```
+
+
+## Requirements
+
+Rails 3.1.x or 3.2.x  
+Ruby 1.8.7, 1.9.3 or 2.0.0
 
 
 ## Installation
@@ -91,7 +107,7 @@ user.settings(:calendar).scope
 Include the gem in your Gemfile:
 
 ```ruby
-gem 'ledermann-rails-settings', :github => 'ledermann/rails-settings', :branch => 'rewrite', :require => 'rails-settings'
+gem 'ledermann-rails-settings', :github => 'ledermann/rails-settings', :require => 'rails-settings'
 ```
 
 Generate and run the migration:
@@ -100,6 +116,13 @@ Generate and run the migration:
 rails g rails_settings:migration
 rake db:migrate
 ```
+
+## Compatibility
+
+Version 2 is a complete rewrite and has a new DSL, so it's **not** compatible with Version 1. But the database schema is unchanged, so you can use the same data after upgrading.
+In addition, Rails 2.3 is not supported anymore.
+
+If you don't want to upgrade, you find the old version in the [1.x](https://github.com/ledermann/rails-settings/commits/1.x) branch. But don't expect any updates there.
 
 
 ## License
