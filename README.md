@@ -107,7 +107,7 @@ Ruby 1.8.7, 1.9.3 or 2.0.0
 Include the gem in your Gemfile:
 
 ```ruby
-gem 'ledermann-rails-settings', :github => 'ledermann/rails-settings', :require => 'rails-settings'
+gem 'ledermann-rails-settings', :require => 'rails-settings'
 ```
 
 Generate and run the migration:

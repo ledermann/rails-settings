@@ -1,7 +1,7 @@
-Version 2.0.0 (WIP, will be released soon)
+Version 2.0.0 (2013-03-07)
 
 - Complete rewrite
-- New DSL (see README)
+- New DSL (see README.md)
 - No global defaults anymore. Defaults are defined per ActiveRecord class
 - No more storing defaults in the database
 - Rails >= 3.1 needed (Rails 2.3 not supported anymore)
