@@ -6,7 +6,8 @@ module RailsSettings
 
     validates_presence_of :var, :value, :target_type
     validate do
-      unless target_class.default_settings[var.to_sym]
+      unless _target_class
+.default_settings[var.to_sym]
         errors.add(:var, "#{var} is not defined!")
       end
     end
@@ -25,19 +26,9 @@ module RailsSettings
         super
       else
         if method_name.to_s =~ REGEX_SETTER && args.size == 1
-          # Setter
-          if self.value[$1] != args.first
-            self.value_will_change!
-
-            if args.first.nil?
-              self.value.delete($1)
-            else
-              self.value[$1] = args.first
-            end
-          end
+          _set_value($1, args.first)
         elsif method_name.to_s =~ REGEX_GETTER && args.size == 0
-          # Getter
-          self.value[$1] || target_class.default_settings[var.to_sym][$1]
+          _get_value($1)
         else
           super
         end
@@ -45,7 +36,23 @@ module RailsSettings
     end
 
   private
-    def target_class
+    def _get_value(name)
+      value[name] || _target_class.default_settings[var.to_sym][name]
+    end
+
+    def _set_value(name, v)
+      if value[name] != v
+        value_will_change!
+
+        if v.nil?
+          value.delete(name)
+        else
+          value[name] = v
+        end
+      end
+    end
+
+    def _target_class
       target_type.constantize
     end
 
