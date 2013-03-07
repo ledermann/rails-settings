@@ -16,14 +16,14 @@ describe RailsSettings::SettingObject do
         expect { new_setting_object.foo! }.to raise_error(NoMethodError)
         expect { new_setting_object.foo? }.to raise_error(NoMethodError)
       end
-      
+
       it "should not respond if a block is given" do
-        expect { 
+        expect {
           new_setting_object.foo do
           end
         }.to raise_error(NoMethodError)
       end
-      
+
       it "should not respond if params are given" do
         expect { new_setting_object.foo(42) }.to raise_error(NoMethodError)
         expect { new_setting_object.foo(42,43) }.to raise_error(NoMethodError)
@@ -70,7 +70,7 @@ describe RailsSettings::SettingObject do
         saved_setting_object.should_not be_value_changed
         saved_setting_object.should_not be_changed
       end
-      
+
       it "should delete key on assigning nil" do
         saved_setting_object.theme = nil
         saved_setting_object.value.should == { 'filter' => true }
@@ -88,7 +88,7 @@ describe RailsSettings::SettingObject do
       new_setting_object.should_not be_new_record
       new_setting_object.id.should_not be_zero
     end
-    
+
     it 'should not save blank hash' do
       new_setting_object.update_attributes({}).should be_false
     end

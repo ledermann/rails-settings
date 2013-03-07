@@ -14,7 +14,7 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   #  config.order = 'random'
-  
+
   config.before(:each) do
     clear_db
   end
@@ -73,7 +73,7 @@ def setup_db
     create_table :accounts do |t|
       t.string :subdomain
     end
-    
+
     create_table :projects do |t|
       t.string :name
     end

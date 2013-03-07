@@ -6,10 +6,10 @@ describe "Defaults" do
   end
 
   it "should be stored for parent class" do
-    User.default_settings.should eq(:dashboard => { 'theme' => 'blue', 'view' => 'monthly', 'filter' => false }, 
+    User.default_settings.should eq(:dashboard => { 'theme' => 'blue', 'view' => 'monthly', 'filter' => false },
                                     :calendar => { 'scope' => 'company'})
   end
-  
+
   it "should be stored for child class" do
     GuestUser.default_settings.should eq(:dashboard => { 'theme' => 'red', 'view' => 'monthly', 'filter' => false })
   end
@@ -25,7 +25,7 @@ describe "Getter/Setter" do
     account.settings(:portal).enabled.should eq(true)
     account.settings(:portal).template.should eq('black')
   end
-  
+
   it "should return nil for not existing key" do
     account.settings(:portal).foo.should eq(nil)
   end
@@ -52,14 +52,14 @@ describe 'Objects' do
       account.reload
       account.settings(:portal).premium.should eq(true)
       account.settings(:portal).fee.should eq(42.5)
-      
+
       RailsSettings::SettingObject.count.should eq(1)
       RailsSettings::SettingObject.first.value.should == { 'premium' => true, 'fee' => 42.5 }
     end
-    
+
     it "should save settings separated" do
       account.save!
-      
+
       settings = account.settings(:portal)
       settings.enabled = true
       settings.template = 'black'
@@ -80,10 +80,10 @@ describe 'Objects' do
       user.settings(:dashboard).filter.should eq(false)
       user.settings(:calendar).scope.should eq('company')
     end
-    
+
     it 'should have default settings after changing one' do
       user.settings(:dashboard).theme = 'gray'
-      
+
       user.settings(:dashboard).theme.should eq('gray')
       user.settings(:dashboard).view.should eq('monthly')
       user.settings(:dashboard).filter.should eq(false)
@@ -122,7 +122,7 @@ describe "Object without settings" do
     user.settings?.should eq(false)
     user.settings?(:dashboard).should eq(false)
   end
-  
+
   it "should have no setting objects" do
     RailsSettings::SettingObject.count.should eq(0)
   end
@@ -149,7 +149,7 @@ describe "Object with settings" do
       user.settings(:calendar).scope = 'all'
     end
   end
-  
+
   it "should respond to #settings?" do
     user.settings?.should eq(true)
 
@@ -173,32 +173,32 @@ describe "Object with settings" do
   it "should update settings by saving object" do
     user.settings(:dashboard).smart = true
     user.save!
-    
+
     user.reload
     user.settings(:dashboard).smart.should eq(true)
   end
-  
+
   it "should destroy settings with nil" do
     expect {
       user.settings = nil
       user.save!
     }.to change(RailsSettings::SettingObject, :count).by(-2)
-    
+
     user.settings?.should == false
   end
 end
 
 describe "Customized SettingObject" do
   let(:project) { Project.create! :name => 'Heist' }
-  
+
   it "should not accept invalid attributes" do
     project.settings(:info).owner_name = 42
     project.settings(:info).should_not be_valid
-    
+
     project.settings(:info).owner_name = ''
     project.settings(:info).should_not be_valid
   end
-  
+
   it "should accept valid attributes" do
     project.settings(:info).owner_name = 'Mr. Brown'
     project.settings(:info).should be_valid

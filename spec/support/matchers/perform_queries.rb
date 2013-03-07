@@ -12,7 +12,7 @@ RSpec::Matchers.define :perform_queries do |expected|
     ActiveSupport::Notifications.subscribe('sql.active_record', @counter.to_proc)
     yield
     ActiveSupport::Notifications.unsubscribe(@counter.to_proc)
-    
+
     @counter.query_count
   end
 end

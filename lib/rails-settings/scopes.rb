@@ -9,7 +9,7 @@ module RailsSettings
 
         scope :with_settings_for, lambda { |var|
           raise ArgumentError unless var.is_a?(Symbol)
-          
+
           joins("JOIN settings ON (settings.target_id = #{self.table_name}.#{self.primary_key} AND
                                    settings.target_type = '#{self.base_class.name}') AND
                                    settings.var = '#{var}'")
@@ -24,7 +24,7 @@ module RailsSettings
 
         scope :without_settings_for, lambda { |var|
           raise ArgumentError unless var.is_a?(Symbol)
-          
+
           joins("LEFT JOIN settings ON (settings.target_id = #{self.table_name}.#{self.primary_key} AND
                            settings.target_type = '#{self.base_class.name}') AND
                            settings.var = '#{var}'").

@@ -98,7 +98,7 @@ User.without_settings_for(:calendar)
 
 ## Requirements
 
-Rails 3.1.x or 3.2.x  
+Rails 3.1.x or 3.2.x
 Ruby 1.8.7, 1.9.3 or 2.0.0
 
 
@@ -127,7 +127,7 @@ If you don't want to upgrade, you find the old version in the [1.x](https://gith
 
 ## License
 
-MIT License  
+MIT License
 Copyright (c) 2013 Georg Ledermann
 
 This gem is a complete rewrite of [rails-settings](https://github.com/Squeegy/rails-settings) by [Alex Wayne](https://github.com/Squeegy)

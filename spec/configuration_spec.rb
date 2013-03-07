@@ -62,7 +62,7 @@ module RailsSettings
       Dummy.setting_object_class_name.should == 'MyClass'
     end
   end
-  
+
   describe Configuration, 'failure' do
     it "should fail without args" do
       expect {
