@@ -1,4 +1,4 @@
-require 'app/models/setting_object'
+require 'rails-settings/setting_object'
 require 'rails-settings/configuration'
 require 'rails-settings/base'
 require 'rails-settings/scopes'
