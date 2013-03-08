@@ -1,6 +1,6 @@
 # Settings for Rails 3
 
-[![Build Status](https://secure.travis-ci.org/ledermann/rails-settings.png)](http://travis-ci.org/ledermann/rails-settings)
+[![Build Status](https://travis-ci.org/ledermann/rails-settings.png?branch=master)](https://travis-ci.org/ledermann/rails-settings)
 [![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.png)](https://codeclimate.com/github/ledermann/rails-settings)
 
 Ruby gem to handle settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.
