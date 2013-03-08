@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe RailsSettings::SettingObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
-  let(:new_setting_object) { user.setting_objects.build :var => 'dashboard' }
-  let(:saved_setting_object) { user.setting_objects.create! :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => true } }
+  let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}, :without_protection => true) }
+  let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => true}}, :without_protection => true) }
 
   describe "Getter and Setter" do
     context "on unsaved settings" do
@@ -91,6 +91,13 @@ describe RailsSettings::SettingObject do
 
     it 'should not save blank hash' do
       new_setting_object.update_attributes({}).should be_false
+    end
+
+    it 'should not allow changing protected attributes' do
+      new_setting_object.update_attributes!(:var => 'calendar', :foo => 42)
+
+      new_setting_object.var.should eq('dashboard')
+      new_setting_object.foo.should eq(42)
     end
   end
 

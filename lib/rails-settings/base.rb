@@ -12,7 +12,7 @@ module RailsSettings
           raise ArgumentError unless var.is_a?(Symbol)
           raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_settings[var]
 
-          setting_objects.detect { |s| s.var == var.to_s } || setting_objects.build(:var => var.to_s)
+          setting_objects.detect { |s| s.var == var.to_s } || setting_objects.build({ :var => var.to_s }, :without_protection => true)
         end
 
         def settings=(value)
