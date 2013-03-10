@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ['Georg Ledermann']
   gem.email         = ['mail@georg-ledermann.de']
   gem.description   = %q{Settings gem for Ruby on Rails}
-  gem.summary       = %q{Handling settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.}
+  gem.summary       = %q{Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.}
   gem.homepage      = 'https://github.com/ledermann/rails-settings'
 
   gem.files         = `git ls-files`.split($/)

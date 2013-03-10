@@ -3,14 +3,12 @@
 [![Build Status](https://travis-ci.org/ledermann/rails-settings.png?branch=master)](https://travis-ci.org/ledermann/rails-settings)
 [![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.png)](https://codeclimate.com/github/ledermann/rails-settings)
 
-Ruby gem to handle settings for ActiveRecord objects by storing them as serialized Hash in a separate database table. Optional: Defaults and Namespaces.
-
-**BEWARE: This is version 2 which is a complete rewrite and NOT compatible with version 1.x**
+Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.
 
 
-## Example
+## Usage
 
-### Defining settings
+### Define settings
 
 ```ruby
 class User < ActiveRecord::Base
@@ -98,13 +96,13 @@ User.without_settings_for(:calendar)
 
 ## Requirements
 
-Rails 3.1.x or 3.2.x
-Ruby 1.8.7, 1.9.3 or 2.0.0
+* Ruby 1.8.7, 1.9.3 or 2.0.0
+* Rails 3.1.x or 3.2.x
 
 
 ## Installation
 
-Include the gem in your Gemfile:
+Include the gem in your Gemfile und run `bundle` to install it:
 
 ```ruby
 gem 'ledermann-rails-settings', :require => 'rails-settings'
@@ -119,8 +117,7 @@ rake db:migrate
 
 ## Compatibility
 
-Version 2 is a complete rewrite and has a new DSL, so it's **not** compatible with Version 1. But the database schema is unchanged, so you can use the same data after upgrading.
-In addition, Rails 2.3 is not supported anymore.
+Version 2 is a complete rewrite and has a new DSL, so it's **not** compatible with Version 1. In addition, Rails 2.3 is not supported anymore. But the database schema is unchanged, so you can continue to use the data created by 1.x, no conversion is needed.
 
 If you don't want to upgrade, you find the old version in the [1.x](https://github.com/ledermann/rails-settings/commits/1.x) branch. But don't expect any updates there.
 
@@ -128,6 +125,7 @@ If you don't want to upgrade, you find the old version in the [1.x](https://gith
 ## License
 
 MIT License
-Copyright (c) 2013 Georg Ledermann
+
+Copyright (c) 2013 [Georg Ledermann](http://www.georg-ledermann.de)
 
 This gem is a complete rewrite of [rails-settings](https://github.com/Squeegy/rails-settings) by [Alex Wayne](https://github.com/Squeegy)
