@@ -40,11 +40,18 @@ describe RailsSettings::SettingObject do
         new_setting_object.filter.should eq(false)
       end
 
-      it "should store to value hash" do
-        new_setting_object.foo = 42
-        new_setting_object.bar = 'hello'
+      it "should store different objects to value hash" do
+        new_setting_object.integer = 42
+        new_setting_object.float   = 1.234
+        new_setting_object.string  = 'Hello, World!'
+        new_setting_object.array   = [ 1,2,3 ]
+        new_setting_object.symbol  = :foo
 
-        new_setting_object.value.should eq({'foo' => 42, 'bar' => 'hello'})
+        new_setting_object.value.should eq('integer' => 42,
+                                           'float'   => 1.234,
+                                           'string'  => 'Hello, World!',
+                                           'array'   => [ 1,2,3 ],
+                                           'symbol'  => :foo)
       end
 
       it "should set and return attributes" do
