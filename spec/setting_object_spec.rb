@@ -5,6 +5,12 @@ describe RailsSettings::SettingObject do
   let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}, :without_protection => true) }
   let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => true}}, :without_protection => true) }
 
+  describe "serialization" do
+    it "should have a hash default" do
+      RailsSettings::SettingObject.new.value.should == {}
+    end
+  end
+
   describe "Getter and Setter" do
     context "on unsaved settings" do
       it "should respond to setters" do

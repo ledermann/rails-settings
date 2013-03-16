@@ -1,3 +1,8 @@
+WIP
+
+- Removed default for column "value" to fix serialization issue with MySQL
+
+
 Version 2.0.1 (2013-03-08)
 
 - Added mass assignment security by protecting all regular attributes

@@ -59,7 +59,7 @@ def setup_db
   ActiveRecord::Schema.define(:version => 1) do
     create_table :settings do |t|
       t.string     :var,    :null => false
-      t.text       :value,  :null => false
+      t.text       :value
       t.references :target, :null => false, :polymorphic => true
       t.timestamps
     end
