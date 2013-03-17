@@ -1,6 +1,23 @@
-WIP
+Version 2.0.2 (2013-03-17)
 
-- Removed default for column "value" to fix serialization issue with MySQL
+- Changed database schema to allow NULL for column `value` to fix serialization
+  bug with MySQL. Thanks to @steventen for pointing this out in issue #31.
+
+  IMPORTANT: The migration generator of version 2.0.0 and 2.0.1 was broken. If
+             you use MySQL it's required to update your database schema like
+             this:
+
+             ```ruby
+             class FixSettings < ActiveRecord::Migration
+               def up
+                 change_column :settings, :value, :text, :null => true
+               end
+
+               def down
+                 change_column :settings, :value, :text, :null => false
+               end
+             end
+             ```
 
 
 Version 2.0.1 (2013-03-08)
