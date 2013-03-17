@@ -6,3 +6,8 @@ rvm:
 gemfile:
   - ci/Gemfile.rails-3.1.x
   - ci/Gemfile.rails-3.2.x
+env:
+  - DB=sqlite
+  - DB=mysql
+before_script:
+  - "mysql -e 'create database rails_settings_test;' >/dev/null"

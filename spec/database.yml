@@ -1,0 +1,8 @@
+sqlite:
+  adapter: sqlite3
+  database: ":memory:"
+mysql:
+  adapter: mysql2
+  database: rails_settings_test
+  username:
+  encoding: utf8

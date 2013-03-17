@@ -23,9 +23,6 @@ end
 require 'active_record'
 require 'rails-settings'
 
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
-ActiveRecord::Migration.verbose = false
-
 class User < ActiveRecord::Base
   has_settings do |s|
     s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => false }
@@ -56,6 +53,18 @@ class ProjectSettingObject < RailsSettings::SettingObject
 end
 
 def setup_db
+  ActiveRecord::Base.configurations = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
+  db_name = ENV['DB'] || 'sqlite'
+  ActiveRecord::Base.establish_connection(db_name)
+
+  ActiveRecord::Migration.verbose = false
+  ActiveRecord::Base.connection.tables.each do |table|
+    next if table == 'schema_migrations'
+    ActiveRecord::Base.connection.execute("DROP TABLE #{table}")
+  end
+
+  puts "Testing on #{db_name} with ActiveRecord #{ActiveRecord::VERSION::STRING}"
+
   ActiveRecord::Schema.define(:version => 1) do
     create_table :settings do |t|
       t.string     :var,    :null => false
@@ -86,5 +95,4 @@ def clear_db
   RailsSettings::SettingObject.delete_all
 end
 
-puts "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING}"
 setup_db

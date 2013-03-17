@@ -11,7 +11,7 @@ module ActiveRecord
     end
 
     def callback(name, start, finish, message_id, values)
-      @query_count += 1 unless %w(CACHE SCHEMA).include?(values[:name]) || values[:sql] == 'begin transaction' || values[:sql] == 'commit transaction'
+      @query_count += 1 unless %w(CACHE SCHEMA).include?(values[:name]) || values[:sql] =~ /^begin/i || values[:sql] =~ /^commit/i
     end
   end
 end
