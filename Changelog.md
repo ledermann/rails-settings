@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.0.3 (WIP)
+
+- Fixed bug with setting getter when settings are booleans and default is true (thanks to @mduong)
+
+
 ## Version 2.0.2 (2013-03-17)
 
 - Changed database schema to allow NULL for column `value` to fix serialization
