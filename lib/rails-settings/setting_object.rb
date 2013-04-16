@@ -46,7 +46,11 @@ module RailsSettings
 
   private
     def _get_value(name)
-      value[name] || _target_class.default_settings[var.to_sym][name]
+      if value[name].nil?
+        _target_class.default_settings[var.to_sym][name]
+      else
+        value[name]
+      end
     end
 
     def _set_value(name, v)
