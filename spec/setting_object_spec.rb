@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RailsSettings::SettingObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
   let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}, :without_protection => true) }
-  let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => true}}, :without_protection => true) }
+  let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}, :without_protection => true) }
 
   describe "serialization" do
     it "should have a hash default" do
@@ -43,7 +43,7 @@ describe RailsSettings::SettingObject do
       it "should return defaults" do
         new_setting_object.theme.should eq('blue')
         new_setting_object.view.should eq('monthly')
-        new_setting_object.filter.should eq(false)
+        new_setting_object.filter.should eq(true)
       end
 
       it "should store different objects to value hash" do
@@ -86,7 +86,7 @@ describe RailsSettings::SettingObject do
 
       it "should delete key on assigning nil" do
         saved_setting_object.theme = nil
-        saved_setting_object.value.should == { 'filter' => true }
+        saved_setting_object.value.should == { 'filter' => false }
       end
     end
   end

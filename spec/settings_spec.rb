@@ -6,12 +6,12 @@ describe "Defaults" do
   end
 
   it "should be stored for parent class" do
-    User.default_settings.should eq(:dashboard => { 'theme' => 'blue', 'view' => 'monthly', 'filter' => false },
+    User.default_settings.should eq(:dashboard => { 'theme' => 'blue', 'view' => 'monthly', 'filter' => true },
                                     :calendar => { 'scope' => 'company'})
   end
 
   it "should be stored for child class" do
-    GuestUser.default_settings.should eq(:dashboard => { 'theme' => 'red', 'view' => 'monthly', 'filter' => false })
+    GuestUser.default_settings.should eq(:dashboard => { 'theme' => 'red', 'view' => 'monthly', 'filter' => true })
   end
 end
 
@@ -77,7 +77,7 @@ describe 'Objects' do
     it 'should have default settings' do
       user.settings(:dashboard).theme.should eq('blue')
       user.settings(:dashboard).view.should eq('monthly')
-      user.settings(:dashboard).filter.should eq(false)
+      user.settings(:dashboard).filter.should eq(true)
       user.settings(:calendar).scope.should eq('company')
     end
 
@@ -86,20 +86,20 @@ describe 'Objects' do
 
       user.settings(:dashboard).theme.should eq('gray')
       user.settings(:dashboard).view.should eq('monthly')
-      user.settings(:dashboard).filter.should eq(false)
+      user.settings(:dashboard).filter.should eq(true)
       user.settings(:calendar).scope.should eq('company')
     end
 
     it "should overwrite settings" do
       user.settings(:dashboard).theme = 'brown'
-      user.settings(:dashboard).filter = true
+      user.settings(:dashboard).filter = false
       user.save!
 
       user.reload
       user.settings(:dashboard).theme.should eq('brown')
-      user.settings(:dashboard).filter.should eq(true)
+      user.settings(:dashboard).filter.should eq(false)
       RailsSettings::SettingObject.count.should eq(1)
-      RailsSettings::SettingObject.first.value.should == { 'theme' => 'brown', 'filter' => true }
+      RailsSettings::SettingObject.first.value.should == { 'theme' => 'brown', 'filter' => false }
     end
 
     it "should merge settings with defaults" do
@@ -108,7 +108,7 @@ describe 'Objects' do
 
       user.reload
       user.settings(:dashboard).theme.should eq('brown')
-      user.settings(:dashboard).filter.should eq(false)
+      user.settings(:dashboard).filter.should eq(true)
       RailsSettings::SettingObject.count.should eq(1)
       RailsSettings::SettingObject.first.value.should == { 'theme' => 'brown' }
     end

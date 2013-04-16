@@ -25,14 +25,14 @@ require 'rails-settings'
 
 class User < ActiveRecord::Base
   has_settings do |s|
-    s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => false }
+    s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => true }
     s.key :calendar,  :defaults => { :scope => 'company'}
   end
 end
 
 class GuestUser < User
   has_settings do |s|
-    s.key :dashboard, :defaults => { :theme => 'red', :view => 'monthly', :filter => false }
+    s.key :dashboard, :defaults => { :theme => 'red', :view => 'monthly', :filter => true }
   end
 end
 
