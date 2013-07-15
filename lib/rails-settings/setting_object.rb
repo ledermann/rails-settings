@@ -15,7 +15,9 @@ module RailsSettings
 
     # attr_protected can not be here used because it touches the database which is not connected yet.
     # So allow no attributes and override <tt>#sanitize_for_mass_assignment</tt>
-    attr_accessible
+    if ActiveRecord::VERSION::MAJOR < 4
+      attr_accessible
+    end
 
     REGEX_SETTER = /\A([a-z]\w+)=\Z/i
     REGEX_GETTER = /\A([a-z]\w+)\Z/i
@@ -28,7 +30,9 @@ module RailsSettings
       if block_given?
         super
       else
-        if method_name.to_s =~ REGEX_SETTER && args.size == 1
+        if attribute_names.include?(method_name.to_s)
+          super
+        elsif method_name.to_s =~ REGEX_SETTER && args.size == 1
           _set_value($1, args.first)
         elsif method_name.to_s =~ REGEX_GETTER && args.size == 0
           _get_value($1)
@@ -39,9 +43,11 @@ module RailsSettings
     end
 
   protected
-    # Simulate attr_protected by removing all regular attributes
-    def sanitize_for_mass_assignment(attributes, role = nil)
-      attributes.except('id', 'var', 'value', 'target_id', 'target_type', 'created_at', 'updated_at')
+    if ActiveRecord::VERSION::MAJOR < 4
+      # Simulate attr_protected by removing all regular attributes
+      def sanitize_for_mass_assignment(attributes, role = nil)
+        attributes.except('id', 'var', 'value', 'target_id', 'target_type', 'created_at', 'updated_at')
+      end
     end
 
   private

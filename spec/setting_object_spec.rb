@@ -2,8 +2,14 @@ require 'spec_helper'
 
 describe RailsSettings::SettingObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
-  let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}, :without_protection => true) }
-  let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}, :without_protection => true) }
+
+  if ActiveRecord::VERSION::MAJOR < 4
+    let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}, :without_protection => true) }
+    let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}, :without_protection => true) }
+  else
+    let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}) }
+    let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}) }
+  end
 
   describe "serialization" do
     it "should have a hash default" do

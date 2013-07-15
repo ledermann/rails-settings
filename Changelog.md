@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.1.0 (WIP)
+
+- Support for Rails 4 (not finished yet!)
+
+
 ## Version 2.0.3 (2013-04-16)
 
 - Fixed bug with setting getter when settings are booleans and default is true (thanks to @mduong)
