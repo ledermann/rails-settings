@@ -112,11 +112,13 @@ describe RailsSettings::SettingObject do
       new_setting_object.update_attributes({}).should be_false
     end
 
-    it 'should not allow changing protected attributes' do
-      new_setting_object.update_attributes!(:var => 'calendar', :foo => 42)
+    if ActiveRecord::VERSION::MAJOR < 4
+      it 'should not allow changing protected attributes' do
+        new_setting_object.update_attributes!(:var => 'calendar', :foo => 42)
 
-      new_setting_object.var.should eq('dashboard')
-      new_setting_object.foo.should eq(42)
+        new_setting_object.var.should eq('dashboard')
+        new_setting_object.foo.should eq(42)
+      end
     end
   end
 
