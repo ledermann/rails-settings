@@ -3,6 +3,7 @@
 ## Version 2.1.0 (WIP)
 
 - Support for Rails 4
+- Removed support for Ruby 1.8.7
 
 
 ## Version 2.0.3 (2013-04-16)
