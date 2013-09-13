@@ -12,6 +12,3 @@ env:
   - DB=mysql
 before_script:
   - "mysql -e 'create database rails_settings_test;' >/dev/null"
-matrix:
-  allow_failures:
-    - ci/Gemfile.rails-4.0.x

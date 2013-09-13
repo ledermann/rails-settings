@@ -2,7 +2,7 @@
 
 ## Version 2.1.0 (WIP)
 
-- Support for Rails 4 (not finished yet!)
+- Support for Rails 4
 
 
 ## Version 2.0.3 (2013-04-16)

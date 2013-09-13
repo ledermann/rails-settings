@@ -97,7 +97,7 @@ User.without_settings_for(:calendar)
 ## Requirements
 
 * Ruby 1.8.7, 1.9.3 or 2.0.0
-* Rails 3.1.x or 3.2.x
+* Rails 3.1 or greater (including Rails 4)
 
 
 ## Installation
