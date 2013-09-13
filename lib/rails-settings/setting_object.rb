@@ -30,7 +30,7 @@ module RailsSettings
       if block_given?
         super
       else
-        if attribute_names.include?(method_name.to_s)
+        if attribute_names.include?(method_name.to_s.sub('=',''))
           super
         elsif method_name.to_s =~ REGEX_SETTER && args.size == 1
           _set_value($1, args.first)
