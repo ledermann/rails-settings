@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 2.1.0 (WIP)
+## Version 2.1.0 (2013-09-13)
 
 - Support for Rails 4
 - Removed support for Ruby 1.8.7
