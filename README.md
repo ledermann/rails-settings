@@ -1,4 +1,4 @@
-# Settings for Rails 3
+# Settings for Rails
 
 [![Build Status](https://travis-ci.org/ledermann/rails-settings.png?branch=master)](https://travis-ci.org/ledermann/rails-settings)
 [![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.png)](https://codeclimate.com/github/ledermann/rails-settings)
