@@ -94,6 +94,10 @@ describe RailsSettings::SettingObject do
         saved_setting_object.theme = nil
         saved_setting_object.value.should == { 'filter' => false }
       end
+
+      it "should return all possible values" do
+        saved_setting_object._all.should eq({ 'theme' => 'pink', 'filter' => false, 'view' => 'monthly'})
+      end
     end
   end
 

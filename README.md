@@ -94,6 +94,25 @@ User.without_settings_for(:calendar)
 ```
 
 
+### Defaults as Proc
+```ruby
+class User < ActiveRecord::Base
+  has_settings :calendar, :defaults => Proc.new{ |target| target.company.settings(:calendar)._all }
+end
+
+class Company < ActiveRecord::Base
+  has_settings :calendar, :defaults => { view: 'week' }
+end
+
+user = User.new
+user.settings(:calendar).view
+# => 'week'
+
+user.settings(:calendar)._all
+# => { view: 'week' }
+```
+Warning! Be carefull with User.default_settings, it contains Proc instead of Hash.
+
 ## Requirements
 
 * Ruby 1.9.3 or 2.0.0
