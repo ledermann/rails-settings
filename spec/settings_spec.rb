@@ -204,3 +204,13 @@ describe "Customized SettingObject" do
     project.settings(:info).should be_valid
   end
 end
+
+describe "CompanyUser with Proc as defaults" do
+  let(:company) { Company.create! :name => 'Rails Inc' }
+  let(:company_user) { CompanyUser.create! :name => 'John', :company_id => company.id }
+
+  it "should have default settings as Company" do
+    company_user.settings(:calendar).view.should eq(company.settings(:calendar).view)
+  end
+
+end

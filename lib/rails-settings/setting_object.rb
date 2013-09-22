@@ -42,6 +42,10 @@ module RailsSettings
       end
     end
 
+    def _all
+      (_get_defaults || {}).merge(value)
+    end
+
   protected
     if ActiveRecord::VERSION::MAJOR < 4
       # Simulate attr_protected by removing all regular attributes
@@ -53,7 +57,7 @@ module RailsSettings
   private
     def _get_value(name)
       if value[name].nil?
-        _target_class.default_settings[var.to_sym][name]
+        _get_defaults[name]
       else
         value[name]
       end
@@ -73,6 +77,12 @@ module RailsSettings
 
     def _target_class
       target_type.constantize
+    end
+
+    def _get_defaults
+      # Cache result if defaults is a Proc
+      _target_class.default_settings[var.to_sym] = _target_class.default_settings[var.to_sym].call(target) if _target_class.default_settings[var.to_sym].is_a?(Proc)
+      _target_class.default_settings[var.to_sym]
     end
 
     # Patch ActiveRecord to save serialized attributes only if they are changed

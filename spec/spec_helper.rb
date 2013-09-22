@@ -52,6 +52,14 @@ class ProjectSettingObject < RailsSettings::SettingObject
   end
 end
 
+class CompanyUser < ActiveRecord::Base
+  has_settings :calendar, :defaults => Proc.new{ |target| target.company.settings(:calendar)._all }
+end
+
+class Company < ActiveRecord::Base
+  has_settings :calendar, :defaults => { view: 'week' }
+end
+
 def setup_db
   ActiveRecord::Base.configurations = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
   db_name = ENV['DB'] || 'sqlite'
@@ -86,10 +94,21 @@ def setup_db
     create_table :projects do |t|
       t.string :name
     end
+
+    create_table :company_users do |t|
+      t.string :name
+      t.references :company, :null => false
+    end
+
+    create_table :companies do |t|
+      t.string :name
+    end    
   end
 end
 
 def clear_db
+  Company.delete_all
+  CompanyUser.delete_all
   User.delete_all
   Account.delete_all
   RailsSettings::SettingObject.delete_all
