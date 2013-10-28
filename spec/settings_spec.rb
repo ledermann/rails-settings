@@ -209,6 +209,7 @@ describe "to_settings_hash" do
     let(:user) do
       User.new :name => 'Mrs. Fin' do |user|
         user.settings(:dashboard).theme = 'green'
+        user.settings(:dashboard).sound = 11
         user.settings(:calendar).scope = 'some'
       end
     end
@@ -218,6 +219,6 @@ describe "to_settings_hash" do
     end
 
     it "should return merged settings" do
-      user.to_settings_hash.should ==  {:dashboard=>{"theme"=>"blue", "view"=>"monthly", "filter"=>true}, :calendar=>{"scope"=>"company"}, "theme"=>"green", "scope"=>"some"}
+      user.to_settings_hash.should ==  {:dashboard=>{"theme"=>"green", "view"=>"monthly", "filter"=>true, "sound" => 11}, :calendar=>{"scope"=>"some"}}
     end
 end
