@@ -204,3 +204,20 @@ describe "Customized SettingObject" do
     project.settings(:info).should be_valid
   end
 end
+
+describe "to_settings_hash" do
+    let(:user) do
+      User.new :name => 'Mrs. Fin' do |user|
+        user.settings(:dashboard).theme = 'green'
+        user.settings(:calendar).scope = 'some'
+      end
+    end
+
+    it "should return defaults" do
+      User.new.to_settings_hash.should == {:dashboard=>{"theme"=>"blue", "view"=>"monthly", "filter"=>true}, :calendar=>{"scope"=>"company"}}
+    end
+
+    it "should return merged settings" do
+      user.to_settings_hash.should ==  {:dashboard=>{"theme"=>"blue", "view"=>"monthly", "filter"=>true}, :calendar=>{"scope"=>"company"}, "theme"=>"green", "scope"=>"some"}
+    end
+end

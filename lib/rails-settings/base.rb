@@ -34,6 +34,14 @@ module RailsSettings
             settings(var).value.present?
           end
         end
+
+        def to_settings_hash
+          settings_hash = self.class.default_settings
+          settings_hash.each do |var, vals|
+            settings_hash = settings_hash.merge(settings(var.to_sym).value)               
+          end
+          settings_hash
+        end
       end
     end
   end
