@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.2.0 (WIP)
+
+- Added RailsSettings::Base#to_settings_hash (thanks to @mguymon)
+
+
 ## Version 2.1.0 (2013-09-13)
 
 - Support for Rails 4
