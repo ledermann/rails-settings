@@ -16,7 +16,7 @@ describe RailsSettings::SettingObject do
       RailsSettings::SettingObject.new.value.should == {}
     end
   end
- 
+
   describe "Getter and Setter" do
     context "on unsaved settings" do
       it "should respond to setters" do
