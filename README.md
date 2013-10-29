@@ -102,7 +102,7 @@ User.without_settings_for(:calendar)
 
 ## Installation
 
-Include the gem in your Gemfile und run `bundle` to install it:
+Include the gem in your Gemfile and run `bundle` to install it:
 
 ```ruby
 gem 'ledermann-rails-settings', :require => 'rails-settings'
