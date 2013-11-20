@@ -81,8 +81,11 @@ module RailsSettings
 
     def _get_defaults
       # Cache result if defaults is a Proc
-      _target_class.default_settings[var.to_sym] = _target_class.default_settings[var.to_sym].call(target) if _target_class.default_settings[var.to_sym].is_a?(Proc)
-      _target_class.default_settings[var.to_sym]
+      if _target_class.default_settings[var.to_sym].is_a?(Proc)
+        _target_class.default_settings[var.to_sym].call(target) 
+      else
+        _target_class.default_settings[var.to_sym]
+      end
     end
 
     # Patch ActiveRecord to save serialized attributes only if they are changed
