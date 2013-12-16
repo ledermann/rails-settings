@@ -58,7 +58,7 @@ or
 ```ruby
 user = User.find(1)
 user.settings(:dashboard).update_attributes! :theme => 'black'
-user.settings(:calendar).update_attributes! :scope => 'all', :display => 'dialy'
+user.settings(:calendar).update_attributes! :scope => 'all', :display => 'daily'
 ```
 
 
