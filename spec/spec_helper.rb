@@ -23,6 +23,10 @@ end
 require 'active_record'
 require 'rails-settings'
 
+if I18n.respond_to?(:enforce_available_locales=)
+  I18n.enforce_available_locales = false
+end
+
 class User < ActiveRecord::Base
   has_settings do |s|
     s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :filter => true }
