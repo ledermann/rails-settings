@@ -12,3 +12,4 @@ env:
   - DB=mysql
 before_script:
   - "mysql -e 'create database rails_settings_test;' >/dev/null"
+before_install: gem update bundler
