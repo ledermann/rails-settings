@@ -36,7 +36,7 @@ module RailsSettings
         end
 
         def to_settings_hash
-          settings_hash = self.class.default_settings
+          settings_hash = self.class.default_settings.dup
           settings_hash.each do |var, vals|
             settings_hash[var] = settings_hash[var].merge(settings(var.to_sym).value)
           end
