@@ -122,6 +122,11 @@ Version 2 is a complete rewrite and has a new DSL, so it's **not** compatible wi
 If you don't want to upgrade, you find the old version in the [1.x](https://github.com/ledermann/rails-settings/commits/1.x) branch. But don't expect any updates there.
 
 
+## Changelog
+
+See https://github.com/ledermann/rails-settings/releases
+
+
 ## License
 
 MIT License
