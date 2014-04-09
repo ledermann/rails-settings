@@ -59,7 +59,7 @@ end
 def setup_db
   ActiveRecord::Base.configurations = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
   db_name = ENV['DB'] || 'sqlite'
-  ActiveRecord::Base.establish_connection(db_name)
+  ActiveRecord::Base.establish_connection(db_name.to_sym)
 
   ActiveRecord::Migration.verbose = false
   ActiveRecord::Base.connection.tables.each do |table|
