@@ -60,24 +60,13 @@ def setup_db
   ActiveRecord::Base.configurations = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
   db_name = ENV['DB'] || 'sqlite'
   ActiveRecord::Base.establish_connection(db_name.to_sym)
-
   ActiveRecord::Migration.verbose = false
-  ActiveRecord::Base.connection.tables.each do |table|
-    next if table == 'schema_migrations'
-    ActiveRecord::Base.connection.execute("DROP TABLE #{table}")
-  end
-
   puts "Testing on #{db_name} with ActiveRecord #{ActiveRecord::VERSION::STRING}"
 
-  ActiveRecord::Schema.define(:version => 1) do
-    create_table :settings do |t|
-      t.string     :var,    :null => false
-      t.text       :value
-      t.references :target, :null => false, :polymorphic => true
-      t.timestamps
-    end
-    add_index :settings, [ :target_type, :target_id, :var ], :unique => true
+  require File.expand_path('../../lib/generators/rails_settings/migration/templates/migration.rb', __FILE__)
+  RailsSettingsMigration.migrate(:up)
 
+  ActiveRecord::Schema.define(:version => 1) do
     create_table :users do |t|
       t.string :type
       t.string :name
