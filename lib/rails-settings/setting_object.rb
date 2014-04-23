@@ -4,8 +4,10 @@ module RailsSettings
 
     belongs_to :target, :polymorphic => true
 
-    validates_presence_of :var, :value, :target_type
+    validates_presence_of :var, :target_type
     validate do
+      errors.add(:value, "Invalid setting value") unless value.is_a? Hash
+
       unless _target_class.default_settings[var.to_sym]
         errors.add(:var, "#{var} is not defined!")
       end
