@@ -97,6 +97,15 @@ user.settings(:calendar).scope
 # => 'all'
 ```
 
+### Delete settings
+
+```ruby
+user = User.find(1)
+user.settings(:dashboard).update_attributes! :theme => nil
+
+user.settings(:dashboard).view = nil
+user.settings(:dashboard).save!
+```
 
 ### Using scopes
 
