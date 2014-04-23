@@ -5,6 +5,27 @@
 
 Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.
 
+## Requirements
+
+* Ruby 1.9.3 or newer
+* Rails 3.1 or greater (including Rails 4)
+
+
+## Installation
+
+Include the gem in your Gemfile and run `bundle` to install it:
+
+```ruby
+gem 'ledermann-rails-settings'
+```
+
+Generate and run the migration:
+
+```shell
+rails g rails_settings:migration
+rake db:migrate
+```
+
 
 ## Usage
 
@@ -93,27 +114,6 @@ User.without_settings_for(:calendar)
 # => all users without having settings for 'calendar'
 ```
 
-
-## Requirements
-
-* Ruby 1.9.3 or newer
-* Rails 3.1 or greater (including Rails 4)
-
-
-## Installation
-
-Include the gem in your Gemfile and run `bundle` to install it:
-
-```ruby
-gem 'ledermann-rails-settings'
-```
-
-Generate and run the migration:
-
-```shell
-rails g rails_settings:migration
-rake db:migrate
-```
 
 ## Compatibility
 
