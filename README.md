@@ -105,7 +105,7 @@ User.without_settings_for(:calendar)
 Include the gem in your Gemfile and run `bundle` to install it:
 
 ```ruby
-gem 'ledermann-rails-settings', :require => 'rails-settings'
+gem 'ledermann-rails-settings'
 ```
 
 Generate and run the migration:
