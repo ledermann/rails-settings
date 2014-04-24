@@ -39,6 +39,23 @@ describe 'Objects' do
       account.settings(:portal).value.should eq({})
     end
 
+    it 'should allow saving a blank value' do
+      account.save!
+      account.settings(:portal).save.should be_true
+    end
+
+    it 'should allow removing all values' do
+      account.settings(:portal).premium = true
+      account.settings(:portal).fee = 42.5
+      account.save!
+
+      account.settings(:portal).premium = nil
+      account.save.should be_true
+
+      account.settings(:portal).fee = nil
+      account.save.should be_true
+    end
+
     it 'should not add settings on saving' do
       account.save!
       RailsSettings::SettingObject.count.should eq(0)
