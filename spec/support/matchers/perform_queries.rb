@@ -15,4 +15,8 @@ RSpec::Matchers.define :perform_queries do |expected|
 
     @counter.query_count
   end
+
+  def supports_block_expectations?
+    true
+  end
 end
