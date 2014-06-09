@@ -3,7 +3,7 @@ RSpec::Matchers.define :perform_queries do |expected|
     query_count(&block) == expected
   end
 
-  failure_message_for_should do |actual|
+  failure_message do |actual|
     "Expected to run #{expected} queries, got #{@counter.query_count}"
   end
 

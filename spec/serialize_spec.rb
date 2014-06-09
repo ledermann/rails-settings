@@ -15,11 +15,11 @@ describe "Serialization" do
       dashboard_settings = user.setting_objects.where(:var => 'dashboard').first
       calendar_settings = user.setting_objects.where(:var => 'calendar').first
 
-      dashboard_settings.var.should == 'dashboard'
-      dashboard_settings.value.should eq({'theme' => 'white'})
+      expect(dashboard_settings.var).to eq('dashboard')
+      expect(dashboard_settings.value).to eq({'theme' => 'white'})
 
-      calendar_settings.var.should == 'calendar'
-      calendar_settings.value.should eq({'scope' => 'all'})
+      expect(calendar_settings.var).to eq('calendar')
+      expect(calendar_settings.value).to eq({'scope' => 'all'})
     end
   end
 
@@ -30,11 +30,11 @@ describe "Serialization" do
       dashboard_settings = user.setting_objects.where(:var => 'dashboard').first
       calendar_settings = user.setting_objects.where(:var => 'calendar').first
 
-      dashboard_settings.var.should == 'dashboard'
-      dashboard_settings.value.should eq({'theme' => 'white', 'smart' => true})
+      expect(dashboard_settings.var).to eq('dashboard')
+      expect(dashboard_settings.value).to eq({'theme' => 'white', 'smart' => true})
 
-      calendar_settings.var.should == 'calendar'
-      calendar_settings.value.should eq({'scope' => 'all'})
+      expect(calendar_settings.var).to eq('calendar')
+      expect(calendar_settings.value).to eq({'scope' => 'all'})
     end
   end
 end

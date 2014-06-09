@@ -8,28 +8,28 @@ module RailsSettings
     it "should define single key" do
       Configuration.new(Dummy, :dashboard)
 
-      Dummy.default_settings.should == { :dashboard => {} }
-      Dummy.setting_object_class_name.should == 'RailsSettings::SettingObject'
+      expect(Dummy.default_settings).to eq({ :dashboard => {} })
+      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
     end
 
     it "should define multiple keys" do
       Configuration.new(Dummy, :dashboard, :calendar)
 
-      Dummy.default_settings.should == { :dashboard => {}, :calendar => {} }
-      Dummy.setting_object_class_name.should == 'RailsSettings::SettingObject'
+      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
     end
 
     it "should define single key with class_name" do
       Configuration.new(Dummy, :dashboard, :class_name => 'MyClass')
-      Dummy.default_settings.should == { :dashboard => {} }
-      Dummy.setting_object_class_name.should == 'MyClass'
+      expect(Dummy.default_settings).to eq({ :dashboard => {} })
+      expect(Dummy.setting_object_class_name).to eq('MyClass')
     end
 
     it "should define multiple keys with class_name" do
       Configuration.new(Dummy, :dashboard, :calendar, :class_name => 'MyClass')
 
-      Dummy.default_settings.should == { :dashboard => {}, :calendar => {} }
-      Dummy.setting_object_class_name.should == 'MyClass'
+      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.setting_object_class_name).to eq('MyClass')
     end
 
     it "should define using block" do
@@ -38,8 +38,8 @@ module RailsSettings
         c.key :calendar
       end
 
-      Dummy.default_settings.should == { :dashboard => {}, :calendar => {} }
-      Dummy.setting_object_class_name.should == 'RailsSettings::SettingObject'
+      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
     end
 
     it "should define using block with defaults" do
@@ -48,8 +48,8 @@ module RailsSettings
         c.key :calendar, :defaults => { :scope => 'all' }
       end
 
-      Dummy.default_settings.should == { :dashboard => { 'theme' => 'red' }, :calendar => { 'scope' => 'all'} }
-      Dummy.setting_object_class_name.should == 'RailsSettings::SettingObject'
+      expect(Dummy.default_settings).to eq({ :dashboard => { 'theme' => 'red' }, :calendar => { 'scope' => 'all'} })
+      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
     end
 
     it "should define using block and class_name" do
@@ -58,8 +58,8 @@ module RailsSettings
         c.key :calendar
       end
 
-      Dummy.default_settings.should == { :dashboard => {}, :calendar => {} }
-      Dummy.setting_object_class_name.should == 'MyClass'
+      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
+      expect(Dummy.setting_object_class_name).to eq('MyClass')
     end
   end
 
