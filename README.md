@@ -123,6 +123,11 @@ User.without_settings_for(:calendar)
 # => all users without having settings for 'calendar'
 ```
 
+### Eager Loading
+```ruby
+User.includes(:setting_objects)
+# => Eager load setting_objects when querying many users
+```
 
 ## Compatibility
 
