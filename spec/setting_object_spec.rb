@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RailsSettings::SettingObject do
   let(:user) { User.create! :name => 'Mr. Pink' }
 
-  if ActiveRecord::VERSION::MAJOR < 4
+  if defined?(ProtectedAttributes)
     let(:new_setting_object) { user.setting_objects.build({ :var => 'dashboard'}, :without_protection => true) }
     let(:saved_setting_object) { user.setting_objects.create!({ :var => 'dashboard', :value => { 'theme' => 'pink', 'filter' => false}}, :without_protection => true) }
   else
@@ -112,7 +112,7 @@ describe RailsSettings::SettingObject do
       expect(new_setting_object.update_attributes({})).to be_truthy
     end
 
-    if ActiveRecord::VERSION::MAJOR < 4
+    if defined?(ProtectedAttributes)
       it 'should not allow changing protected attributes' do
         new_setting_object.update_attributes!(:var => 'calendar', :foo => 42)
 

@@ -15,9 +15,9 @@ module RailsSettings
 
     serialize :value, Hash
 
-    # attr_protected can not be here used because it touches the database which is not connected yet.
+    # attr_protected can not be used here because it touches the database which is not connected yet.
     # So allow no attributes and override <tt>#sanitize_for_mass_assignment</tt>
-    if ActiveRecord::VERSION::MAJOR < 4
+    if defined?(ProtectedAttributes)
       attr_accessible
     end
 
@@ -45,7 +45,7 @@ module RailsSettings
     end
 
   protected
-    if ActiveRecord::VERSION::MAJOR < 4
+    if defined?(ProtectedAttributes)
       # Simulate attr_protected by removing all regular attributes
       def sanitize_for_mass_assignment(attributes, role = nil)
         attributes.except('id', 'var', 'value', 'target_id', 'target_type', 'created_at', 'updated_at')

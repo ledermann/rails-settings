@@ -21,6 +21,7 @@ RSpec.configure do |config|
 end
 
 require 'active_record'
+require 'protected_attributes' if ENV['PROTECTED_ATTRIBUTES'] == 'true'
 require 'rails-settings'
 
 if I18n.respond_to?(:enforce_available_locales=)
@@ -61,7 +62,7 @@ def setup_db
   db_name = ENV['DB'] || 'sqlite'
   ActiveRecord::Base.establish_connection(db_name.to_sym)
   ActiveRecord::Migration.verbose = false
-  puts "Testing on #{db_name} with ActiveRecord #{ActiveRecord::VERSION::STRING}"
+  puts "Testing on #{db_name} with ActiveRecord #{ActiveRecord::VERSION::STRING} #{defined?(ProtectedAttributes) ? 'with' : 'without'} protected_attributes"
 
   require File.expand_path('../../lib/generators/rails_settings/migration/templates/migration.rb', __FILE__)
   RailsSettingsMigration.migrate(:up)
