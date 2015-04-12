@@ -10,14 +10,9 @@ gemfile:
   - ci/Gemfile-rails-4-0
   - ci/Gemfile-rails-4-1
   - ci/Gemfile-rails-4-2
-env:
-  - DB=sqlite
-  - DB=mysql
 matrix:
   include:
     - rvm: 2.2.1
       gemfile: ci/Gemfile-rails-4-2
       env: PROTECTED_ATTRIBUTES=true
-before_script:
-  - "mysql -e 'create database rails_settings_test;' >/dev/null"
 before_install: gem update bundler

@@ -59,10 +59,9 @@ end
 
 def setup_db
   ActiveRecord::Base.configurations = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
-  db_name = ENV['DB'] || 'sqlite'
-  ActiveRecord::Base.establish_connection(db_name.to_sym)
+  ActiveRecord::Base.establish_connection(:sqlite)
   ActiveRecord::Migration.verbose = false
-  puts "Testing on #{db_name} with ActiveRecord #{ActiveRecord::VERSION::STRING} #{defined?(ProtectedAttributes) ? 'with' : 'without'} protected_attributes"
+  puts "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING} #{defined?(ProtectedAttributes) ? 'with' : 'without'} protected_attributes"
 
   require File.expand_path('../../lib/generators/rails_settings/migration/templates/migration.rb', __FILE__)
   RailsSettingsMigration.migrate(:up)
