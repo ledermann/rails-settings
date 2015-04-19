@@ -29,6 +29,10 @@ RSpec.configure do |config|
   config.before(:each) do
     clear_db
   end
+
+  config.after :suite do
+    RailsSettingsMigration.migrate(:down)
+  end
 end
 
 require 'active_record'

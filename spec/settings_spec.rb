@@ -203,6 +203,13 @@ describe "Object with settings" do
 
     expect(user.settings?).to eq(false)
   end
+
+  it "should raise exception on assigning other than nil" do
+    expect {
+      user.settings = :foo
+      user.save!
+    }.to raise_error(ArgumentError)
+  end
 end
 
 describe "Customized SettingObject" do
