@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ledermann/rails-settings.svg?branch=master)](https://travis-ci.org/ledermann/rails-settings)
 [![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.svg)](https://codeclimate.com/github/ledermann/rails-settings)
+[![Coverage Status](https://coveralls.io/repos/ledermann/rails-settings/badge.svg?branch=master)](https://coveralls.io/r/ledermann/rails-settings?branch=master)
 
 Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.
 
