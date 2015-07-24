@@ -1,5 +1,7 @@
 # Settings for Rails
 
+[![Join the chat at https://gitter.im/ledermann/rails-settings](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ledermann/rails-settings?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/ledermann/rails-settings.svg?branch=master)](https://travis-ci.org/ledermann/rails-settings)
 [![Code Climate](https://codeclimate.com/github/ledermann/rails-settings.svg)](https://codeclimate.com/github/ledermann/rails-settings)
 [![Coverage Status](https://coveralls.io/repos/ledermann/rails-settings/badge.svg?branch=master)](https://coveralls.io/r/ledermann/rails-settings?branch=master)
