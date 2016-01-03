@@ -20,3 +20,4 @@ matrix:
     - rvm: 2.2.1
       gemfile: ci/Gemfile-rails-3-2
 before_install: gem update bundler
+sudo: false
