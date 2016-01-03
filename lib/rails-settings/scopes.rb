@@ -2,7 +2,7 @@ module RailsSettings
   module Scopes
     def with_settings
       joins("INNER JOIN settings ON #{settings_join_condition}").
-      uniq
+      distinct
     end
 
     def with_settings_for(var)
