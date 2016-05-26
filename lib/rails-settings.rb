@@ -3,8 +3,7 @@ module RailsSettings
   # In Rails 4, attributes can be protected by using the gem `protected_attributes`
   # In Rails 5, protecting attributes is obsolete (there are `StrongParameters` only)
   def self.can_protect_attributes?
-    ActiveRecord::Base.respond_to?(:attr_accessible) &&
-    ActiveRecord::Base.respond_to?(:attr_protected)
+    (ActiveRecord::VERSION::MAJOR == 3) || defined?(ProtectedAttributes)
   end
 end
 
