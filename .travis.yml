@@ -14,11 +14,14 @@ gemfile:
   - ci/Gemfile-rails-5-0
 matrix:
   include:
-    - gemfile: ci/Gemfile-rails-4-0
+    - rvm: 2.2.5
+      gemfile: ci/Gemfile-rails-4-0
       env: PROTECTED_ATTRIBUTES=true
-    - gemfile: ci/Gemfile-rails-4-1
+    - rvm: 2.2.5
+      gemfile: ci/Gemfile-rails-4-1
       env: PROTECTED_ATTRIBUTES=true
-    - gemfile: ci/Gemfile-rails-4-2
+    - rvm: 2.2.5
+      gemfile: ci/Gemfile-rails-4-2
       env: PROTECTED_ATTRIBUTES=true
   exclude:
     - rvm: 1.9.3
