@@ -25,7 +25,7 @@ module RailsSettings
     REGEX_GETTER = /\A([a-z]\w+)\Z/i
 
     def respond_to?(method_name, include_priv=false)
-      super || method_name.to_s =~ REGEX_SETTER
+      super || method_name.to_s =~ REGEX_SETTER || _setting?(method_name)
     end
 
     def method_missing(method_name, *args, &block)
@@ -75,6 +75,10 @@ module RailsSettings
 
     def _target_class
       target_type.constantize
+    end
+
+    def _setting?(method_name)
+      _target_class.default_settings[var.to_sym].keys.include?(method_name.to_s)
     end
   end
 end
