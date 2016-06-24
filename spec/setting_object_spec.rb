@@ -52,6 +52,12 @@ describe RailsSettings::SettingObject do
         expect(new_setting_object.filter).to eq(true)
       end
 
+      it "should return defaults when using `try`" do
+        expect(new_setting_object.try(:theme)).to eq('blue')
+        expect(new_setting_object.try(:view)).to eq('monthly')
+        expect(new_setting_object.try(:filter)).to eq(true)
+      end
+
       it "should store different objects to value hash" do
         new_setting_object.integer = 42
         new_setting_object.float   = 1.234
