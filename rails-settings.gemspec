@@ -25,12 +25,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'sqlite3'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'coveralls'
-
-  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.0.0')
-    # On Ruby 1.9, an older version of simplecov is needed because one
-    # of its dependencies (json) requires Ruby 2.0 or later
-    gem.add_development_dependency 'simplecov', '~> 0.11.2'
-  else
-    gem.add_development_dependency 'simplecov'
-  end
+  gem.add_development_dependency 'simplecov', '~> 0.11.0'
 end
