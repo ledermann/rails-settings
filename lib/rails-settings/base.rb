@@ -22,6 +22,8 @@ module RailsSettings
         def settings=(value)
           if value.nil?
             setting_objects.each(&:mark_for_destruction)
+          elsif !self.persisted?
+            return
           else
             raise ArgumentError
           end
