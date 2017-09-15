@@ -3,9 +3,9 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.1
+  - 2.2.8
+  - 2.3.4
+  - 2.4.2
 gemfile:
   - ci/Gemfile-rails-3-1
   - ci/Gemfile-rails-3-2
@@ -16,13 +16,13 @@ gemfile:
   - ci/Gemfile-rails-5-1
 matrix:
   include:
-    - rvm: 2.2.6
+    - rvm: 2.2.8
       gemfile: ci/Gemfile-rails-4-0
       env: PROTECTED_ATTRIBUTES=true
-    - rvm: 2.2.6
+    - rvm: 2.2.8
       gemfile: ci/Gemfile-rails-4-1
       env: PROTECTED_ATTRIBUTES=true
-    - rvm: 2.2.6
+    - rvm: 2.2.8
       gemfile: ci/Gemfile-rails-4-2
       env: PROTECTED_ATTRIBUTES=true
   exclude:
@@ -38,21 +38,21 @@ matrix:
       gemfile: ci/Gemfile-rails-5-0
     - rvm: 2.1.10
       gemfile: ci/Gemfile-rails-5-1
-    - rvm: 2.2.6
+    - rvm: 2.2.8
       gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.2.6
+    - rvm: 2.2.8
       gemfile: ci/Gemfile-rails-3-2
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: ci/Gemfile-rails-3-2
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: ci/Gemfile-rails-3-2
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: ci/Gemfile-rails-4-0
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       gemfile: ci/Gemfile-rails-4-1
 before_install: gem update bundler
 sudo: false
