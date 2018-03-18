@@ -20,4 +20,3 @@ ActiveRecord::Base.class_eval do
     extend RailsSettings::Scopes
   end
 end
-
