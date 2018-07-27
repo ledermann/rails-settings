@@ -12,7 +12,7 @@ module RailsSettings
           raise ArgumentError unless var.is_a?(Symbol)
           raise ArgumentError.new("Unknown key: #{var}") unless self.class.setting_keys[var]
 
-          fetch_settings_record(var).becomes(self.class.setting_keys[var][:class_name].constantize)
+          fetch_settings_record(var)
         end
 
         def settings=(value)
@@ -44,14 +44,22 @@ module RailsSettings
         end
 
         def find_settings_record(var)
-          setting_objects.detect { |s| s.var == var.to_s }
+          setting_objects
+            .select { |s| s.var == var.to_s }
+            .map { |s| s.becomes self.class.setting_keys[var][:class_name].constantize }
+            .first
         end
 
         def build_settings_record(var)
-          if RailsSettings.can_protect_attributes?
-            setting_objects.build({ :var => var.to_s }, :without_protection => true)
-          else
-            setting_objects.build(:var => var.to_s, :target => self)
+          build_args =
+            if RailsSettings.can_protect_attributes?
+              [{ :var => var.to_s }, :without_protection => true]
+            else
+              [:var => var.to_s, :target => self]
+            end
+
+          setting_objects.build(*build_args) do |record|
+            record.becomes self.class.setting_keys[var][:class_name].constantize
           end
         end
       end
