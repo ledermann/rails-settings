@@ -32,6 +32,16 @@ describe "Getter/Setter" do
 end
 
 describe 'Objects' do
+  context "settings should be an instance of :class_name" do
+    it "should be an instance of 'SettingObject' by default" do
+      expect(User.new.settings(:dashboard)).to be_a(RailsSettings::SettingObject)
+    end
+
+    it "should be an instance of 'ProjectSettingObject' if defined" do
+      expect(Project.new.settings(:info)).to be_a(ProjectSettingObject)
+    end
+  end
+
   context 'without defaults' do
     let(:account) { Account.new :subdomain => 'foo' }
 
