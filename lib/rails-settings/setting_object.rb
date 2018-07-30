@@ -8,7 +8,7 @@ module RailsSettings
     validate do
       errors.add(:value, "Invalid setting value") unless value.is_a? Hash
 
-      unless _target_class.default_settings[var.to_sym]
+      unless _target_class.setting_keys[var.to_sym]
         errors.add(:var, "#{var} is not defined!")
       end
     end
@@ -26,6 +26,15 @@ module RailsSettings
 
     def respond_to?(method_name, include_priv=false)
       super || method_name.to_s =~ REGEX_SETTER || _setting?(method_name)
+    end
+
+    # Annoying hack for old Rails
+    unless RailsSettings.can_use_becomes?
+      def becomes(klass)
+        became = super(klass)
+        became.instance_variable_set("@changed_attributes", @changed_attributes)
+        became
+      end
     end
 
     def method_missing(method_name, *args, &block)
@@ -55,7 +64,7 @@ module RailsSettings
   private
     def _get_value(name)
       if value[name].nil?
-        _target_class.default_settings[var.to_sym][name]
+        _target_class.setting_keys[var.to_sym][:default_value][name]
       else
         value[name]
       end
@@ -78,7 +87,12 @@ module RailsSettings
     end
 
     def _setting?(method_name)
-      _target_class.default_settings[var.to_sym].keys.include?(method_name.to_s)
+      return false if target_id.nil? || target_type.nil?
+
+      _target_class
+        .setting_keys[var.to_sym][:default_value]
+        .keys
+        .include?(method_name.to_s)
     end
   end
 end

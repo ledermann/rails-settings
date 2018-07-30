@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe "Defaults" do
   it "should be stored for simple class" do
-    expect(Account.default_settings).to eq(:portal => {})
+    expect(Account.setting_keys[:portal][:default_value]).to eq({})
   end
 
   it "should be stored for parent class" do
-    expect(User.default_settings).to eq(:dashboard => { 'theme' => 'blue', 'view' => 'monthly', 'filter' => true },
-                                    :calendar => { 'scope' => 'company'})
+    expect(User.setting_keys[:dashboard][:default_value]).to eq({ 'theme' => 'blue', 'view' => 'monthly', 'filter' => true })
+    expect(User.setting_keys[:calendar][:default_value]).to eq({ 'scope' => 'company'})
   end
 
   it "should be stored for child class" do
-    expect(GuestUser.default_settings).to eq(:dashboard => { 'theme' => 'red', 'view' => 'monthly', 'filter' => true })
+    expect(GuestUser.setting_keys[:dashboard][:default_value]).to eq({ 'theme' => 'red', 'view' => 'monthly', 'filter' => true })
   end
 end
 
@@ -32,6 +32,16 @@ describe "Getter/Setter" do
 end
 
 describe 'Objects' do
+  context "settings should be an instance of :class_name" do
+    it "should be an instance of 'SettingObject' by default" do
+      expect(User.new.settings(:dashboard)).to be_a(RailsSettings::SettingObject)
+    end
+
+    it "should be an instance of 'ProjectSettingObject' if defined" do
+      expect(Project.new.settings(:info)).to be_a(ProjectSettingObject)
+    end
+  end
+
   context 'without defaults' do
     let(:account) { Account.new :subdomain => 'foo' }
 

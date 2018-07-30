@@ -8,28 +8,32 @@ module RailsSettings
     it "should define single key" do
       Configuration.new(Dummy, :dashboard)
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('RailsSettings::SettingObject')
     end
 
     it "should define multiple keys" do
       Configuration.new(Dummy, :dashboard, :calendar)
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:calendar][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:calendar][:class_name]).to eq('RailsSettings::SettingObject')
     end
 
     it "should define single key with class_name" do
-      Configuration.new(Dummy, :dashboard, :class_name => 'MyClass')
-      expect(Dummy.default_settings).to eq({ :dashboard => {} })
-      expect(Dummy.setting_object_class_name).to eq('MyClass')
+      Configuration.new(Dummy, :dashboard, :class_name => 'ProjectSettingObject')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('ProjectSettingObject')
     end
 
     it "should define multiple keys with class_name" do
-      Configuration.new(Dummy, :dashboard, :calendar, :class_name => 'MyClass')
+      Configuration.new(Dummy, :dashboard, :calendar, :class_name => 'ProjectSettingObject')
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('MyClass')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:calendar][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('ProjectSettingObject')
+      expect(Dummy.setting_keys[:calendar][:class_name]).to eq('ProjectSettingObject')
     end
 
     it "should define using block" do
@@ -38,8 +42,10 @@ module RailsSettings
         c.key :calendar
       end
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:calendar][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:calendar][:class_name]).to eq('RailsSettings::SettingObject')
     end
 
     it "should define using block with defaults" do
@@ -48,18 +54,22 @@ module RailsSettings
         c.key :calendar, :defaults => { :scope => 'all' }
       end
 
-      expect(Dummy.default_settings).to eq({ :dashboard => { 'theme' => 'red' }, :calendar => { 'scope' => 'all'} })
-      expect(Dummy.setting_object_class_name).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({ 'theme' => 'red' })
+      expect(Dummy.setting_keys[:calendar][:default_value]).to eq({ 'scope' => 'all'})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('RailsSettings::SettingObject')
+      expect(Dummy.setting_keys[:calendar][:class_name]).to eq('RailsSettings::SettingObject')
     end
 
     it "should define using block and class_name" do
-      Configuration.new(Dummy, :class_name => 'MyClass') do |c|
+      Configuration.new(Dummy, :class_name => 'ProjectSettingObject') do |c|
         c.key :dashboard
         c.key :calendar
       end
 
-      expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
-      expect(Dummy.setting_object_class_name).to eq('MyClass')
+      expect(Dummy.setting_keys[:dashboard][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:calendar][:default_value]).to eq({})
+      expect(Dummy.setting_keys[:dashboard][:class_name]).to eq('ProjectSettingObject')
+      expect(Dummy.setting_keys[:calendar][:class_name]).to eq('ProjectSettingObject')
     end
   end
 
@@ -101,6 +111,14 @@ module RailsSettings
       expect {
         Configuration.new(Dummy) do |c|
           c.key :dashboard, :foo => {}
+        end
+      }.to raise_error(ArgumentError)
+    end
+
+    it "should fail with an invalid settings object" do
+      expect {
+        Configuration.new(Dummy) do |c|
+          c.key :dashboard, :class_name => "InvalidSettingObject"
         end
       }.to raise_error(ArgumentError)
     end
