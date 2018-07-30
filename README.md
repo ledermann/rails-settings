@@ -52,30 +52,15 @@ end
 Every setting is handled by the class `RailsSettings::SettingObject`. You can use your own class, e.g. for validations:
 
 ```ruby
+class Project < ActiveRecord::Base
+  has_settings :info, :class_name => 'ProjectSettingObject'
+end
+
 class ProjectSettingObject < RailsSettings::SettingObject
   validate do
     unless self.owner_name.present? && self.owner_name.is_a?(String)
       errors.add(:base, "Owner name is missing")
     end
-  end
-end
-```
-
-Then you can use it like this:
-
-```ruby
-class Project < ActiveRecord::Base
-  has_settings :info, :class_name => 'ProjectSettingObject'
-end
-```
-
-Or use it only on some of the settings:
-
-```ruby
-class Project < ActiveRecord::Base
-  has_settings do |s|
-    s.key :calendar # Will use the default RailsSettings::SettingObject
-    s.key :info, :class_name => 'ProjectSettingObject'
   end
 end
 ```
