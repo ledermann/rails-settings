@@ -5,15 +5,6 @@ module RailsSettings
   def self.can_protect_attributes?
     (ActiveRecord::VERSION::MAJOR == 3) || defined?(ProtectedAttributes)
   end
-
-  def self.can_use_becomes?
-    ![
-      [3, 0],
-      [3, 1],
-      [3, 2],
-      [4, 0]
-    ].include?([ActiveRecord::VERSION::MAJOR, ActiveRecord::VERSION::MINOR])
-  end
 end
 
 require 'rails-settings/setting_object'
@@ -29,3 +20,4 @@ ActiveRecord::Base.class_eval do
     extend RailsSettings::Scopes
   end
 end
+

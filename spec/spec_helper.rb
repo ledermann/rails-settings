@@ -60,7 +60,8 @@ class Account < ActiveRecord::Base
   has_settings :portal
 end
 
-class InvalidSettingObject
+class Project < ActiveRecord::Base
+  has_settings :info, :class_name => 'ProjectSettingObject'
 end
 
 class ProjectSettingObject < RailsSettings::SettingObject
@@ -69,10 +70,6 @@ class ProjectSettingObject < RailsSettings::SettingObject
       errors.add(:base, "Owner name is missing")
     end
   end
-end
-
-class Project < ActiveRecord::Base
-  has_settings :info, :class_name => 'ProjectSettingObject'
 end
 
 def setup_db

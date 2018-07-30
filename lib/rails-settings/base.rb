@@ -6,14 +6,17 @@ module RailsSettings
                  :as         => :target,
                  :autosave   => true,
                  :dependent  => :delete_all,
-                 :class_name => "RailsSettings::SettingObject"
+                 :class_name => self.setting_object_class_name
 
         def settings(var)
           raise ArgumentError unless var.is_a?(Symbol)
-          raise ArgumentError.new("Unknown key: #{var}") unless self.class.setting_keys[var]
+          raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_settings[var]
 
-          fetch_settings_record(var)
-            .becomes(self.class.setting_keys[var][:class_name].constantize)
+          if RailsSettings.can_protect_attributes?
+            setting_objects.detect { |s| s.var == var.to_s } || setting_objects.build({ :var => var.to_s }, :without_protection => true)
+          else
+            setting_objects.detect { |s| s.var == var.to_s } || setting_objects.build(:var => var.to_s, :target => self)
+          end
         end
 
         def settings=(value)
@@ -33,27 +36,11 @@ module RailsSettings
         end
 
         def to_settings_hash
-          Hash[self.class.setting_keys.map do |key, options|
-            [key, options[:default_value].merge(settings(key.to_sym).value)]
-          end]
-        end
-
-        private
-
-        def fetch_settings_record(var)
-          find_settings_record(var) or build_settings_record(var)
-        end
-
-        def find_settings_record(var)
-          setting_objects.detect { |s| s.var == var.to_s }
-        end
-
-        def build_settings_record(var)
-          if RailsSettings.can_protect_attributes?
-            setting_objects.build({ :var => var.to_s }, :without_protection => true)
-          else
-            setting_objects.build(:var => var.to_s, :target => self)
+          settings_hash = self.class.default_settings.dup
+          settings_hash.each do |var, vals|
+            settings_hash[var] = settings_hash[var].merge(settings(var.to_sym).value)
           end
+          settings_hash
         end
       end
     end
