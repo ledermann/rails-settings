@@ -118,7 +118,7 @@ User.without_settings
 # => all users without having any setting
 
 User.with_settings_for(:calendar)
-# => all users having a setting for 'calender'
+# => all users having a setting for 'calendar'
 
 User.without_settings_for(:calendar)
 # => all users without having settings for 'calendar'
