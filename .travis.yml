@@ -13,12 +13,15 @@ gemfile:
   - ci/Gemfile-rails-5-0
   - ci/Gemfile-rails-5-1
   - ci/Gemfile-rails-5-2
+  - ci/Gemfile-rails-6-0
 matrix:
   exclude:
     - rvm: 2.3.8
       gemfile: ci/Gemfile-rails-3-1
     - rvm: 2.3.8
       gemfile: ci/Gemfile-rails-3-2
+    - rvm: 2.3.8
+      gemfile: ci/Gemfile-rails-6-0
     - rvm: 2.4.5
       gemfile: ci/Gemfile-rails-3-1
     - rvm: 2.4.5
@@ -27,6 +30,8 @@ matrix:
       gemfile: ci/Gemfile-rails-4-0
     - rvm: 2.4.5
       gemfile: ci/Gemfile-rails-4-1
+    - rvm: 2.4.5
+      gemfile: ci/Gemfile-rails-6-0
     - rvm: 2.5.5
       gemfile: ci/Gemfile-rails-3-1
     - rvm: 2.5.5
