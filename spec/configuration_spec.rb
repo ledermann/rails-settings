@@ -61,6 +61,18 @@ module RailsSettings
       expect(Dummy.default_settings).to eq({ :dashboard => {}, :calendar => {} })
       expect(Dummy.setting_object_class_name).to eq('MyClass')
     end
+
+    context 'persistent' do
+      it "should keep settings between multiple configurations initialization" do
+        Configuration.new(Dummy, :persistent => true) do |c|
+          c.key :dashboard, :defaults => { :theme => 'red' }
+        end
+
+        Configuration.new(Dummy, :calendar, :persistent => true)
+
+        expect(Dummy.default_settings).to eq({ :dashboard => { 'theme' => 'red' }, :calendar => {} })
+      end
+    end
   end
 
   describe Configuration, 'failure' do
