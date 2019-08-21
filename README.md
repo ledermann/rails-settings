@@ -8,8 +8,8 @@ Ruby gem to handle settings for ActiveRecord instances by storing them as serial
 
 ## Requirements
 
-* Ruby 2.3 or newer
-* Rails 3.1 or newer (including Rails 6)
+* Ruby 2.4 or newer
+* Rails 4.0 or newer (including Rails 6)
 
 
 ## Installation
@@ -79,8 +79,8 @@ or
 
 ```ruby
 user = User.find(1)
-user.settings(:dashboard).update_attributes! :theme => 'black'
-user.settings(:calendar).update_attributes! :scope => 'all', :display => 'daily'
+user.settings(:dashboard).update! :theme => 'black'
+user.settings(:calendar).update! :scope => 'all', :display => 'daily'
 ```
 
 
@@ -102,7 +102,7 @@ user.settings(:calendar).scope
 
 ```ruby
 user = User.find(1)
-user.settings(:dashboard).update_attributes! :theme => nil
+user.settings(:dashboard).update! :theme => nil
 
 user.settings(:dashboard).view = nil
 user.settings(:dashboard).save!
@@ -146,6 +146,6 @@ See https://github.com/ledermann/rails-settings/releases
 
 MIT License
 
-Copyright (c) 2012-2018 [Georg Ledermann](http://www.georg-ledermann.de)
+Copyright (c) 2012-2019 [Georg Ledermann](http://www.georg-ledermann.de)
 
 This gem is a complete rewrite of [rails-settings](https://github.com/Squeegy/rails-settings) by [Alex Wayne](https://github.com/Squeegy)
