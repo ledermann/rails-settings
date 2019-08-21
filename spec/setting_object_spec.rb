@@ -103,9 +103,9 @@ describe RailsSettings::SettingObject do
     end
   end
 
-  describe "update_attributes" do
+  describe "update" do
     it 'should save' do
-      expect(new_setting_object.update_attributes(:foo => 42, :bar => 'string')).to be_truthy
+      expect(new_setting_object.update(:foo => 42, :bar => 'string')).to be_truthy
       new_setting_object.reload
 
       expect(new_setting_object.foo).to eq(42)
@@ -115,12 +115,12 @@ describe RailsSettings::SettingObject do
     end
 
     it 'should not save blank hash' do
-      expect(new_setting_object.update_attributes({})).to be_truthy
+      expect(new_setting_object.update({})).to be_truthy
     end
 
     if RailsSettings.can_protect_attributes?
       it 'should not allow changing protected attributes' do
-        new_setting_object.update_attributes!(:var => 'calendar', :foo => 42)
+        new_setting_object.update!(:var => 'calendar', :foo => 42)
 
         expect(new_setting_object.var).to eq('dashboard')
         expect(new_setting_object.foo).to eq(42)

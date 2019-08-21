@@ -25,7 +25,7 @@ describe "Serialization" do
 
   describe 'updated settings' do
     it 'should be serialized' do
-      user.settings(:dashboard).update_attributes! :smart => true
+      user.settings(:dashboard).update! :smart => true
 
       dashboard_settings = user.setting_objects.where(:var => 'dashboard').first
       calendar_settings = user.setting_objects.where(:var => 'calendar').first

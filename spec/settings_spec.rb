@@ -145,7 +145,7 @@ describe "Object without settings" do
   end
 
   it "should add settings" do
-    user.settings(:dashboard).update_attributes! :smart => true
+    user.settings(:dashboard).update! :smart => true
 
     user.reload
     expect(user.settings(:dashboard).smart).to eq(true)
@@ -179,7 +179,7 @@ describe "Object with settings" do
   end
 
   it "should update settings" do
-    user.settings(:dashboard).update_attributes! :smart => true
+    user.settings(:dashboard).update! :smart => true
     user.reload
 
     expect(user.settings(:dashboard).smart).to eq(true)
