@@ -9,7 +9,7 @@ Ruby gem to handle settings for ActiveRecord instances by storing them as serial
 ## Requirements
 
 * Ruby 2.4 or newer
-* Rails 4.0 or newer (including Rails 6)
+* Rails 4.2 or newer (including Rails 6)
 
 
 ## Installation
