@@ -1,12 +1,9 @@
 language: ruby
 rvm:
-  - 2.3.8
-  - 2.4.5
+  - 2.4.6
   - 2.5.5
-  - 2.6.2
+  - 2.6.3
 gemfile:
-  - ci/Gemfile-rails-3-1
-  - ci/Gemfile-rails-3-2
   - ci/Gemfile-rails-4-0
   - ci/Gemfile-rails-4-1
   - ci/Gemfile-rails-4-2
@@ -16,37 +13,19 @@ gemfile:
   - ci/Gemfile-rails-6-0
 matrix:
   exclude:
-    - rvm: 2.3.8
-      gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.3.8
-      gemfile: ci/Gemfile-rails-3-2
-    - rvm: 2.3.8
-      gemfile: ci/Gemfile-rails-6-0
-    - rvm: 2.4.5
-      gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.4.5
-      gemfile: ci/Gemfile-rails-3-2
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: ci/Gemfile-rails-4-0
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: ci/Gemfile-rails-4-1
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: ci/Gemfile-rails-6-0
-    - rvm: 2.5.5
-      gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.5.5
-      gemfile: ci/Gemfile-rails-3-2
     - rvm: 2.5.5
       gemfile: ci/Gemfile-rails-4-0
     - rvm: 2.5.5
       gemfile: ci/Gemfile-rails-4-1
-    - rvm: 2.6.2
-      gemfile: ci/Gemfile-rails-3-1
-    - rvm: 2.6.2
-      gemfile: ci/Gemfile-rails-3-2
-    - rvm: 2.6.2
+    - rvm: 2.6.3
       gemfile: ci/Gemfile-rails-4-0
-    - rvm: 2.6.2
+    - rvm: 2.6.3
       gemfile: ci/Gemfile-rails-4-1
 before_install: gem update bundler
 sudo: false

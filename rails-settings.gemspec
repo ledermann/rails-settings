@@ -12,14 +12,14 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Settings gem for Ruby on Rails}
   gem.summary       = %q{Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.}
   gem.homepage      = 'https://github.com/ledermann/rails-settings'
-  gem.required_ruby_version = '>= 2.3'
+  gem.required_ruby_version = '>= 2.4'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'activerecord', '>= 3.1'
+  gem.add_dependency 'activerecord', '>= 4.0'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'sqlite3'
