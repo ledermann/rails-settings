@@ -65,6 +65,26 @@ class ProjectSettingObject < RailsSettings::SettingObject
 end
 ```
 
+In case you need to define settings separatedly for the same models, you can use the persistent option
+
+```ruby
+module UserDashboardConcern
+  extend ActiveSupport::Concern
+
+  included do
+    has_settings persistent: true do |s|
+      s.key :dashboard
+    end
+  end
+end
+
+class User < ActiveRecord::Base
+  has_settings persistent: true do |s|
+    s.key :calendar
+  end
+end
+```
+
 ### Set settings
 
 ```ruby

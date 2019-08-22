@@ -8,8 +8,15 @@ module RailsSettings
       raise ArgumentError unless klass
 
       @klass = klass
-      @klass.class_attribute :default_settings, :setting_object_class_name
-      @klass.default_settings = {}
+
+      if options[:persistent]
+        @klass.class_attribute :default_settings unless @klass.methods.include?(:default_settings)
+      else
+        @klass.class_attribute :default_settings
+      end
+
+      @klass.class_attribute :setting_object_class_name
+      @klass.default_settings ||= {}
       @klass.setting_object_class_name = options[:class_name] || 'RailsSettings::SettingObject'
 
       if block_given?
