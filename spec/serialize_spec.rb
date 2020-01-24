@@ -37,4 +37,17 @@ describe "Serialization" do
       expect(calendar_settings.value).to eq({'scope' => 'all'})
     end
   end
+
+  describe 'setting as hash' do
+    it 'should be serialized' do
+      expect(user.settings(:dashboard).to_h).to include({"theme" => 'white', "view" => 'monthly', "filter" => true})
+    end
+
+    context 'when it was changed' do
+      it 'shuld be updated and serialized' do
+        user.settings(:dashboard).update! theme: 'red'
+        expect(user.settings(:dashboard).to_h).to include({"theme" => 'red', "view" => 'monthly', "filter" => true})
+      end
+    end
+  end
 end

@@ -28,6 +28,15 @@ module RailsSettings
       super || method_name.to_s =~ REGEX_SETTER || _setting?(method_name)
     end
 
+    # handler for a SettingObject similar to the to_settings_hash but only for a var (not all associated ones)
+    def to_h
+      _hash = _target_class.default_settings[self[:var].to_sym].dup
+      value.each do |k, val|
+        _hash[k] = val
+      end
+      _hash
+    end
+
     def method_missing(method_name, *args, &block)
       if block_given?
         super
