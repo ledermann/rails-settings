@@ -58,6 +58,10 @@ describe RailsSettings::SettingObject do
         expect(new_setting_object.try(:filter)).to eq(true)
       end
 
+      it "should return value from target method if proc is a default value" do
+        expect(new_setting_object.owner_name).to eq('Mr. Pink')
+      end
+
       it "should store different objects to value hash" do
         new_setting_object.integer = 42
         new_setting_object.float   = 1.234

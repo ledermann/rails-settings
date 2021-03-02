@@ -55,7 +55,11 @@ module RailsSettings
   private
     def _get_value(name)
       if value[name].nil?
-        _target_class.default_settings[var.to_sym][name]
+        if _target_class.default_settings[var.to_sym][name].respond_to?(:call)
+          _target_class.default_settings[var.to_sym][name].call(target)
+        else
+          _target_class.default_settings[var.to_sym][name]
+        end
       else
         value[name]
       end
