@@ -1,0 +1,52 @@
+name: Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby_version:
+          - '2.5'
+          - '2.6'
+          - '2.7'
+          - '3.0'
+        gemfile:
+          - gemfiles/rails_5_0.gemfile
+          - gemfiles/rails_5_1.gemfile
+          - gemfiles/rails_5_2.gemfile
+          - gemfiles/rails_6_0.gemfile
+          - gemfiles/rails_6_1.gemfile
+        exclude:
+          - ruby_version: '2.7'
+            gemfile: gemfiles/rails_4_2.gemfile
+          - ruby_version: '3.0'
+            gemfile: gemfiles/rails_4_2.gemfile
+          - ruby_version: '3.0'
+            gemfile: gemfiles/rails_5_0.gemfile
+          - ruby_version: '3.0'
+            gemfile: gemfiles/rails_5_1.gemfile
+          - ruby_version: '3.0'
+            gemfile: gemfiles/rails_5_2.gemfile
+
+    name: Ruby ${{ matrix.ruby_version }} / Gemfile ${{ matrix.gemfile }}
+
+    env:
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby_version }}
+          bundler-cache: true
+
+      - name: RSpec
+        run: bundle exec rake
