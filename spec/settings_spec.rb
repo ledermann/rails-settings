@@ -134,6 +134,13 @@ describe 'Objects' do
       expect(RailsSettings::SettingObject.count).to eq(1)
       expect(RailsSettings::SettingObject.first.value).to eq({ 'theme' => 'brown' })
     end
+
+    it "should not mutate default settings" do
+      expected_return_value = User.default_settings[:calendar]['events'].dup
+
+      user.settings(:calendar).events.push('new_value')
+      expect(User.default_settings[:calendar]['events']).to eq(expected_return_value)
+    end
   end
 end
 
