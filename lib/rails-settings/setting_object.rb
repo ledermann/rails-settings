@@ -55,14 +55,25 @@ module RailsSettings
   private
     def _get_value(name)
       if value[name].nil?
-        if _target_class.default_settings[var.to_sym][name].respond_to?(:call)
-          _target_class.default_settings[var.to_sym][name].call(target)
-        else
-          _target_class.default_settings[var.to_sym][name]
-        end
+        default_value = _get_default_value(name)
+        _deep_dup(default_value)
       else
         value[name]
       end
+    end
+  
+    def _get_default_value(name)
+      default_value = _target_class.default_settings[var.to_sym][name]
+  
+      if default_value.respond_to?(:call)
+        default_value.call(target)
+      else
+        default_value
+      end
+    end
+  
+    def _deep_dup(nested_hashes_and_or_arrays)
+      Marshal.load(Marshal.dump(nested_hashes_and_or_arrays))
     end
 
     def _set_value(name, v)
