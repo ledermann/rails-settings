@@ -22,6 +22,7 @@ describe RailsSettings::SettingObject do
       it "should respond to setters" do
         expect(new_setting_object).to respond_to(:foo=)
         expect(new_setting_object).to respond_to(:bar=)
+        expect(new_setting_object).to respond_to(:x=)
       end
 
       it "should not respond to some getters" do
@@ -44,12 +45,14 @@ describe RailsSettings::SettingObject do
       it "should return nil for unknown attribute" do
         expect(new_setting_object.foo).to eq(nil)
         expect(new_setting_object.bar).to eq(nil)
+        expect(new_setting_object.c).to eq(nil)
       end
 
       it "should return defaults" do
         expect(new_setting_object.theme).to eq('blue')
         expect(new_setting_object.view).to eq('monthly')
         expect(new_setting_object.filter).to eq(true)
+        expect(new_setting_object.a).to eq('b')
       end
 
       it "should return defaults when using `try`" do

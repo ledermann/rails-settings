@@ -251,6 +251,6 @@ describe "to_settings_hash" do
   end
 
   it "should return merged settings" do
-    expect(user.to_settings_hash).to eq({:dashboard=>{"filter"=>true, "owner_name"=>"Mr. Vishal", "sound"=>11, "theme"=>"green", "view"=>"monthly"}, :calendar=>{"scope"=>"some"}})
+    expect(user.to_settings_hash).to eq({:dashboard=>{"a"=>"b", "filter"=>true, "owner_name"=>"Mr. Vishal", "sound"=>11, "theme"=>"green", "view"=>"monthly"}, :calendar=>{"scope"=>"some"}})
   end
 end
