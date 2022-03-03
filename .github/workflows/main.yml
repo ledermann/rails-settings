@@ -12,10 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         ruby_version:
-          - '2.5'
           - '2.6'
           - '2.7'
           - '3.0'
+          - '3.1'
         gemfile:
           - gemfiles/rails_5_0.gemfile
           - gemfiles/rails_5_1.gemfile
@@ -24,8 +24,6 @@ jobs:
           - gemfiles/rails_6_1.gemfile
           - gemfiles/rails_7_0.gemfile
         exclude:
-          - ruby_version: '2.5'
-            gemfile: gemfiles/rails_7_0.gemfile
           - ruby_version: '2.6'
             gemfile: gemfiles/rails_7_0.gemfile
           - ruby_version: '2.7'
@@ -37,6 +35,14 @@ jobs:
           - ruby_version: '3.0'
             gemfile: gemfiles/rails_5_1.gemfile
           - ruby_version: '3.0'
+            gemfile: gemfiles/rails_5_2.gemfile
+          - ruby_version: '3.1'
+            gemfile: gemfiles/rails_4_2.gemfile
+          - ruby_version: '3.1'
+            gemfile: gemfiles/rails_5_0.gemfile
+          - ruby_version: '3.1'
+            gemfile: gemfiles/rails_5_1.gemfile
+          - ruby_version: '3.1'
             gemfile: gemfiles/rails_5_2.gemfile
 
     name: Ruby ${{ matrix.ruby_version }} / Gemfile ${{ matrix.gemfile }}
