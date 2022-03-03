@@ -134,6 +134,24 @@ describe 'Objects' do
       expect(RailsSettings::SettingObject.count).to eq(1)
       expect(RailsSettings::SettingObject.first.value).to eq({ 'theme' => 'brown' })
     end
+
+    context "when default value is an Array" do
+      it "should not mutate default_settings" do
+        expected_return_value = User.default_settings[:calendar]['events'].dup
+
+        user.settings(:calendar).events.push('new_value')
+        expect(User.default_settings[:calendar]['events']).to eq(expected_return_value)
+      end
+    end
+
+    context "when default value is a Hash" do
+      it "should not mutate default_settings" do
+        expected_return_value = User.default_settings[:calendar]['profile'].dup
+
+        user.settings(:calendar).profile.update('new_key' => 'new_value')
+        expect(User.default_settings[:calendar]['profile']).to eq(expected_return_value)
+      end
+    end
   end
 end
 
@@ -251,6 +269,6 @@ describe "to_settings_hash" do
   end
 
   it "should return merged settings" do
-    expect(user.to_settings_hash).to eq({:dashboard=>{"a"=>"b", "filter"=>true, "owner_name"=>"Mr. Vishal", "sound"=>11, "theme"=>"green", "view"=>"monthly"}, :calendar=>{"scope"=>"some"}})
+    expect(user.to_settings_hash).to eq({:dashboard=>{"a"=>"b", "filter"=>true, "owner_name"=>"Mr. Vishal", "sound"=>11, "theme"=>"green", "view"=>"monthly"}, :calendar=>{"scope"=>"some", "events"=>[], "profile"=>{}}})
   end
 end

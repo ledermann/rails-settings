@@ -46,7 +46,7 @@ end
 class User < ActiveRecord::Base
   has_settings do |s|
     s.key :dashboard, :defaults => { :theme => 'blue', :view => 'monthly', :a => 'b', :filter => true, owner_name: -> (target) { target.name } }
-    s.key :calendar,  :defaults => { :scope => 'company'}
+    s.key :calendar,  :defaults => { :scope => 'company', :events => [], :profile => {} }
   end
 end
 
