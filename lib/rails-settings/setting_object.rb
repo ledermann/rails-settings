@@ -13,7 +13,11 @@ module RailsSettings
       end
     end
 
-    serialize :value, Hash
+    if Rails.version >= "7.1"
+      serialize :value, type: Hash
+    else
+      serialize :value, Hash
+    end
 
     if RailsSettings.can_protect_attributes?
       # attr_protected can not be used here because it touches the database which is not connected yet.
