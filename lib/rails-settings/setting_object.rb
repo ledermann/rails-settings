@@ -13,7 +13,7 @@ module RailsSettings
       end
     end
 
-    if Rails.version >= "7.1"
+    if ActiveRecord.version >= "7.1.0.beta1"
       serialize :value, type: Hash
     else
       serialize :value, Hash
