@@ -1,7 +1,5 @@
 RSpec::Matchers.define :perform_queries do |expected|
-  match do |block|
-    query_count(&block) == expected
-  end
+  match { |block| query_count(&block) == expected }
 
   failure_message do |actual|
     "Expected to run #{expected} queries, got #{@counter.query_count}"
@@ -9,7 +7,10 @@ RSpec::Matchers.define :perform_queries do |expected|
 
   def query_count(&block)
     @counter = ActiveRecord::QueryCounter.new
-    ActiveSupport::Notifications.subscribe('sql.active_record', @counter.to_proc)
+    ActiveSupport::Notifications.subscribe(
+      'sql.active_record',
+      @counter.to_proc,
+    )
     yield
     ActiveSupport::Notifications.unsubscribe(@counter.to_proc)
 

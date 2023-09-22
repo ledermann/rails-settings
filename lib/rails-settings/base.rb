@@ -3,19 +3,23 @@ module RailsSettings
     def self.included(base)
       base.class_eval do
         has_many :setting_objects,
-                 :as         => :target,
-                 :autosave   => true,
-                 :dependent  => :delete_all,
-                 :class_name => self.setting_object_class_name
+                 as: :target,
+                 autosave: true,
+                 dependent: :delete_all,
+                 class_name: self.setting_object_class_name
 
         def settings(var)
           raise ArgumentError unless var.is_a?(Symbol)
-          raise ArgumentError.new("Unknown key: #{var}") unless self.class.default_settings[var]
+          unless self.class.default_settings[var]
+            raise ArgumentError.new("Unknown key: #{var}")
+          end
 
           if RailsSettings.can_protect_attributes?
-            setting_objects.detect { |s| s.var == var.to_s } || setting_objects.build({ :var => var.to_s }, :without_protection => true)
+            setting_objects.detect { |s| s.var == var.to_s } ||
+              setting_objects.build({ var: var.to_s }, without_protection: true)
           else
-            setting_objects.detect { |s| s.var == var.to_s } || setting_objects.build(:var => var.to_s, :target => self)
+            setting_objects.detect { |s| s.var == var.to_s } ||
+              setting_objects.build(var: var.to_s, target: self)
           end
         end
 
@@ -27,9 +31,12 @@ module RailsSettings
           end
         end
 
-        def settings?(var=nil)
+        def settings?(var = nil)
           if var.nil?
-            setting_objects.any? { |setting_object| !setting_object.marked_for_destruction? && setting_object.value.present? }
+            setting_objects.any? do |setting_object|
+              !setting_object.marked_for_destruction? &&
+                setting_object.value.present?
+            end
           else
             settings(var).value.present?
           end
@@ -38,7 +45,9 @@ module RailsSettings
         def to_settings_hash
           settings_hash = self.class.default_settings.dup
           settings_hash.each do |var, vals|
-            settings_hash[var] = settings_hash[var].merge(settings(var.to_sym).value)
+            settings_hash[var] = settings_hash[var].merge(
+              settings(var.to_sym).value,
+            )
           end
           settings_hash
         end

@@ -4,19 +4,20 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'rails-settings/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = 'ledermann-rails-settings'
-  gem.version       = RailsSettings::VERSION
-  gem.licenses      = ['MIT']
-  gem.authors       = ['Georg Ledermann']
-  gem.email         = ['georg@ledermann.dev']
-  gem.description   = %q{Settings gem for Ruby on Rails}
-  gem.summary       = %q{Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.}
-  gem.homepage      = 'https://github.com/ledermann/rails-settings'
+  gem.name = 'ledermann-rails-settings'
+  gem.version = RailsSettings::VERSION
+  gem.licenses = ['MIT']
+  gem.authors = ['Georg Ledermann']
+  gem.email = ['georg@ledermann.dev']
+  gem.description = 'Settings gem for Ruby on Rails'
+  gem.summary =
+    'Ruby gem to handle settings for ActiveRecord instances by storing them as serialized Hash in a separate database table. Namespaces and defaults included.'
+  gem.homepage = 'https://github.com/ledermann/rails-settings'
   gem.required_ruby_version = '>= 3.0'
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.files = `git ls-files`.split($/)
+  gem.executables = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
+  gem.test_files = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
   gem.add_dependency 'activerecord', '>= 6.1'

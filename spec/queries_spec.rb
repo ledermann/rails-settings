@@ -2,12 +2,10 @@ require 'spec_helper'
 
 describe 'Queries performed' do
   context 'New record' do
-    let!(:user) { User.new :name => 'Mr. Pink' }
+    let!(:user) { User.new name: 'Mr. Pink' }
 
     it 'should be saved by one SQL query' do
-      expect {
-        user.save!
-      }.to perform_queries(1)
+      expect { user.save! }.to perform_queries(1)
     end
 
     it 'should be saved with settings for one key by two SQL queries' do
@@ -29,12 +27,10 @@ describe 'Queries performed' do
   end
 
   context 'Existing record without settings' do
-    let!(:user) { User.create! :name => 'Mr. Pink' }
+    let!(:user) { User.create! name: 'Mr. Pink' }
 
     it 'should be saved without SQL queries' do
-      expect {
-        user.save!
-      }.to perform_queries(0)
+      expect { user.save! }.to perform_queries(0)
     end
 
     it 'should be saved with settings for one key by two SQL queries' do
@@ -57,16 +53,14 @@ describe 'Queries performed' do
 
   context 'Existing record with settings' do
     let!(:user) do
-      User.create! :name => 'Mr. Pink' do |user|
+      User.create! name: 'Mr. Pink' do |user|
         user.settings(:dashboard).theme = 'pink'
         user.settings(:calendar).scope = 'all'
       end
     end
 
     it 'should be saved without SQL queries' do
-      expect {
-        user.save!
-      }.to perform_queries(0)
+      expect { user.save! }.to perform_queries(0)
     end
 
     it 'should be saved with settings for one key by one SQL queries' do
@@ -87,14 +81,12 @@ describe 'Queries performed' do
     end
 
     it 'should be destroyed by two SQL queries' do
-      expect {
-        user.destroy
-      }.to perform_queries(2)
+      expect { user.destroy }.to perform_queries(2)
     end
 
-    it "should update settings by one SQL query" do
+    it 'should update settings by one SQL query' do
       expect {
-        user.settings(:dashboard).update! :foo => 'bar'
+        user.settings(:dashboard).update! foo: 'bar'
       }.to perform_queries(1)
     end
   end

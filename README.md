@@ -8,9 +8,8 @@ Ruby gem to handle settings for ActiveRecord instances by storing them as serial
 
 ## Requirements
 
-* Ruby 3.0 or newer
-* Rails 6.1 or newer (including Rails 7.0)
-
+- Ruby 3.0 or newer
+- Rails 6.1 or newer (including Rails 7.0)
 
 ## Installation
 
@@ -26,7 +25,6 @@ Generate and run the migration:
 rails g rails_settings:migration
 rake db:migrate
 ```
-
 
 ## Usage
 
@@ -103,7 +101,6 @@ user.settings(:dashboard).update! :theme => 'black'
 user.settings(:calendar).update! :scope => 'all', :display => 'daily'
 ```
 
-
 ### Get settings
 
 ```ruby
@@ -145,6 +142,7 @@ User.without_settings_for(:calendar)
 ```
 
 ### Eager Loading
+
 ```ruby
 User.includes(:setting_objects)
 # => Eager load setting_objects when querying many users
@@ -156,11 +154,9 @@ Version 2 is a complete rewrite and has a new DSL, so it's **not** compatible wi
 
 If you don't want to upgrade, you find the old version in the [1.x](https://github.com/ledermann/rails-settings/commits/1.x) branch. But don't expect any updates there.
 
-
 ## Changelog
 
 See https://github.com/ledermann/rails-settings/releases
-
 
 ## License
 

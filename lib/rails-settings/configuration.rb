@@ -10,30 +10,43 @@ module RailsSettings
       @klass = klass
 
       if options[:persistent]
-        @klass.class_attribute :default_settings unless @klass.methods.include?(:default_settings)
+        unless @klass.methods.include?(:default_settings)
+          @klass.class_attribute :default_settings
+        end
       else
         @klass.class_attribute :default_settings
       end
 
       @klass.class_attribute :setting_object_class_name
       @klass.default_settings ||= {}
-      @klass.setting_object_class_name = options[:class_name] || 'RailsSettings::SettingObject'
+      @klass.setting_object_class_name =
+        options[:class_name] || 'RailsSettings::SettingObject'
 
       if block_given?
         yield(self)
       else
-        keys.each do |k|
-          key(k)
-        end
+        keys.each { |k| key(k) }
       end
 
-      raise ArgumentError.new('has_settings: No keys defined') if @klass.default_settings.blank?
+      if @klass.default_settings.blank?
+        raise ArgumentError.new('has_settings: No keys defined')
+      end
     end
 
-    def key(name, options={})
-      raise ArgumentError.new("has_settings: Symbol expected, but got a #{name.class}") unless name.is_a?(Symbol)
-      raise ArgumentError.new("has_settings: Option :defaults expected, but got #{options.keys.join(', ')}") unless options.blank? || (options.keys == [:defaults])
-      @klass.default_settings[name] = (options[:defaults] || {}).stringify_keys.freeze
+    def key(name, options = {})
+      unless name.is_a?(Symbol)
+        raise ArgumentError.new(
+                "has_settings: Symbol expected, but got a #{name.class}",
+              )
+      end
+      unless options.blank? || (options.keys == [:defaults])
+        raise ArgumentError.new(
+                "has_settings: Option :defaults expected, but got #{options.keys.join(', ')}",
+              )
+      end
+      @klass.default_settings[name] = (
+        options[:defaults] || {}
+      ).stringify_keys.freeze
     end
   end
 end
