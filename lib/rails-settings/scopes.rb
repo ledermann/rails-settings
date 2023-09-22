@@ -2,12 +2,7 @@ module RailsSettings
   module Scopes
     def with_settings
       result = joins("INNER JOIN settings ON #{settings_join_condition}")
-
-      if ActiveRecord::VERSION::MAJOR < 5
-        result.uniq
-      else
-        result.distinct
-      end
+      result.distinct
     end
 
     def with_settings_for(var)

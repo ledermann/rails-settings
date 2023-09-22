@@ -78,9 +78,6 @@ def setup_db
   ActiveRecord::Migration.verbose = false
 
   print "Testing with ActiveRecord #{ActiveRecord::VERSION::STRING}"
-  if ActiveRecord::VERSION::MAJOR == 4
-    print " #{defined?(ProtectedAttributes) ? 'with' : 'without'} gem `protected_attributes`"
-  end
   puts
 
   require File.expand_path('../../lib/generators/rails_settings/migration/templates/migration.rb', __FILE__)
