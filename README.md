@@ -162,6 +162,6 @@ See https://github.com/ledermann/rails-settings/releases
 
 MIT License
 
-Copyright (c) 2012-2023 [Georg Ledermann](https://ledermann.dev)
+Copyright (c) 2012-2024 [Georg Ledermann](https://ledermann.dev)
 
 This gem is a complete rewrite of [rails-settings](https://github.com/Squeegy/rails-settings) by [Alex Wayne](https://github.com/Squeegy)
