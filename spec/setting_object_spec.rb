@@ -3,25 +3,13 @@ require 'spec_helper'
 describe RailsSettings::SettingObject do
   let(:user) { User.create! name: 'Mr. Pink' }
 
-  if RailsSettings.can_protect_attributes?
-    let(:new_setting_object) do
-      user.setting_objects.build({ var: 'dashboard' }, without_protection: true)
-    end
-    let(:saved_setting_object) do
-      user.setting_objects.create!(
-        { var: 'dashboard', value: { 'theme' => 'pink', 'filter' => false } },
-        without_protection: true,
-      )
-    end
-  else
-    let(:new_setting_object) do
-      user.setting_objects.build({ var: 'dashboard' })
-    end
-    let(:saved_setting_object) do
-      user.setting_objects.create!(
-        { var: 'dashboard', value: { 'theme' => 'pink', 'filter' => false } },
-      )
-    end
+  let(:new_setting_object) do
+    user.setting_objects.build({ var: 'dashboard' })
+  end
+  let(:saved_setting_object) do
+    user.setting_objects.create!(
+      { var: 'dashboard', value: { 'theme' => 'pink', 'filter' => false } },
+    )
   end
 
   describe 'serialization' do
@@ -135,15 +123,6 @@ describe RailsSettings::SettingObject do
 
     it 'should not save blank hash' do
       expect(new_setting_object.update({})).to be_truthy
-    end
-
-    if RailsSettings.can_protect_attributes?
-      it 'should not allow changing protected attributes' do
-        new_setting_object.update!(var: 'calendar', foo: 42)
-
-        expect(new_setting_object.var).to eq('dashboard')
-        expect(new_setting_object.foo).to eq(42)
-      end
     end
   end
 

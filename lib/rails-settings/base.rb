@@ -14,13 +14,8 @@ module RailsSettings
             raise ArgumentError.new("Unknown key: #{var}")
           end
 
-          if RailsSettings.can_protect_attributes?
-            setting_objects.detect { |s| s.var == var.to_s } ||
-              setting_objects.build({ var: var.to_s }, without_protection: true)
-          else
-            setting_objects.detect { |s| s.var == var.to_s } ||
-              setting_objects.build(var: var.to_s, target: self)
-          end
+          setting_objects.detect { |s| s.var == var.to_s } ||
+            setting_objects.build(var: var.to_s, target: self)
         end
 
         def settings=(value)
