@@ -33,6 +33,8 @@ RSpec.configure do |config|
   end
 end
 
+# Ensure stdlib Logger is loaded before ActiveSupport (needed for Rails < 7.1 on Ruby 3.2+)
+require 'logger'
 require 'active_record'
 require 'protected_attributes' if ENV['PROTECTED_ATTRIBUTES'] == 'true'
 require 'rails-settings'
